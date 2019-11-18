@@ -1,0 +1,99 @@
+\section{Méthodes de Détection des Valeurs Aberrantes}
+
+\subsection{Méthode Basée sur la Distance}
+
+To determine whether a point is anomalous we must compare it to a set of other points. 
+One natural comparison is to consider its distance from these other points.
+Then the further the point in question is from the others,
+the more it suggests this point is anomalous.
+This works in both continuous and discrete cases whenever we are given either a distance function or a pre-computed table of pairwise distances.
+The choice of which sets of points to use in this comparison distinguishes the different distance based algorithms.
+
+Let $D \subset \mathbb{R}^n$ be an $n$-dimensional data set, 
+$p$ and $q$ be data points from $D$, 
+$P \subset D$ be a subset of $D$, 
+and $d: D \times D \to \mathbb{R}$ be the distance between $p$ and $q$ written $d(p,q)$.
+An anomaly detection algorithm must give us a function $a : D \to \mathbb{R}$ that describes how anomalous a given point is.
+This induces an ordering on the points of $D$;
+if $a(p) < a(q)$ for $p,q \in D$, then $p$ is less anomalous than $q$.
+It is then necessary to define a threshold beyond which a point is considered anomalous.
+If $\alpha \in \mathbb{R}$ is such a threshold, then any $p \in D$ where $a(p) > \alpha$ is considered an anomaly.
+Such $p$ are called \textbf{absolutely anomalous}.
+
+\subsubsection*{Similarity Measures}
+
+A \textbf{similarity measure} is a real-valued function that describes the similarity between two objects.
+A common construction is to define the similarity between two points as $\frac{1}{d(p,q)}$ for some distance function $d$.
+
+A similarity measure can also be constructed between probability distributions.
+Let $X$ and $Y$ be two $n$-dimensional random vector of (possibly) different distribution.
+Recall that the covariance matrix $\Sigma$ of $X$ is an $(n \times n)$ matrix whose $(i,j)$-entry is the variance between the $i$-th and $j$-th positions of $X$.
+Let $\Sigma_X$ and $\Sigma_Y$ be the covariance matrices of $X$ and $Y$ respectively.
+The \textbf{Bhattacharyya distance} is defined as 
+
+Given a collection of identically distributed samples, the covariance matrix can be estimated.
+
+We can consider a single fixed point to be a probability distribution.
+Then the Bhattacharyya distance between the point distribution and another distribution can be considered.
+This special case is called the \textbf{Mahalanobis distance}.
+
+\[
+\sqrt{(p - q)^T \Sigma^{-1} (p - q)}
+\]
+
+Suppose $\Sigma$ is diagonal.
+This occurs when there is no correlation i.e. linear relationship between dimensions.
+This is a necessary but insufficient condition of the dimensions being independent.
+In this case the Mahalanobis distance is
+
+\[
+\sqrt{\sum_{i=1}^n \frac{(p_i - q_i)^2}{\sigma_i^2}}
+\]
+
+where $\sigma_i^2$ is the standard deviation of the $i$-th dimension.
+If $\Sigma$ is the identity matrix, then we recover the \textbf{Euclidean distance}
+
+\[
+\sqrt{\sum_{i=1}^n (p_i - q_i)^2}
+\]
+
+When taking the Euclidean distance a linear normalization can be first applied to each dimension so that each entry lies between $[-1,1]^n$.
+
+% p35
+
+\textbf{Minkowski distance}
+
+\textbf{Jacob distance}
+
+\textbf{Jaccard distance}
+
+\textbf{Cosine distance}
+
+\subsubsection*{Distance-Based Approaches}
+
+These distance functions can be applied to create some basic anomaly detection algorithms.
+These ideas will later be extended to more complex algorithms.
+
+\textbf{Distance to All Points}
+
+\textbf{Distance to Nearest Neighbour}
+
+\textbf{Average Distance to $k$ Nearest Neighbours}
+
+\textbf{Median Distance to $k$ Nearest Neighbours}
+
+\subsection{Méthode Basée sur la Densité}
+% p97
+
+\subsubsection*{Local Outlier Factor (LOF)}
+
+\subsubsection*{DBSCAN}
+
+\subsection{L’écart Type}
+% p8
+
+\subsubsection*{Isolation Forest \cite{A15}}
+
+The previously discussed approaches first construct models of what normal points look like, and then identify points that do not fit this model.
+Instead anomalous points can be explicitly identified.
+This allows the use of sampling techniques that increases the algorithmic speed and while decreasing memory requirements.

@@ -1,0 +1,57 @@
+\usepackage[section]{placeins}
+\usepackage{cite}
+\usepackage{tcolorbox}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{example}
+\tcbuselibrary{skins}
+\tcbuselibrary{breakable}
+\usepackage[aboveskip=1pt,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=off]{caption}
+\usepackage[ruled,vlined]{algorithm2e}
+\newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi:\detokenize{#1}}}
+\newcommand*{\www}[1]{\href{http://\detokenize{#1}}{\textcolor{acolor}{\detokenize{#1}}}}
+\newcommand*{\wwws}[1]{\href{https://\detokenize{#1}}{\textcolor{acolor}{\detokenize{#1}}}}
+\newcommand*{\newhref}[2]{\href{#1}{\textbf{\textcolor{acolor}{#2}}}}
+\newcommand{\newl}{\newline\newline}
+
+\DeclareMathOperator{\LL}{LL}
+\DeclareMathOperator{\OR}{OR}
+\DeclareMathOperator{\BB}{B}
+\DeclareMathOperator{\SE}{SE}
+\DeclareMathOperator{\SD}{SD}
+
+%---------------------------------------------------
+%	COLUMNS
+%---------------------------------------------------
+
+\setlength{\columnsep}{0.55cm} % Distance between the two columns of text
+\setlength{\fboxrule}{0.75pt} % Width of the border around the abstract
+
+%----------------------------------------------------
+%	COLORS
+%----------------------------------------------------
+
+\definecolor{bcolor}{RGB}{0,20,20} % Color of the boxes behind the abstract and headings
+
+%----------------------------------------------------
+%	HYPERLINKS
+%----------------------------------------------------
+
+\usepackage{hyperref} % Required for hyperlinks
+\hypersetup{hidelinks,colorlinks,breaklinks=true,urlcolor=bcolor,citecolor=acolor,linkcolor=acolor,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
+
+%----------------------------------------------------
+%	BULLETS
+%----------------------------------------------------
+
+\newcommand{\localtextbulletone}{\textcolor{acolor}{\raisebox{.45ex}{\rule{.6ex}{.6ex}}}}
+\renewcommand{\labelitemi}{\localtextbulletone}
+
+%----------------------------------------------------
+%	MISC
+%----------------------------------------------------
+
+\usepackage{subfigure}
