@@ -75,7 +75,14 @@ p_k=\frac{\sum_{i=1}^{k} \lambda_i}{\sum_{i=1}^{p}\lambda_i }
 On retient donc les $k$ composantes principales de sorte $p_k$  soit supérieure à une valeur prédéfinie (souvent elle est  comprise entre $80\%$ et $90\%$). \newl
 \textbf{la méthode de l'éboulis}, consiste à tracer la courbe des valeurs propres de façon décroissante. Le principe consiste à repérer, s'il existe, un "coude" dans le graphe et de ne conserver que les valeurs propres jusqu'à ce coude.
 \begin{example}
-$\cdots$
+Un exemple appliqué sur  les \href{1http://web.stanford.edu/ hastie/CASIles/DATA/leukemia big.csv}{donnèes} de mesures de l'expression génique chez 72 patients atteints de leucémie. Il se compose de 7128 gènes. Voir Figure \ref{fig0}.
+\begin{figure*}[t]
+    \centering
+     \includegraphics[width=.5\textwidth]{ADOA/Images/screeleuk.png}
+    \includegraphics[width=.4\textwidth]{ADOA/Images/3dpcleuk.PNG}
+    \caption{Courbe d'éboulis (gauche), projection des données sur 3 composantes (droite)}\hrule
+    \label{fig0}
+\end{figure*}
 \end{example}
 
 \subsubsection*{A Distance based Outlier BasIs using Neighbours (DOBIN)}
@@ -109,7 +116,7 @@ Dans les ensembles séquentiels, un algorithme donné ou un ensemble d'algorithm
 appliqués de manière séquentielle, de sorte que les applications futures des algorithmes
 réutilisent les résultats obtenus précédemment ainsi de suite. Le résultat final est soit une combinaison pondérée de, ou le résultat final de la dernière application du dernier algorithme. 
 
-\begin{algorithm}[H]
+\begin{algorithm}
 \SetAlgoLined
 j=1\;
 \While{Tant que la condition est vérifiée }{
@@ -131,7 +138,7 @@ des données ou des parties des données. Les choix faits sur les données
 et les algorithmes appliqués sont indépendants des résultats obtenus
 à partir des différentes exécutions. Les résultats sont combinées afin d'obtenir des valeurs aberrantes plus robustes.
 
-\begin{algorithm}[H]
+\begin{algorithm}
 \SetAlgoLined
 j=1\;
 \While{Tant que la condition est vérifiée }{
@@ -180,7 +187,7 @@ Clairement, la fonction de combinaison peut dépendre de la structure de l'ensem
 L'analyse d'ensemble a été utilisée de manière particulièrement éfficace dans la détection de valeurs aberrantes de grande dimension [\cite{A8}, \cite{A13}, \cite{A14}], dans lesquels plusieurs sous-espaces des données sont souvent explorées afin de découvrir des valeurs aberrantes,en effet, elles sont souvent cachées dans des sous-espaces de dimension inférieure. Il est donc logique d'explorer les sous-espaces dimensionnels inférieurs \cite{A1}. Une telle approche élimine les effets de bruit additifs de grand nombre de dimensions et conduit à des valeurs aberrantes plus robustes. Un tel problème est très difficile à résoudre efficacement. Ceci est dû au fait le nombre de projections possibles de données de grande dimension est liée de manière exponentielle à la dimensionnalité des données. Le problème détection des valeurs aberrantes est comme trouver une aiguille dans une botte de foin \cite{A14}. \\
 \textcolor{red}{en construction}
 
-\begin{algorithm}[H]
+\begin{algorithm}
 \SetAlgoLined
 j=1\;
 \While{Tant que la condition est vérifiée }{
