@@ -1,3 +1,6 @@
+% {Youssouph Cissokho}
+\newpage
+\newpage
 \section{Détection des anomalies dans des données de grande dimension}
 %
 One se réfère principalement dans cette section  à Aggarwal (2017) \cite{A1}, Aggarwal et Sathe (2017) \cite{A8}, Ranga et al. (2019) \cite{A10} and Lazarevic et al.(2005) \cite{A14} .\newl 
@@ -94,10 +97,43 @@ Un exemple appliqué sur  les \href{1http://web.stanford.edu/ hastie/CASIles/DAT
  d(x_i,x_j)^2=(x_i-x_j)^tS(x_i-x_j) 
  \end{align*}
  ou $S$ est une matrice symétrique définie positive. Si $S=diag(s_1,\cdots,s_p)$ est une matrice diagonale, alors
- \begin{align*}
+ \begin{align}\label{dob1}
  d(x_i,x_j)^2=\langle\eta,(x_i-x_j)\circ(x_i-x_j) \rangle
- \end{align*} 
- où $\langle\cdot{,}\cdot\rangle$ désigne le produit scalaire  standard dans $R^p$, $\eta = (s_1,\cdots,s_p)$ et $\circ$ désigne le produit par élément. Comme $S$ est symétrique et définie positives, il est diagonalisable, ce qui motive à considérer une diagonale $S$.\\
+ \end{align} 
+ où $\langle\cdot{,}\cdot\rangle$ désigne le produit scalaire  standard dans $R^p$, $\eta = (s_1,\cdots,s_p)$ et $\circ$ désigne le produit par élément. Comme $S$ est symétrique et définie positives, il est diagonalisable, ce qui motive à considérer une diagonale $S$. L'élément clé de DOBIN réside dans la contructin de de l'espace $Y$.
+ Posons $y_{ij}=(x_i-x_j)\circ(x_i-x_j)$, parconséquent \ref{dob1} devient 
+\begin{align}\label{dob2}
+d(x_i,x_j)^2=\langle\eta,y_{ij}\rangle.
+\end{align}
+ Le but est maintemant de trouver un vecteur unitaire $\eta$ qui maximiera la distance entre $x_i$ et $x_j$. Calculer $y_{ij}$ pour toutes les paires serait coûteux car il y a $N (N + 1) / 2$ paires à prendre en compte. De plus, cela nous donnerait des distances par paires entre des points qui ne nous intéressent pas, tels que des points à la limite du nuage de points. Trouver $\eta$ qui maximise les distances entre de tels points n’est pas bénéfique pour la détection des valeurs aberrantes, car une grande distance entre les points opposés ne signifie pas qu’un de ces points soit des valeurs aberrantes. L'algorithme suivant résume le calcul de l'espace $Y$
+\begin{algorithm}
+\SetAlgoLined
+$X_1$=norm1($X$)\;
+Chercher entre $k1$ à $k2$ voisins de chaque point dans $X_1$\;
+$X_2$=norm2($X$)\;
+Chercher entre $k1$ à $k2$ voisins de chaque point dans $X_2$\;
+Puis, pour chaque point, rassemble tous les voisins uniques obtenus dans l'étape 2 et 3\;
+Poser $T=\{(i,j): \quad i,j\in X\}$\;
+Pour toutes ces paires, calculez $y_{ij}$ comme dans l'équation \ref{dob2} en utilisant $X_1$ or $X_2$\;
+
+Soit $Y=\{y_1=y_{i_1j_1},\cdots,y_m=y_{i_mj_m}\}$
+avec $y_{i_kj_k}$ le kième paire dans T\;
+\KwResult{ L'espace $Y$ consititué  de $\{y_\ell \}^M_{\ell=1}$ and et les indices $i$ et $j$ correspondantes }
+\caption{Consruction de l'espace $Y$: Données $X$, $k1$, $k2 \in Z^+$, $q\in (0, 1)$ and choice of normalization.}
+\end{algorithm}%\newl
+
+
+%8 Let Q be the qth percentile of ��∑p y ��. The quantity ∑p y is the distance
+%m=1 lm between points xi(l) and xj(l) in X1 or X2 space.
+%m=1 lm
+%9 Remove points for which ∑p ylm < Q. m=1
+%10 Removetheassociatedpairsof(i,j)fromT.
+%11 The remaining points constitute the Y space: Y = {yl}M . l=1
+ 
+ 
+ 
+ 
+ 
  \textcolor{red}{En construction}\\
 % 
 % L'objectif de DOBIN consiste à:
