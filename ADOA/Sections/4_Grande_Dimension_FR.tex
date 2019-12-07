@@ -1,7 +1,8 @@
 % {Youssouph Cissokho}
 \newpage
+\  
 \newpage
-\section{Détection des anomalies dans des données de grande dimension}
+\section{Anomalies et données de grande dimension}
 %
 One se réfère principalement dans cette section  à Aggarwal (2017) \cite{A1}, Aggarwal et Sathe (2017) \cite{A8}, Ranga et al. (2019) \cite{A10} and Lazarevic et al.(2005) \cite{A14} .\newl 
 La détection des valeurs aberrantes est un vaste domaine qui a été étudié dans le cadre d’un grand nombre de domaines d’application. De nos jours, de nombreuses données réelles sont de très grandes dimensions, dans certains scénarios, les données peuvent contenir \textbf{des centaines ou des milliers de dimensions}. De nombreux algorithmes récents utilisent des concepts de proximité (distances) afin de déterminer les valeurs aberrantes en fonction de leur relation avec le reste des données.  Cependant,  en haute dimension l’espace les données se retrouvent  isolées et deviennent éparses et la notion de proximité ne parvient pas à conserver son importance. En conséquence, pour les données de grande dimension, la notion de définition de valeurs aberrantes significatives est beaucoup plus complexe et non évidente.  Ainsi, beaucoup de  méthodes conventionnelles de  détection des valeurs aberrantes ne fonctionnent pas très efficacement, \textbf{ceci est un artefact connu sous le nom de  la malédiction ou fléau de la dimensionalité}. \newl
@@ -235,3 +236,7 @@ j=1\;
 \KwResult{Retourner les valeurs aberrantes basées sur la combinaison des differents sous-espaces}
 \caption{FeatureBagging(Donnée: D)}
 \end{algorithm}
+
+
+
+\afterpage{\FloatBarrier}

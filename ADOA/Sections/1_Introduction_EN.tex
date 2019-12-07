@@ -69,15 +69,15 @@ Measurements of the length of the appendage of a certain species of insect have 
 \end{Example}
 \noindent This traditional approach to anomaly detection fails for high-dimensional datasets, however, and a fundamentally different approach is advocated.\newpage  
 \subsection{Anomaly Detection as a Statistical Learning Problem}
-Fraudulent behaviour is not always easily identifiable, even after the fact. Credit card fraudsters, for isntance, will try to disguise their transactions as regular and banal, rather than as outlandish; to fool human observers into confusing what is mererly \textbf{plausible} with what is \textbf{probable} (or at least, \textbf{not improbable}).\newl At its most basic level, anomaly detection is a problem in \textbf{applied probability}: if $I$ denotes what is known about the dataset (behaviour of individual observations, behaviour of observations as a group, anomalous/normal verdict for a number of similar observations, etc.), is $$P(\text{obs. is anomalous}|I) > P(\text{obs. is normal}|I)?$$ 
-Anomaly detection models usually assume \textbf{stationarity for normal observations}, which is to say, that the underlying mechanism that generates data does not change in a substantial manner over time, or, if it does, that its rate of change or cyclicity is known. For time series data, this means that it may be necessary to perform trend and seasonality extraction in order to identify anomalies.
+Fraudulent behaviour is not always easily identifiable, even after the fact. Credit card fraudsters, for isntance, will try to disguise their transactions as regular and banal, rather than as outlandish; to fool human observers into confusing what is mererly \textbf{plausible} with what is \textbf{probable} (or at least, \textbf{not improbable}).\newl At its most basic level, anomaly detection is a problem in \textbf{applied probability}: if $I$ denotes what is known about the dataset (behaviour of individual observations, behaviour of observations as a group, anomalous/normal verdict for a number of similar observations, etc.), is $$P(\text{obs.\@ is anomalous}|I) > P(\text{obs.\@ is normal}|I)?$$ 
+Anomaly detection models usually assume \textbf{stationarity for normal observations}, which is to say, that the underlying mechanism that generates data does not change in a substantial manner over time, or, if it does, that its rate of change or cyclicity is known. \newl For time series data, this means that it may be necessary to first perform trend and seasonality extraction.
 \begin{Example} Supply chains play a crucial role in the transportation of goods from one part of the world to another. As the saying goes, ``a given chain is only as strong as its weakest link'' -- in a multi-modal context, comparing the various transportation segments is far from an obvious endeavour: if shipments departing Shanghai in February 2013 took two more days, on average, to arrive in Vancouver than those departing in July 2017, can it be said with any certainty that the shipping process has improved in the intervening years? Are February departures always slower to cross the Pacific Ocean? \par The seasonal variability of performance is relevant to supply chain monitoring and the ability to quantify and account for the severity of its impact on the data is thus of great interest. \par 
 One way to tackle this problem is to produce an \textbf{index} to track container transit times. This index should depict the \textbf{reliability} and the \textbf{variability} of transit times but in such a way as to be able to allow for performance comparison between differing time periods.\newl 
 To simplify the discussion, assume that the ultimate goal is to compare quarterly and/or monthly performance data, irrespective of the transit season, in order to determine how well the network is performing on the \textit{Shanghai} $\to$ \textit{Port Metro Vancouver/Prince Rupert} $\to$ \textit{Toronto} corridor, say. 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.5\textwidth]{Images/mmsc.png}
-\caption[\small Visualisations for a service point dataset]{\small Multi-modal supply chain.} \label{fig:mmsc}
+\caption{\small Multi-modal supply chain.} \label{fig:mmsc}
 \end{figure}
 \noindent The supply chain under investigation has Shanghai as the point of origin of shipments, with Toronto as the final destination; the containers enter the country either through Vancouver or Prince Rupert. Containers leave their point of origin by boat, arrive and dwell in either of the two ports before reaching their final destination by rail. \newl 
 For each of the three segments (Marine Transit, Port Dwell, Rail Transit), the data consists of the monthly empirical distribution of transit times, built from sub-samples  (assumed to be randomly selected and fully representative) of all containers entering the appropriate segment.
@@ -94,9 +94,78 @@ The time series of monthly indicators (which are derived from the monthly transi
 \item seasonal component (seasonality, trading-day, moving-holiday), and 
 \item irregular component.
 \end{itemize}
-The trend and the seasonal components provide the \textbf{expected behaviour} of the indicator time series; the irregular component arose as a consequence of supply chain \textbf{volatility}. A high irregular component at a given time point indicates a poor performance against expectations for that month, which is to say, an \textbf{anomalous observation}.  
-
+The trend and the seasonal components provide the \textbf{expected behaviour} of the indicator time series;\footnote{Before carrying out seasonal adjustment, it is important to identify and pre-adjust for structural breaks (using the Chow test, for instance), as their presence can give rise to severe distortions in the estimation of the Trend and Seasonal effects. Seasonal breaks occur when the usual seasonal activity level of a particular time reporting unit changes in subsequent years. Trend breaks occurs when the trend in a data series is lowered or raised for a prolonged period, either temporarily or permanently. Sources of these breaks may come from changes in government policies, strike actions, exceptional events, inclement weather, etc.} the irregular component arose as a consequence of supply chain \textbf{volatility}. A high irregular component at a given time point indicates a poor performance against expectations for that month, which is to say, an \textbf{anomalous observation}.  
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.5\textwidth]{Images/decomposition.png}
+\caption{\small Conceptual time series decomposition; potential anomalous behaviour should be searched for in the irregular component.}\hrule \label{fig:description}
+\end{figure}
+\newl In general, the decomposition follows a model which is 
+\begin{itemize}[noitemsep]
+\item multiplicative;
+\item additive, or 
+\item pseudo-additive.
+\end{itemize}
+The choice of a model is driven by data behaviour and choice of assumptions; the X12 model automates some of the aspects of the decomposition, but manual intervention and diagnostics are still required.\footnote{X12 is implemented in SAS and R, among other platforms.}
+The additive model, for instance, assumes that: 
+\begin{enumerate}[noitemsep]\item the seasonal component $S_t$ and the irregular component $I_t$ are independent of the trend $T_t$; \item  the seasonal component $S_t$ remains stable from year to year; and \item there is no seasonal fluctuation: $\sum_{j=1}^{12} S_{t+j}=0 $.\end{enumerate} 
+Mathematically, the model is expressed as:
+    \begin{equation*}
+        O_t = T_t + S_t + I_t
+    \end{equation*}
+    All components share the same dimensions and units. After seasonality adjustment,the seasonality adjusted series is:
+    \begin{equation*}
+        SA_t = O_t - S_t = T_t + I_t
+    \end{equation*}
+The multiplicative and pseudo-additive models are defined in similar ways (consult \cite{TS_FH,TS_FMBOC,TS_ICTSA,TS_SAETS,TS_JL} for details).\footnote{The simplest way to determine whether to use multiplicative or additive decomposition is by graphing the time series. If the size of the seasonal variation increases/decreases over time, multiplicative decomposition should be used. On the other hand, if the seasonal variation seems to be constant over time, additive model should be used. A pseudo-additive model should be used when the data exhibits the characteristics of the multiplicative series, but parameter values are close to zero.}\newl 
+The data decomposition/preparation process is illustrated with the 40-month time series of marine transit CVs from 2010-2013, whose values are shown in Figure~\ref{fig:cv_cont}.  The size of the peaks and troughs seems fairly constant with respect to the changing trend; the SAS implementation of X12 agrees with that assessment and suggests the additive decomposition model, with  no need for further data transformations.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{Images/CV_continuously.png}
+\caption{Monthly marine transit CVs and estimation summary.}
+\label{fig:cv_cont}
+\end{figure*}
+\par The diagnostic plots are shown in Figure~\ref{fig:diff}: the 2010 CV series is prior-adjusted from the beginning until OCT2010 after the detection of a level shift. The SI (Seasonal Irregular) chart shows that there are more than one irregular component which exhibits volatility.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.98\textwidth]{Images/DiffComponents.png}
+\caption[Diagnostic plots.]{Diagnostic plots. Note here that the analysis of a time series starts with estimation of the effects of festivals and trading days. These pre-calculated
+estimates are then used for prior adjustment of the series. The prior adjusted original series is subsequently analyzed using the seasonal adjustment.}\hrule
+\label{fig:diff}
+\end{figure*}
+The adjusted series is shown below in Figure~\ref{fig:adjusted}; the trend and irregular components are also shown separately for readability. It is on the irregular component that detection anomaly would be conducted. 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.98\textwidth]{Images/adjustedplot.png}
+\caption{Adjusted time series components plots.}\hrule
+\label{fig:adjusted}
+\end{figure*}
 \end{Example}
+\begin{center}
+    \rule{0.25\textwidth}{.4pt}
+\end{center}
+The last example shows the importance of domain understanding and data preparation to the anomaly detection process. Given that the vast majority of observations in a general problem are typically "normal", another conceptually important approach is to view anomaly detection as a \textbf{rare occurrence learning} classification problem or as a \textbf{novelty detection} data stream problem (these problems will be tackled in other data science reports of this series). \par Either way, while there a number of strategies use regular classification/clustering algorithms for anomaly detection, they are rarely successful unless they are adapted or modified for the anomaly detection context.  
+\subsubsection*{Basic Concepts}
+A generic system (such as the monthly transit times from the previous subsection, say) may be realized in \textbf{normal} states or in \textbf{abnormal} states. Normality, perhaps counter-intuitively, is not confined to finding the most likely state, however, as infrequently occurring states could still be normal or plausible under some interpretation of the system. \par As the authors of \cite{A10} see it, a system's states are the results of processes or behaviours that follow certain natural rules and broad principles; the observations are a manifestation of these states. Data, in general, allows for inferences to be made about the underlying processes, which can then be tested or invalidated by the collection of additional data. When the inputs are perturbed, the corresponding outputs are likely to be perturbed as well; if anomalies arise from perturbed processes, being able to identify when the process is abnormal, that is to say, being able to capture the various normal and abnormal processes, may lead to useful anomaly detection. 
+\newl Any \textbf{supervised} anomaly detection algorithm requires a training set of historical labeled data (which may be costly to obtain) on which to build the prediction model, and a testing set on which to evaluate the model's performance in terms of \textbf{True Positives} ($\text{TP}$, detected anomalies that actually arise from process abnormalities); 
+\textbf{True Negatives} ($\text{TN}$, predicted normal observations that indeed arise from normal processes); \textbf{False Positives} ($\text{FP}$, detected anomalies corresponding to regular processes), and \textbf{False Negatives} ($\text{FN}$, predicted normal observations that are in fact the product of an abnormal process). \newpage\noindent
+\qquad\includegraphics[width=0.4\textwidth]{Images/Confusion.png}\par\noindent
+As discussed previously, the rare occurrence problem makes optimizing for maximum \textbf{accuracy} $$a=\frac{\text{TN}+\text{TP}}{\text{TN}+\text{TP}+\text{FN}+\text{FP}}$$ a losing strategy; instead, algorithms attempt to minimize the FP rate and the FN rate under the assumption that the cost of making a false negative error could be substantially higher than the cost of making a false positive error. \newpage \noindent Assume that for a testing set with $d=\text{FN}+\text{TP}$ true outliers, an anomaly detection algorithm identifies $m=\text{FP}+\text{TP}$ suspicious observations, of which $n=\text{TP}$ are known to be true outliers. Performance evaluation in this context is often measured using: 
+\begin{description}
+\item[Precision]-- the proportion of true outliers among the suspicious observations $$p=\frac{n}{m}=\frac{\text{TP}}{\text{FP}+\text{TP}};$$ when most of the points identified by the algorithm are true outliers, $p\approx 1$;
+\item[Recall]-- the proportion of true outliers detected by the algorithm
+$$r=\frac{n}{d}=\frac{\text{TP}}{\text{FN}+\text{TP}};$$ when most of the true outliers are ident by the algorithm, $r\approx 1$;
+\item[$F_1-$Score]-- the harmonic mean of the algorithm's precision and its recall 
+$$F_1=\frac{2pr}{p+r}=\frac{2\text{TP}}{2\text{TP}+\text{FP}+\text{FN}};$$ one drawback of precision, recall, and the $F_1-$score is that they do not incorporate $\text{TN}$ in the evaluation process, but this is unlikely to be problematic as regular observations that are correctly seen as unsuspicious are not usually the observations of interest;\footnote{Nevertheless, the analyst for whom the full picture is important might want to further evaluate the algorithm with the help of the \textbf{Matthews Correlation Coefficient} \cite{W_MCC}.};
+\end{description}
+Consider a test dataset with 5000 observations, 100 of which are anomalous. An algorithm which predicts all observations to be anomalous would score $a=p=0.02$, $r=1$, and $F_1\approx 0.04$, whereas an algorithm that detects 10 of the true outliers would score $r=0.1$ (the other values would change according to the $\text{TN}$ and $\text{FN}$ counts).
+\newpage \noindent Another supervised approach is to estimate the relative abnormality of various observations: it is usually quite difficult to estimate the probability that an observation $\mathbf{x}_1$ is anomalous with any certainty, but it might be possible to determine that it is more likely to be anomalous than another observation $\mathbf{x}_2$, say (denoted by $\mathbf{x}_1\succeq \mathbf{x}_2$). %\par Either way, it is usually preferable to attempt to estimate $P(\mathbf{x}\text{ is an anomaly}|I)$ rather than to attempt to predict $\text{class}(\mathbf{x})\in\{\text{anomaly},\text{normal}\}$ directly. 
+\par This paradigm allows the suspicious observations to be ranked; let $k_i\in\{1,\ldots,m\}$ be the rank of the $i^{\text{th}}$ true outlier, $i\in \{1,\ldots,n\}$ in the sorted list of suspicious observations $$\mathbf{x}_1\succeq \mathbf{x}_{k_1}\succeq \cdots\succeq\mathbf{x}_{k_i}\succeq \cdots \mathbf{x}_{k_n}\succeq \mathbf{x}_m;$$ the \textbf{rank power} of the algorithm is $$RP=\frac{n(n+1)}{2\sum_{i=1}^nk_i}.$$ When the $d$ actual anomalies are ranked in (or near) the top $d$ suspicious observations, $RP\approx 1$. \par Rank power is well-defined only when $m\geq d$; as with most performance evaluation metrics, a single raw number is meaningless -- it is in comparison with the performance of other algorithms that it is most useful.  \newl On the \textbf{unsupervised} front, where anomalous/normal labels are not known or used, if anomalies are those observations that are dissimilar to other observations, and if clusters represent groupings of similar observations, then observations that do not naturally fit into a cluster could be potential anomalies (see Figure~\ref{fig:clust2}). \par There are a number of challenges, not the least of which being that most clustering algorithms do not recognize potential outliers (DBSCAN is a happy exception) and that some appropriate measure of similarity/dissimilarity of observations has to be agreed upon (different measures could lead to different cluster assignments). \newl Finally, it is worth mentioning that the definitions of terms like \textbf{normal} and \textbf{anomalous} are kept purposely vague, to allow for flexibility. 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{Images/clustering2_\ldoc.png}
+\caption{\small Clusters of customers (red, green, blue) and potential anomalies/outliers (grey) in an artificial dataset.}\hrule\label{fig:clust2}
+\end{figure*}
+
 \subsection{Literature Review}
 \subsection{Structure and Organization}
-\afterpage{\FloatBarrier}
