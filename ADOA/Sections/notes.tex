@@ -1,0 +1,27 @@
+\begin{algorithm}[ht]
+\SetAlgoLined
+\textbf{Input:} dataset $D$, point $\mathbf{p} \in D$, integer $k$ for number of nearest neighbours to consider, distance function $d$
+\\ Compute the mutual distance between all points in $D$
+\\\For{$p \in D$}{
+\For{$q \in D \setminus \{p\}$}{
+Compute $d(\mathbf{p}, \mathbf{q})$
+}
+Order $D$ by increasing distance from $p$
+\\Set $d_k(\mathbf{p}) = d(\mathbf{p}, q_k)$
+}
+Find the $k$ nearest neighbours of $p$ 
+\\(accepting more than $k$ if there is a tie)
+\\ Set $N_k(\mathbf{p}) = \{ q \in D \setminus \{p\} : d(\mathbf{p}, \mathbf{q}) \leq d_k(\mathbf{p}) \}$
+\\ Define the reachability distance
+$d_{reach}(\mathbf{p},\mathbf{q}) = \max\{d_k(\mathbf{q}), d(\mathbf{p},\mathbf{q})\}$
+\\ Define the average reachability distance $\overline{d_{reach}}(\mathbf{p}) 
+= \frac{\sum_{q \in N_k(\mathbf{p})} d_{reach}(\mathbf{p},\mathbf{q})}{\lvert N_k(\mathbf{p}) \rvert}$
+\\Define the local reachability density
+$\ell_k(\mathbf{p}) = \left( \overline{d_{reach}}(\mathbf{p}) \right)^{-1}$
+\\Compute the local outlier factor
+$a_k(\mathbf{p})
+= \frac{\sum_{q \in N_k(\mathbf{p})} \frac{\ell_k(\mathbf{q})}{\ell_k(\mathbf{p})}}{\lvert N_k(\mathbf{p}) \rvert}$
+\\ \textbf{Output:} LOF $a_k(\mathbf{p})$
+% \KwResult{Result}
+\caption{Local Outlier Factor (LOF)}
+\end{algorithm}

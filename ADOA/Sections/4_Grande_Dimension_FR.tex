@@ -1,30 +1,51 @@
+\addtocontents{toc}{\protect\newpage}
 % {Youssouph Cissokho}
 \newpage
-\  
-\newpage
-\section{Anomalies et données de grande dimension}
+
+\section{Anomalies et données de grande dimension}\label{Section:4}
 %
-One se réfère principalement dans cette section  à Aggarwal (2017) \cite{A1}, Aggarwal et Sathe (2017) \cite{A8}, Ranga et al. (2019) \cite{A10} and Lazarevic et al.(2005) \cite{A14} .\newl 
-La détection des valeurs aberrantes est un vaste domaine qui a été étudié dans le cadre d’un grand nombre de domaines d’application. De nos jours, de nombreuses données réelles sont de très grandes dimensions, dans certains scénarios, les données peuvent contenir \textbf{des centaines ou des milliers de dimensions}. De nombreux algorithmes récents utilisent des concepts de proximité (distances) afin de déterminer les valeurs aberrantes en fonction de leur relation avec le reste des données.  Cependant,  en haute dimension l’espace les données se retrouvent  isolées et deviennent éparses et la notion de proximité ne parvient pas à conserver son importance. En conséquence, pour les données de grande dimension, la notion de définition de valeurs aberrantes significatives est beaucoup plus complexe et non évidente.  Ainsi, beaucoup de  méthodes conventionnelles de  détection des valeurs aberrantes ne fonctionnent pas très efficacement, \textbf{ceci est un artefact connu sous le nom de  la malédiction ou fléau de la dimensionalité}. \newl
-Le reste de cette section est organisé comme suit: dans un premier temps, une tentative de définition est donnée ainsi que les défis, ensuite, on étudiera les techniques de détection des valeurs aberrantes et enfin, on présentera la méthode des ensembles ainsi que celle des sous-espaces. 
-%
-%
-\subsection{Definition and défis}
+Dans cette section, on se référe principalement à [\cite{A1}, \cite{A8}, \cite{A10}, \cite{A14} \cite{Aurore}].
+
+La détection des valeurs aberrantes est un vaste domaine qui a été étudié dans le cadre d’un grand nombre de domaines d’application. De nos jours, de nombreuses données réelles sont de très grandes dimensions, dans certains scénarios, les données peuvent contenir \textbf{des centaines ou des milliers de dimensions}. De nombreux méthodes classiques récentes utilisent des concepts de proximité (distances) de détection d’anomalies et ne peuvent s’appliquer que dans les cas où la taille d’échantillon $n$ est plus grande que la dimension $p$ ($n>p$). Cependant, la gestion des données en grande dimension i.e. ($n<p$) est un autre enjeu trés critique. En effet, l’espace les données se retrouvent  isolées et deviennent éparses et la notion de proximité ne parvient pas à conserver son importance. En conséquence, la notion de définition de valeurs aberrantes significatives est beaucoup plus complexe et non évidente.  Ainsi, beaucoup de  méthodes conventionnelles de  détection des valeurs aberrantes ne fonctionnent pas très efficacement, \textbf{ceci est un artefact connu sous le nom de  la malédiction ou fléau de la dimensionalité}. \newl
+Le reste de cette section est organisé comme suit: dans un premier temps, une tentative de définition est donnée ainsi que les défis, ensuite, on étudiera les techniques de détection des valeurs aberrantes 
+et enfin, on présentera la méthode des ensembles ainsi que celle des sous-espaces. 
 %
 %
-Une valeur aberrante est une observation qui s'écarte ou a des comportements différents des autres observations dans la donnée qui suscite les soupçons qu'elle a été générée par un autre
-mécanisme. Les valeurs aberrantes sont également appelées anomalies, discordants, déviants,
-dans la littérature relative à l'exploration de données et aux statistiques. \cite{A1}\newl
-La difficulté de la détection des valeurs aberrantes ou anomalies en grande dimension réside dans le fait que la notion de distance ne parvient pas à conserver son importance on parle ainsi du fléau de la dimensionalité. C'est en ce sens qu'il est dit que le problème détection des valeurs aberrantes est comme trouver une aiguille dans une botte de foin \cite{A14}
+\subsection{D\'efinitions et défis}
 %
-\subsection{Méthode de réduction de la dimension: ACP, DOBIN}
 %
-Comme mentionné ci-haut, on a des données de très grande dimension, lesquelles peuvent contenir des centaines de dimensions et cela à pour conséquence  que les méthodes conventionnelles de  détection des anomalies ou valeurs aberrantes ne fonctionnent pas très efficacement. Pour contrer ce problème, une des solutions consiste à réduire la dimension, tout en gardant l'essentiel des caractéristiques des données. C'est la réduction de la dimensionnalité. On peut citer entre autres,\textbf{ analyse en composantes principales,  analyse discriminante linéaire, sélection de caractéristique etc}. Deux approches classiques sont \textbf{la sélection des caractéristiques}, qui consiste à choisir un petit ensemble de variables représentatives des observations, et \textbf{analyse en composantes principales} feront l'objet d'une étude détaillée pour la suite.
+Une valeur aberrante est une observation qui s'écarte ou a des comportements différents des autres observations dans la donnée qui suscite les soupçons qu'elle a été générée par un autre mécanisme. La valeur aberrante est également appelée une anormalité, une discordance, une anomalie ou encore une déviation, dans la littérature relative à l'exploration de données et aux statistiques \cite{A1}.\newl
+Les défis dans la détection des valeurs aberrantes ou anomalies en grande dimension réside dans le fait que,
+\begin{itemize}
+\item la notion de distance ne parvient pas à conserver son importance a cause du fléau de la dimensionalité. C'est en ce sens qu'il est dit que << le problème détection des valeurs aberrantes est comme trouver une aiguille dans une botte de foin>> \cite{A14}.;
+\item Chaque point tend à devenir une valeur aberrante;
+\item L'ensemble de données devient plus éparse avec une augmentation de la dimension.
+\end{itemize}
+
+\noindent Les auteurs de \cite{AYU} jugent que pour une bonne approache des données en grande dimension, les points suivants doivent être pris en compte \cite{Aurore} :
+\begin{enumerate}[noitemsep]
+\item Gestion efficace des problèmes liés à la rareté des données.
+\item Interprétabilité.
+\item Comparabilité de la mesure de l'anomalie. 
+\item Prise en compte du comportement des données locales pour déterminer si une observation est anormale ou non.
+\end{enumerate}
+%
+
+%
+\subsection{Méthode basée sur la projection dans le sous-espace (réduction de la dimension): ACP, DOBIN}
+%
+De nos jours, il est courant d'avoir de très grands ensembles de données connus sous le nom de HDLSS (High dimension low sample size) i.e. grande dimension et avec une faible taille d’échantillon, lesquelles peuvent contenir des centaines de dimensions et cela à pour conséquence  que les méthodes conventionnelles de  détection des anomalies ou valeurs aberrantes ne fonctionnent pas très efficacement. Pour contrer ce problème, une des solutions consiste à réduire la dimension, tout en gardant l'essentiel des caractéristiques des données. C'est la réduction de la dimensionnalité. On peut citer entre autres,\textbf{ analyse en composantes principales,  analyse discriminante linéaire, sélection de caractéristique etc}. Deux approches classiques sont \textbf{la sélection des caractéristiques}, qui consiste à choisir un petit ensemble de variables représentatives des observations et \textbf{analyse en composantes principales} feront l'objet d'une étude détaillée pour la suite.
 %
 \subsubsection*{Analyse en composantes principales(ACP)}
 %
-L'ACP cherche à trouver une représentation dans l’espace de dimension inférieure (projeter les points sur une droite, un plan, ...un sous-espace ) des données contenant la plus grande variation possible. Elle correspond donc à une  transformation linéaire orthogonale transformant les données en un nouveau système de coordonnées, de sorte que la plus grande variance résultant d’une projection scalaire des données se situe sur la première coordonnée (appelée première composante principale), la deuxième plus grande variance sur la seconde coordonnée, etc. \newl
-Étant donné une matrice des données $n\times p$, $\textbf{X}=(X_1,\cdots,X_p)$ à $n$ observations (nombre de lignes) et $p$ variables (nombre de colonnes) centrée et réduite. Les composantes principales, qui sont une combinaisons linéaires des variables, sont données par les variables  suivantes
+L'ACP cherche à trouver une représentation dans l’espace de dimension inférieure (projeter les points sur une droite, un plan, $\cdots$,un sous-espace ) des données contenant la plus grande variation possible. Elle correspond donc à une  transformation linéaire orthogonale transformant les données en un nouveau système de coordonnées, de sorte que la plus grande variance résultant d’une projection scalaire des données se situe sur la première coordonnée (appelée première composante principale), la deuxième plus grande variance sur la seconde coordonnée, etc. L'ACP peut donc être utilisée pour deux choses:
+\begin{itemize}
+    \item Réduction de la dimension comme prétraitement;
+    \item Être utilisé comme detectin des anamalies directement;
+    \item  Elle permet aussi une visualisation en 2 ou 3 dimensions, là ou on ne pouvait pas le faire avec une dimension supérieur.
+\end{itemize}
+Étant donné une matrice des données $n\times p$, $\textbf{X}=(X_1,\cdots,X_p)$ à $n$ observations (nombre de lignes) et $p$ dimensions (nombre de colonnes) centrée et réduite. Les composantes principales, qui sont une combinaisons linéaires des variables, sont données par les variables  suivantes
+
 \begin{align*}
 \textbf{Y}_i=\ell^t_i\textbf{X}=\ell_{1i}\textbf{X},\cdots,\ell_{pi}\textbf{X};\quad i=1,\cdots,k.
 \end{align*}
@@ -58,11 +79,11 @@ Dérivant le Lagrangien par rapport à chacune des composantes du vecteurs $\ell
 \end{align}
 Le vecteur $\ell_k$ recherché correspond au vecteur propre associé à la $k$ ième plus grande  valeur propre de la matrice $\mathbf{X}^t \mathbf{X}$. D'où le résultat suivant:\
 
-\begin{theorem}
+\begin{lemma}
 Les $k$ ($k<p$) composantes principales donnant la plus grande variance maximale sont données par les $k$ vecteurs propres associés aux $k$ plus grandes valeurs propres de $\mathbf{X}^t \mathbf{X}$.
-\end{theorem}
-L'ACP peut être utilisé comme méthode de détection des valeurs aberrantes ou être utilisé comme méthode préalable (réduction de la dimension)  pour un autre  algorithme.  Par ailleurs, elle permet aussi une visualisation en 2 ou 3 dimensions, là ou on ne pouvait pas le faire avec une dimension supéri\newl
-\textbf{La proportion de variance expliquée}, on note que 
+\end{lemma}
+
+\noindent \textbf{La proportion de variance expliquée}, on note que 
 \begin{align*}
 \sum_{i=1}^{k}\operatorname{var}\left(Y_{i}\right) &=\sum_{i=1}^{k}\ell_{i}^{t} \boldsymbol{\Sigma} \ell_{i}=\sum_{i=1}^{k}\lambda_i \,.
 \end{align*}
@@ -70,7 +91,7 @@ Ainsi, la variance totale de la population est égale à la somme des valeurs pr
 \begin{align*}
 0\leq \frac{\lambda_i}{\sum_{i=1}^{p}\lambda_i }\leq 1
 \end{align*}
-\textbf{Combien de composantes principales à retenir}, 
+\textbf{Combien de composantes principales à retenir?}, 
 La qualité des résultats de l'ACP dépend fortement du nombres de composantes principales retenues, autrement dit, la dimension  $k$ du sous-espace. Il existe plusieurs méthodes qui traitent ce problème, on présentera juste deux ici: \textbf{la part de variance totale expliquée par les $k$ premier axes principaux} et \textbf{la méthode de l'éboulis}.\\
 \textbf{La part de variance totale expliquée par les $k$ premier axes principaux}, est donnée par 
 \begin{align*}
@@ -88,12 +109,12 @@ Un exemple appliqué sur  les \href{1http://web.stanford.edu/ hastie/CASIles/DAT
     \label{fig0}
 \end{figure*}
 \end{example}
-
+Il existe d'autres méthodes de reduction de la dimensionnalité comme
+SVD (Singular Value Decomposition).
 \subsubsection*{A Distance based Outlier BasIs using Neighbours (DOBIN)}
  DOBIN a deux utilisations principales,  premièrement, en tant que base plus propice à la détection des valeurs aberrantes, elle met les valeurs éloignées au premier plan en utilisant un nombre réduit de composants. En ce sens, il s’apparente un peu à la détection des valeurs aberrantes en sous-espace, bien que DOBIN ne détecte pas directement les valeurs aberrantes. Si des valeurs éloignées apparaissent dans l’espace de saisie complet, DOBIN permet à l'algorithme de détection de valeurs aberrantes de détecter les valeurs éloignées en utilisant moins de composants \cite{A7}.  \\
  Soit  $X_{N\times p}$ des données de  $N$ observations et $p$ variables.
  On note le i ième ligne de $X$ par $x_i$, la distance entre  $x_i$ et $x_j$ peut s'écrire
- 
  \begin{align*}
  d(x_i,x_j)^2=(x_i-x_j)^tS(x_i-x_j) 
  \end{align*}
@@ -101,12 +122,12 @@ Un exemple appliqué sur  les \href{1http://web.stanford.edu/ hastie/CASIles/DAT
  \begin{align}\label{dob1}
  d(x_i,x_j)^2=\langle\eta,(x_i-x_j)\circ(x_i-x_j) \rangle
  \end{align} 
- où $\langle\cdot{,}\cdot\rangle$ désigne le produit scalaire  standard dans $R^p$, $\eta = (s_1,\cdots,s_p)$ et $\circ$ désigne le produit par élément. Comme $S$ est symétrique et définie positives, il est diagonalisable, ce qui motive à considérer une diagonale $S$. L'élément clé de DOBIN réside dans la contructin de de l'espace $Y$.
- Posons $y_{ij}=(x_i-x_j)\circ(x_i-x_j)$, parconséquent \ref{dob1} devient 
+ où $\langle\cdot{,}\cdot\rangle$ désigne le produit scalaire  standard dans $R^p$, $\eta = (s_1,\cdots,s_p)$ et $\circ$ désigne le produit par élément. Comme $S$ est symétrique et définie positives, il est diagonalisable, ce qui motive à considérer une diagonale $S$. L'élément clé de DOBIN réside dans la construction de de l'espace $Y$.
+ Posons $y_{ij}=(x_i-x_j)\circ(x_i-x_j)$, par conséquent \eqref{dob1} devient 
 \begin{align}\label{dob2}
 d(x_i,x_j)^2=\langle\eta,y_{ij}\rangle.
 \end{align}
- Le but est maintemant de trouver un vecteur unitaire $\eta$ qui maximiera la distance entre $x_i$ et $x_j$. Calculer $y_{ij}$ pour toutes les paires serait coûteux car il y a $N (N + 1) / 2$ paires à prendre en compte. De plus, cela nous donnerait des distances par paires entre des points qui ne nous intéressent pas, tels que des points à la limite du nuage de points. Trouver $\eta$ qui maximise les distances entre de tels points n’est pas bénéfique pour la détection des valeurs aberrantes, car une grande distance entre les points opposés ne signifie pas qu’un de ces points soit des valeurs aberrantes. L'algorithme suivant résume le calcul de l'espace $Y$
+ Le but est maintenant de trouver un vecteur unitaire $\eta$ qui maximisera la distance entre $x_i$ et $x_j$. Calculer $y_{ij}$ pour toutes les paires serait coûteux car il y a $N (N + 1) / 2$ paires à prendre en compte. De plus, cela nous donnerait des distances par paires entre des points qui ne nous intéressent pas, tels que des points à la limite du nuage de points. Trouver $\eta$ qui maximise les distances entre de tels points n’est pas bénéfique pour la détection des valeurs aberrantes, car une grande distance entre les points opposés ne signifie pas qu’un de ces points soit des valeurs aberrantes. L'algorithme suivant résume le calcul de l'espace $Y$
 \begin{algorithm}
 \SetAlgoLined
 $X_1$=norm1($X$)\;
@@ -115,34 +136,51 @@ $X_2$=norm2($X$)\;
 Chercher entre $k1$ à $k2$ voisins de chaque point dans $X_2$\;
 Puis, pour chaque point, rassemble tous les voisins uniques obtenus dans l'étape 2 et 3\;
 Poser $T=\{(i,j): \quad i,j\in X\}$\;
-Pour toutes ces paires, calculez $y_{ij}$ comme dans l'équation \ref{dob2} en utilisant $X_1$ or $X_2$\;
+Pour toutes ces paires, calculez $y_{ij}$ comme dans l'équation \eqref{dob2} en utilisant $X_1$ or $X_2$\;
 
 Soit $Y=\{y_1=y_{i_1j_1},\cdots,y_m=y_{i_mj_m}\}$
-avec $y_{i_kj_k}$ le kième paire dans T\;
-\KwResult{ L'espace $Y$ consititué  de $\{y_\ell \}^M_{\ell=1}$ and et les indices $i$ et $j$ correspondantes }
-\caption{Consruction de l'espace $Y$: Données $X$, $k1$, $k2 \in Z^+$, $q\in (0, 1)$ and choice of normalization.}
+avec $y_{i_kj_k}$ le kième paire dans T, donc $Y$ is une matrice $m \times p$\ avec $y_\ell$ la $\ell$ ième ligne\;
+
+Soit $Q$ le $q$iéme centile de $d=\sum_k^p y_{\ell k}$ avec $d$ la distance entre $x_{i_\ell}$ et $
+x_{j_\ell}$ dans $X_1$ ou $X_2$.\;
+Enlever les points pour lesquels $d<Q$ et ainsi que les paires correspondantes $(i,j)$ dans T.\;
+
+Les points restants constituent l'espace $Y=\{y_\ell \}^M_{\ell=1}$\;
+\KwResult{ L'espace $Y$ constitué  de $\{y_\ell \}^M_{\ell=1}$ et les indices $i$ et $j$ correspondantes }
+\caption{Construction de l'espace $Y$: Données $X$, $k1$, $k2 \in Z^+$, $q\in (0, 1)$ et le choix de la normalisation.}
 \end{algorithm}%\newl
+\textbf{Maximiser la distance entre les points}
+Reformuler l'équation \eqref{dob2} en utilisant $T(\ell)=(i,j)$
+\begin{align}\label{dob3}
+\sum_{(i,j)\in T}d(x_i,x_j)^2=\sum_\ell \langle\eta,y_\ell\rangle.
+\end{align}
+Le vecteur unitaire $\eta$ qui maximize cette équation est $$\displaystyle \eta=\frac{\sum_\ell^M y_\ell}{\|\sum_\ell^M y_\ell\|},$$ ou $M$ est obtenu dans l'algorithme 1.\newl
+\textbf{Construction d'une base de $Y$: }
+De cette equation, une base est construite via la relation suivante
+\begin{align*}
+y_{\ell_b}=y_{\ell_{b-1}}- \langle\eta_b,y_{\ell_{b-1}}\rangle \eta_b\qquad\text{et}\quad
+\eta_{b+1}=\frac{\sum_\ell^M y_{\ell_b}}{\|\sum_\ell^M y_{\ell_b}\|}
+\end{align*}
+ou $y_{\ell_0}=y_\ell$. L'ensemble $\Theta=(\eta_1,\cdots,\eta_p)$ constitue une base de $Y$.  Avec cette base, le résultat final est obtenu par 
+\begin{align}\label{newx}
+\Tilde{X}=X_1\Theta \qquad\text{ou}\quad \tilde{X}=X_2\Theta.
+\end{align}
+Cette base est invariante par addition mais pas aux rotations. En résumé, 
+ l'objectif de DOBIN consiste à:
+ \begin{itemize}
+ \item  Trouvez l'espace $Y$ pour un jeu de données $X$ donné, comme indiqué dans l'algorithme 1.
+ \item  Construisez la base comme indiqué ci-haut
+ \item Transformez l'espace $X$ d'origine à l'aide de l'équation \eqref{newx}. 
+ \end{itemize}
+ La Figure \ref{fig00} montre les deux espaces $X$ et $Y$ où $X$ est une distribution normale 
+ de $100$ points avec une seule valeur aberrante représentée en rouge. L'espace $Y$ se compose d'un nombre de points inférieur à celui de $X$, dont $6$ points proviennent de la valeur aberrante. En effet, dans la construction de l'espace $Y$, $5$ voisins sont considérés pour chaque point avec $k1 = 1$ à $k2 = 5$.
+ \begin{figure*}[ht]
+    \centering
+     \includegraphics[width=\textwidth]{ADOA/Images/ysapce.png}
+    \caption{The X and Y spaces. The X space in (a) and the associated Y space in (b) with q = 0.95. The red coloured point in the X space gives rise to 6 points, which are coloured in red in the Y space (source \cite{A6}).}\hrule
+    \label{fig00}
+\end{figure*}
 
-
-%8 Let Q be the qth percentile of ��∑p y ��. The quantity ∑p y is the distance
-%m=1 lm between points xi(l) and xj(l) in X1 or X2 space.
-%m=1 lm
-%9 Remove points for which ∑p ylm < Q. m=1
-%10 Removetheassociatedpairsof(i,j)fromT.
-%11 The remaining points constitute the Y space: Y = {yl}M . l=1
- 
- 
- 
- 
- 
- \textcolor{red}{En construction}\\
-% 
-% L'objectif de DOBIN consiste à:
-% \begin{itemize}
-% \item  Trouvez l'espace Y pour un jeu de données X donné, comme indiqué dans l'algorithme 1.
-% \item . Construisez la base comme indiqué à la section 2.3.
-% \item Transformez l'espace X d'origine à l'aide de l'équation (8).
-% \end{itemize} 
 %
 \subsection{Méthode des ensembles}
 %
@@ -151,7 +189,7 @@ Dans les sections précédentes, on a décrit divers algorithmes de détection d
 \subsection*{Ensemble séquentiel }
 Dans les ensembles séquentiels, un algorithme donné ou un ensemble d'algorithmes sont
 appliqués de manière séquentielle, de sorte que les applications futures des algorithmes
-réutilisent les résultats obtenus précédemment ainsi de suite. Le résultat final est soit une combinaison pondérée de, ou le résultat final de la dernière application du dernier algorithme. 
+réutilisent les résultats obtenus précédemment ainsi de suite. Le résultat final est soit une combinaison pondérée de tous les résultats, ou le résultat final de la dernière application du dernier algorithme. 
 
 \begin{algorithm}
 \SetAlgoLined
@@ -165,7 +203,7 @@ j=1\;
 	j=j+1\;
 }
 \KwResult{Retourner les valeurs aberrantes basées sur la combinaison des résultats des exécutions précédentes  }
-\caption{SequentialEnsemble(Donnée: D,
+\caption{SequentialEnsembles(Donnée: D,
 	Algorithmes de base: $A_1,\cdots,A_r$)}
 \end{algorithm}%\newl
 \subsection*{Ensemble independant}
@@ -186,7 +224,7 @@ j=1\;
 }
 \KwResult{Retourner les valeurs aberrantes basées sur la combinaison des résultats
 	des exécutions précédentes  }
-\caption{IndependentEnsemble(Donnée: D,
+\caption{IndependentEnsembles(Donnée: D,
 	Algorithmes de base: $A_1,\cdots,A_r$)}
 \end{algorithm}
 Dans cette  méthode chaque algorithme fournit un résultat  d'anomalie
@@ -220,9 +258,12 @@ r\left(p_{1}\right)=1,\; r\left(p_{2}\right)=1,\; r \left(p_{3}\right)=3.
 $p_1$ et $p_2$ ont le même degré d'anomalie, mais plus anormale que $p_3$. 
 Quelle fonction de combinaison fournit les meilleures informations pour l'analyse d'ensemble?
 Clairement, la fonction de combinaison peut dépendre de la structure de l'ensemble de données. Toutefois, dans le cas général, les deux fonctions les plus couramment utilisées sont la méthode du maximum et de la moyenne.
+%
+%
 \subsection{Méthode des sous espaces}
-L'analyse d'ensemble a été utilisée de manière particulièrement éfficace dans la détection de valeurs aberrantes de grande dimension [\cite{A8}, \cite{A13}, \cite{A14}], dans lesquels plusieurs sous-espaces des données sont souvent explorées afin de découvrir des valeurs aberrantes,en effet, elles sont souvent cachées dans des sous-espaces de dimension inférieure. Il est donc logique d'explorer les sous-espaces dimensionnels inférieurs \cite{A1}. Une telle approche élimine les effets de bruit additifs de grand nombre de dimensions et conduit à des valeurs aberrantes plus robustes. Un tel problème est très difficile à résoudre efficacement. Ceci est dû au fait le nombre de projections possibles de données de grande dimension est liée de manière exponentielle à la dimensionnalité des données. Le problème détection des valeurs aberrantes est comme trouver une aiguille dans une botte de foin \cite{A14}. \\
-\textcolor{red}{en construction}
+%
+%
+L'analyse d'ensemble a été utilisée de manière particulièrement éfficace dans la détection de valeurs aberrantes de grande dimension [\cite{A8}, \cite{A13}, \cite{A14}], dans lesquels plusieurs sous-espaces des données sont souvent explorées afin de découvrir des valeurs aberrantes,en effet, elles sont souvent cachées dans des sous-espaces de dimension inférieure. Il est donc logique d'explorer les sous-espaces dimensionnels inférieurs [\cite{A1},\cite{Aurore}]. Une telle approche élimine les effets de bruit additifs de grand nombre de dimensions et conduit à des valeurs aberrantes plus robustes. Un tel problème est très difficile à résoudre efficacement. Ceci est dû au fait le nombre de projections possibles de données de grande dimension est liée de manière exponentielle à la dimensionnalité des données. Le problème détection des valeurs aberrantes est comme trouver une aiguille dans une botte de foin \cite{A14}. L'algorithme Feature Bagging est présenté ci-dessous
 
 \begin{algorithm}
 \SetAlgoLined
@@ -236,7 +277,7 @@ j=1\;
 \KwResult{Retourner les valeurs aberrantes basées sur la combinaison des differents sous-espaces}
 \caption{FeatureBagging(Donnée: D)}
 \end{algorithm}
+Il existe de nombreux algorithmes dans la littérature, on peut citer entre autres: les méthodes \textbf{HOS} (High-dimensional Outlying Subspaces) \cite{Zhang}; \textbf{SOD} (Subspace Outlier Degree) \cite{Zi} implemented in the \textbf{HighDimOut} package; \textbf{OutRank} (Projected Clustering Ensembles) \cite{M1}; \textbf{OUTRES} (Local Selection of Subspace Projections) \cite{M3}.
 
 
-
-\afterpage{\FloatBarrier}
+En résumé, il est à noter que la détection des anomalies et l'analyse des valeurs aberrantes restent toujours un domaine très ouvert avec de nombreux défis à relever. Il n'exste donc pas une méthode magique, toutes les méthodes ont des atouts et limites. 

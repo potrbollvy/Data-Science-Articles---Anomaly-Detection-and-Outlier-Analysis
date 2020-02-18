@@ -1,0 +1,61 @@
+\section{Qualitative Methods of Anomaly Detection}\label{Section:3}
+% \textcolor{red}{Soufiane} 
+%
+\subsection{Definitions and Challenges}
+%
+A categorical variable, belonging to the nominal scale ( Examples of this type are colour, direction, language, etc.). 
+The central tendency of the values of a categorical variable is given by its mode, while numerical values may appear corresponding to a categorical variable, they each represent a distinct concept and cannot be treated as numbers. 
+A categorical variable that can take exactly two values is called a dichotomous (binary) variable. Variables with more than two possible values are called polytomous variables. Regression analysis on categorical variables is performed by multinomial logistic regression.
+
+
+
+\subsubsection*{Challenges with categorical data}
+When processing data with categorical attributes, it is assumed that these attributes could easily be represented in numerical values. However, there are examples of categorical attributes, in which such representation into numerical attributes is not a simple process. Therefore, methods such as those based on distance or density measurements are not acceptable, requiring a necessary modification of their formulations.
+
+\subsection{Review of some methods}
+\subsubsection*{Algorithm AVF}
+The Attribute Value Frequency (AVF) algorithm is a quick and simple approach to detecting outliers in categorical data, minimizing analysis on the data without the need to create or search through different combinations of attributes or element sets.  \\
+
+\noindent It is intuitive that outliers are points that are infrequent in the data set, and that the "ideal" outlier in a categorical data set is a point where each value is extremely irregular (or infrequent). \\
+
+
+\noindent The rarity of an attribute value can be measured by calculating the number of times that value is assumed by the corresponding attribute in the data set. \\
+
+\noindent Suppose there are $n$ points in the data set: $x_i$ , $I = 1 \cdots n$ and each data point has m attributes. We can write that $x_{i} = [x_{i1}, \cdots , x_{il}, \cdots, x_{im}]$, where $x_{il}$ is the value of the l-th attribute of $x_i$. Following the reasoning given above, the AVF score below is a good indicator for deciding whether $x_i$ is an outlier:
+
+$$AVFscore(x_i) = \frac{1}{m} \sum_{l=1}^{m}f(x_{il})$$
+
+
+\noindent where $f(x_{il})$ is the number of times the l-th attribute value of $x_i$ appears in the data set. A lower AVF score means that the point is more likely to be an outlier. Since $AVFscore(x_i) $ is essentially a sum of $m$ positive numbers, the AVF score is minimal when each of the terms in the sum is minimized individually. Thus, the "ideal" outlier as defined above will have the minimum AVF score. The minimum score will be reached when each value of the data point appears only once.  
+
+
+\begin{algorithm}
+\SetAlgoLined
+Label all data points as non-aberrant;
+
+Calculate the frequency of each attribute value, $f(x_{il})$ \;
+
+i = 1 \;
+
+\While{Until $i \leq n$ }{
+	j = 1
+  	\While{As long as $j \leq m$}{
+	$AVFscore(x_i) += f(x_{il})$\;
+	 $j =  j +1$\; 
+	}
+	Average( $AVFscore(x_i)$)\;
+	$i = i + 1$\;
+}
+
+\KwResult{ top $k$ outliers with minimum AVF Score}
+\caption{AVF Pseudocode $D$: data ($n$ points, $m$ attributes)}
+\label{alg:AVF}
+\end{algorithm}%\newl
+
+\noindent As shown by the AVF pseudocode (see Algorithm~\ref{alg:AVF}), once the AVF score is calculated for all points, the $k$ outliers returned are the k points with the smallest AVF scores. 
+
+\noindent The complexity of the AVF is $O(n\times m)$, where $n$ is the number of data points and $m$ is the dimensionality of the data set.
+
+
+\subsubsection*{Greedy algorithm}
+
