@@ -3,8 +3,7 @@
 % by Richard Millson
 Quantitative methods are divided into distance- and density-based methods. 
 \subsection{Distance-Based Methods}
-In order to determine whether an observation is anomalous or not, it must be compared to a set of other observations (anomalies are relative, not absolute). In the \textbf{distance-based context}, one natural way to compare observations is  to consider their distance from one another,
-with increasing distance from the others being increasingly suggestive of anomalous status.
+In order to determine whether an observation is anomalous or not, it must be compared to a set of other observations (anomalies are relative, not absolute). In the \textbf{distance-based context}, one natural way to compare observations is  to consider their distance from one another, with increasing distance from the others being increasingly suggestive of anomalous status.
 
 This approach works both in continuous and discrete cases, as long as a \textbf{distance function} or a \textbf{pre-computed table of pair-wise distances} between observations is given. 
 
@@ -13,7 +12,7 @@ The choice of which sets of points to use in this comparison distinguishes the d
 Let $D \subset \mathbb{R}^n$ be an $n$-dimensional data set, 
 $\mathbf{p},\mathbf{q}\in D$, 
 $P \subset D$ be a subset of $D$, 
-and $d: D \times D \to \mathbb{R}$ be the distance between $\mathbf{p}$ and $\mathbf{q}$, written $d(\mathbf{p},\mathbf{q})$.
+and $d: D \times D \to \mathbb{R}$ gives the distance between $\mathbf{p}$ and $\mathbf{q}$, written $d(\mathbf{p},\mathbf{q})$.
 
 An anomaly detection algorithm provides a function $a : D \to \mathbb{R}$ that describes how anomalous a given point is. This induces an ordering on the points of $D$: 
 if $a(\mathbf{p}) < a(\mathbf{q})$ for $\mathbf{p},\mathbf{q} \in D$, then $\mathbf{p}$ is \textbf{less anomalous} than $\mathbf{q}$.
@@ -36,9 +35,10 @@ H(X,Y)= \left(1-\int_{\Omega} \sqrt{f_X(\mathbf{z}) f_Y(\mathbf{z})}\, d\mathbf{
 \end{align*} 
 If $f_X=f_Y$ (or $f_X=f_Y$ almost everywhere in the continuous case, that is, except over a countable set), then $$\sum_{\Omega}\sqrt{f_xf_Y}=1 \quad\mbox{or} \quad \int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}=1$$ and $H(X,Y)=0$. The fact that $H(X,Y)\in [0,1]$ is a consequence of Cauchy's inequality, with $f_X^*=\sqrt{f_X}$ and $f_Y^*=\sqrt{f_Y}$: \begin{align*}\int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}&=\int_{\Omega}f_X^*f_Y^*\, d\mathbf{z}\\ &\leq \left(\int_{\Omega}|f_X^*|^2\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}|f_Y^*|^2\, d\mathbf{z}\right)^{1/2} \\ &=\left(\int_{\Omega}f_X\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}f_Y\, d\mathbf{z}\right)^{1/2}=1;\end{align*}
 (a similar argument holds for discrete random variables). 
-\newline\newline Recall that the covariance matrices $\Sigma_X$ and $\Sigma_Y$ are $n \times n$-matrix whose $(i,j)$-entries the covariance between the $i$-th and $j$-th positions of $X$ and $Y$, respectively. Given a collection of identically distributed samples, these covariance matrices can be estimated.
+\newline\newline Recall that the covariance matrices $\Sigma_X$ and $\Sigma_Y$ are $n \times n$-matrices whose $(i,j)$-th entries are the covariance between the $i$-th and $j$-th positions of $X$ and $Y$, respectively. 
+Given a collection of identically distributed samples, these covariance matrices can be estimated.
 
-We can also consider a single point $\mathbf{p}$ to be a probability distribution. In that case, the Hellinger distance between that point distribution and any another distribution with mean $\mathbf{\mu}$ and covariance matrix $\Sigma$ can be studied using the framework above, using the  \textbf{Mahalanobis distance}:
+We can also consider a single point $\mathbf{p}$ to be a probability distribution. In that case, the Hellinger distance between that point distribution and any other distribution with mean $\mathbf{\mu}$ and covariance matrix $\Sigma$ can be studied using the framework above, using the \textbf{Mahalanobis distance}:
 
 $$
 M(\mathbf{p})=\sqrt{(\mathbf{p} - \mathbf{\mu})^{\!\top} \Sigma^{-1} (\mathbf{p} - \mathbf{\mu}).}
@@ -67,7 +67,10 @@ $$
 $$
 d_p(\mathbf{p},\mathbf{q})=\left( \sum_{i=1}^n |p_i - q_i|^p \right)^{1/p}
 $$
-For $p=2$ we recover the Euclidean distance $d_2$, for $p=1$ the \textbf{Manhattan distance} $$d_1(\mathbf{p},\mathbf{q})=\sum_{i=1}^n|p_i-q_i|,$$ and for $p=\infty$ the \textbf{supremum distance} $$d_{\infty}(\mathbf{p},\mathbf{q})=\max_{i=1}^n |p_i - q_i|.$$ The Minkowski distance $d_p$ is only actually a distance function (i.e., a \textbf{metric}) when  $p \geq 1$, but an exception is made for 
+For $p=2$ we recover the Euclidean distance $d_2$, 
+for $p=1$ the \textbf{Manhattan distance} $$d_1(\mathbf{p},\mathbf{q})=\sum_{i=1}^n|p_i-q_i|,$$ 
+and for $p=\infty$ the \textbf{supremum distance} $$d_{\infty}(\mathbf{p},\mathbf{q})=\max_{i=1}^n |p_i - q_i|.$$ 
+The Minkowski distance $d_p$ is only actually a distance function (i.e., a \textbf{metric}) when  $p \geq 1$, but an exception is made for 
 $$
 d_{-\infty}(\mathbf{p},\mathbf{q})=\min_{i=1}^n |p_i - q_i|
 $$
@@ -151,7 +154,9 @@ $a_k(\mathbf{p})
 \label{alg:LOF}
 \end{algorithm}
 
-The Local Outlier Factor (LOF) algorithm was proposed in 2000 by \cite{LOF} and has been summarized in Section 6.4.2 of \cite{A10}. LOF works by measuring the local deviation of each point in a dataset from its $k$ nearest neighbours, with a point said to be anomalous if this \textbf{deviation is large}.
+The Local Outlier Factor (LOF) algorithm was proposed in 2000 by \cite{LOF} 
+(a summary can be found in Section 6.4.2 of \cite{A10}). 
+LOF works by measuring the local deviation of each point in a dataset from its $k$ nearest neighbours, with a point said to be anomalous if this \textbf{deviation is large}.
 
 A \textbf{local $k-$region} around a point $\mathbf{p}$ is defined as the $k$ nearest neighbours of $\mathbf{p}$. The density of points in each of their respective local $k-$neighbourhoods is estimated, and compared to the density of the local $k-$neighbourhoods of the point within their own $k-$neighbourhood.
 
@@ -204,9 +209,13 @@ as it is not a $k$-neighbour of $\mathbf{p}$.
 \newpage\noindent  
 
 \subsubsection*{DBSCAN}
-Density-Based Spatial Clustering of Applications with Noise (DBSCAN) was proposed in 1996 by \cite{DBSCAN} (a summary can be found in Section 4.1.5 of \cite{A10}). As its name suggests, it is a density-based clustering algorithm that groups nearby points together and labels points that do not fall in the clusters as \textbf{anomalies}.
+Density-Based Spatial Clustering of Applications with Noise (DBSCAN) was proposed in 1996 by \cite{DBSCAN} 
+(a summary can be found in Section 4.1.5 of \cite{A10}). 
+As its name suggests, it is a density-based clustering algorithm that groups nearby points together and labels points that do not fall in the clusters as \textbf{anomalies}.
 
-Hierarchical DBSCAN (HDBSCAN) \cite{HDBSCAN} was introduced in 2013 and removes the problem of choosing the parameter for the radius of a neighbourhood by considering all possible radii. Further documentation can be found at \cite{HDBSCAN_code}. \newl 
+Hierarchical DBSCAN (HDBSCAN) \cite{HDBSCAN} was introduced in 2013.
+It notably removes the problem of choosing the parameter for the radius of a neighbourhood by considering all possible radii. 
+Further documentation can be found at \cite{HDBSCAN_code}. \newl 
 In DBSCAN, 
 \begin{itemize}[noitemsep]
 \item a point $\mathbf{p}$ is a \textbf{core point} if there are a minimum number $m$ of points within distance $r$ of $\mathbf{p}$;
@@ -283,6 +292,7 @@ its ability to succesfully identify clusters is crucial to being able to label t
 On the one hand, in DBSCAN the number of clusters does not need to be known beforehand (unlike in $k-$means and other clustering algorithms) and clusters of arbitrary shape can be detected. \par Furthermore, when using HDBSCAN, only the parameter for the minimum cluster size $m$ is required, which can be set fairly intuitively, which is not the case for the parmaters in general clustering algorithms: if the elements of $D$ are $n-$dimensional, take $m\geq n+1$ (larger values of $m$ allow for the better noise identification).
 \newl On the other hand, DBSCAN is not deterministic, as border points can be assigned to different clusters depending on the order in which core points are considered (this does not affect its use as an anomaly detection algorithm, however).
 \par In high dimensions, the ability of any distance function based on Euclidean distance to distinguish near and distant points diminishes due to the \textbf{Curse of Dimensionality}; thus in high dimension spaces, it  become ineffective (as do  other clustering algorithms). \par  Finally, DBSCAN cannot handle differences in local densities as the radius of a neighbourhood $r$ is fixed; this could lead to sparser clusters being labelled as outliers, or to outliers surrounding a denser cluster being included in the cluster.
+This issue is overcome in HDBSCAN.
 
 \subsubsection*{Isolation Forest}
 The previously discussed approaches first construct models of what normal points look like, and then identify points that do not fit this model.
@@ -376,5 +386,6 @@ $$
 Thus defined, $a(\mathbf{p})\in [0,1]$, with $a(\mathbf{p}) \approx 1$ suggesting $\mathbf{p}$ is an \textbf{anomaly}, $a(\mathbf{p}) \leq 0.5$ suggesting $\mathbf{p}$ is a normal point;
 if all points receive a score around $0.5$, this suggests that there are no anomalies present.
 \newl Isolation Forests have small time and memory requirements; can handle high dimensional data, and do not need observations to have been labeled anomalies in the training set, but the anomaly score assigned to a given point can have high variance over multiple runs of the algorithm. The authors of \cite{EIF} propose some solutions.
-\newl In general, \text{density-based} schemes are more powerful than distance-based schemes when a dataset contains patterns with diverse characteristics, but less effective when the patterns are of comparable densities with the outliers \cite{JZ}.
+\begin{center}\rule{0.5\linewidth}{.4pt}\end{center}
+In general, \text{density-based} schemes are more powerful than distance-based schemes when a dataset contains patterns with diverse characteristics, but less effective when the patterns are of comparable densities with the outliers \cite{JZ}.
 

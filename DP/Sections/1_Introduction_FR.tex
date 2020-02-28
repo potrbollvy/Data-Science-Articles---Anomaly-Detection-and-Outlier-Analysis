@@ -1,0 +1,59 @@
+\newpage\section{Introduction}
+\begin{tcolorbox}[title=La maxime de Fisher]
+Consulter le statisticien une fois l'expérience terminée, c'est souvent lui demander de procéder à un examen post mortem. Il pourra peut-être dire de quoi l'expérience est morte. \\[-0.6cm]
+\begin{flushright}
+-- R.A. Fisher, Discours présidentiel devant le \textit{premier congrès statistique indien}, 1938
+\end{flushright}
+\end{tcolorbox}
+\noindent Les outils et techniques d'analyse des données fonctionnent en conjonction avec les données collectées. Le type de données nécessaires pour effectuer ces analyses, ainsi que la priorité accordée à la collecte de données de qualité par rapport à d'autres demandes, dicte le choix des stratégies de collecte de données. La manière dont les résultats de ces analyses sont utilisés lors de la prise de décision influence à son tour les stratégies appropriées de présentation des données et la fonctionnalité du système.  
+\newl Bien que les analystes doivent toujours s'efforcer de travailler avec des données \textbf{représentatives} et \textbf{non biaisées}, il y aura des moments où les données disponibles seront défectueuses et difficiles à réparer. Les analystes sont professionnellement responsables de l'exploration des données, et doivent passer à la recherche d'éventuelles failles fatales \textbf{avant} au début de l'analyse et d'informer leurs clients ou parties prenantes de tout résultat ou d\'efaut qui pourrait arrêter, fausser ou simplement porter entrave au processus d'analyse ou à son applicabilité à la situation en question. 
+\par Il est \textbf{EXTRÊMEMENT IMPORTANT} que vous ne vous contentiez pas de balayer tous ces défauts sous le tapis. Abordez-les de manière répétée lors de vos réunions avec les clients et assurez-vous que les résultats de l'analyse que vous présentez ou dont vous rendez compte comportent un \textit{caveat} approprié. 
+\subsection{Système de collecte de données} Les analystes peuvent également être appelés à faire des suggestions afin d'évaluer ou de corriger le système de collecte de données, selon les axes suivants. 
+\begin{itemize}[noitemsep]
+\item \textbf{Validité des données}: le systè\-me doit collecter les données de manière à ce que la validité des données soit assurée lors de la collecte initiale. En particulier, les données doivent être collectées de manière à garantir une exactitude et une précision suffisantes par rapport à l'utilisation prévue.
+\item \textbf{Granularité des données, ampleur des données}: le système doit collecter les données à un niveau de granularité approprié pour une analyse éventuelle.
+\item \textbf{Couverture des données}: le système doit collecter des données qui représentent les objets d'intérêt de manière complète. De même, le système doit collecter et stocker les données requises sur une période suffisante et aux intervalles requis afin de soutenir les analyses qui nécessitent des données étalées sur une certaine durée.
+\item \textbf{Stockage des données}: le système doit posséder les fonctionnalités nécessaires afin de stocker les types et la quantité de données requises.
+\item \textbf{Accès aux données}: le système doit permettre l'accès aux données pertinentes à l'analyse, dans un format approprié pour cette dernière.
+\item \textbf{Fonctionnalité informatique/analytique}: le systè\-me doit permettre les calculs requis par les techniques d'analyse pertinentes.
+\item \textbf{Tableau de bord, visualisation}: le système doit être capable de présenter les résultats de l'analyse  d'une manière significative, utilisable, et réactive.
+\end{itemize} 
+Différentes stratégies globales de collecte de données peuvent être utilisées. Chacune de ces stratégies est plus ou moins appropriée dans de certaines circonstances, et entraîne des exigences fonctionnelles différentes pour le système. Dans cette section, nous nous concentrerons sur l'échantillonnage, la conception du questionnaire et la collecte automatisée des données. 
+\subsection{Formulation du problème} Les \textbf{objectifs} déterminent tous les autres aspects de l'analyse quantitative. Avec une \textbf{question} (ou des questions) en tête, on peut entamer le processus qui mène à la sélection du \textbf{modèle}. Avec des modèles potentiels en main, l'étape suivante consiste à faire l'inventaire des \textbf{variables} utiles, déterminer le \textbf{nombre} d'observations nécessaires pour atteindre une \textbf{précision} prédéterminée, et choisir la meilleure façon de procéder pour la \textbf{collecte}, le \textbf{stockage} et l'\textbf{accès} aux données.\newl 
+Un autre aspect important du problème est de déterminer si on posent les questions aux sujet des données  \textbf{elles-même}, ou si ces dernières sont utilisées comme \textbf{substituts pour une plus large population}. Dans ce dernier cas, il y a d'autres probl\`emes techniques à intégrer dans l'analyse afin de pouvoir obtenir des résultats généralisables.  
+\par Les questions ne se limitent pas qu'aux aspects pratiques de l'analyse des données, elles sont également à l'origine du développement de méthodes quantitatives. Elles viennent de tous les horizons et leur variabilité et leur ampleur rendent les tentatives de réponse difficiles: nulle approche ne peut fonctionner pour toutes, ni même pour une majorité d'entre elles, ce qui conduit à la découverte de  méthodes améliorées, qui sont à leur tour applicables à de nouvelles situations, et ainsi de suite.  
+\par 
+Bien entendu, il est impossible de répondre à toutes les questions, mais on peut fournir une réponse partielle ou complète à une grande partie d'entre elles, sous la forme d'informations, d'estimations et de gammes de réponses possibles. Les méthodes quantitatives peuvent indiquer la voie à suivre pour la mise en œuvre des solutions.
+\newl À titre d'illustration, consid\'erez les questions suivantes:
+\begin{itemize}[noitemsep]
+\item L'incidence du cancer est-elle plus élevée chez les fumeurs occasionnels que chez les non-fumeurs? 
+\item En utilisant des données historiques sur les collisions mortelles et les indicateurs économiques, peut-on prévoir les futurs taux de collisions mortelles compte tenu d'un taux de chômage national spécifique?
+\item Quel serait l'effet du déménagement d'un bureau central sur la durée moyenne des trajets des employés?  
+\item Un agent clinique est-il efficace dans le traitement contre l'acné?
+\item La productivité des employés a-t-elle augmenté depuis que l'entreprise a introduit la formation linguistique obligatoire? \item Y a-t-il un lien entre la consommation précoce de marijuana et la consommation excessive de drogues plus tard dans la vie? 
+\item La productivité des employés a-t-elle augmenté depuis que l'entreprise a introduit la formation linguistique obligatoire? 
+\item En quoi les selfies du monde entier diffèrent-ils en tout point, de l'humeur à l'ouverture de la bouche, en passant par l'inclinaison de la tête?
+\end{itemize}
+\noindent Comment répondre à ces questions? Dans de nombreux cas, l'étape suivante consiste à obtenir des données pertinentes.   
+\subsection{Types de données} 
+Les données ont des \textbf{attributs} et des \textbf{propriétés}. En général, on reconnait des variables de type \textbf{réponse}, \textbf{auxiliaire}, \textbf{démographique} ou \textbf{classification}; elles sont \textbf{quantitatives} ou \textbf{qualitatives}; \textbf{catégoriques}, \textbf{ordinales}, ou \textbf{continues}; \textbf{à base de texte} ou \textbf{numériques}. En outre, les données sont \textbf{collectées} par le biais d'expériences, d'entretiens, d'enquêtes, de senseurs, grattées sur Internet, etc. 
+\newl Les méthodes de collecte ne sont pas toujours sophistiquées, mais les technologies récentes améliorent  le procédé de plusieurs façons, tout en introduisant de nouveaux problèmes et défis. Cette collecte peut se faire soit en un seul passage, soit par lots, ou en continu.
+\par Comment décider de la méthode à utiliser? Le type de question à laquelle on cherche à répondre a évidemment un effet, tout comme la précision, le coût et les délais requis. L'ouvrage \textit{Méthodes et pratiques d'enquête} de Statistique Canada \cite{DC_SC} fournit des renseignements, toujours pertinents à l'heure des données massives, sur l'échantillonnage probabiliste et le design de questionnaires. \par L'importance de cette étape ne saurait être surestimée: sans un plan de collecte \textbf{bien conçu}, et sans mesures de sauvegarde permettant d'identifier les défauts (et les corrections éventuelles) au fur et à mesure que les données arrivent, le risque d’embrouilles est bien réel. \newl
+Afin d'illustrer l'effet potentiel que la collecte de données peut avoir sur les résultats de l'analyse finale, comparez les deux façons suivantes de collecter des données similaires.
+\begin{tcolorbox}[title=Oui. Au fait ... non. Me semble.]
+Le Gouvernement du Québec a fait connaître sa proposition d’en arriver, avec le reste du Canada, à une nouvelle entente fondée sur le principe de l’égalité des peuples; cette entente permettrait au Québec d'acquérir le pouvoir exclusif de faire ses lois, de percevoir ses impôts et d’établir ses relations extérieures, ce qui est la souveraineté, et, en même temps, de maintenir avec le Canada une association économique comportant l’utilisation de la même monnaie; aucun changement de statut politique résultant de ces négociations ne sera réalisé sans l’accord de la population lors d’un autre référendum; en conséquence, accordez-vous au Gouvernement du Québec le mandat de négocier l’entente proposée entre le Québec et le Canada? \\[-0.6cm]
+\begin{flushright}
+-- R\'ef\'erendum sur la souverainet\'e du Qu\'ebec, 1980
+\end{flushright}
+\end{tcolorbox}
+\begin{tcolorbox}[title=Do You Think They Learned Something From 1980?]
+Should Scotland be an independent country? \\[-0.6cm]
+\begin{flushright}
+-- R\'ef\'erendum sur l'ind\'ependence de l'\'Ecosse, 2014
+\end{flushright}
+\end{tcolorbox}
+\noindent Le résultat final a été le même dans les deux cas, mais le ``non'' écossais de 2014 semble  beaucoup plus clair que le ``non'' québécois de 34 ans auparavant -- malgré sa plus faible marge de victoire en 2014 (55,3\% contre 59,6\%). 
+\subsection{Stockage et accès aux données}
+Le \textbf{stockage} des données est fortement lié au procédé de collecte, dans lequel on doit prendre certaines décisions qui reflètent la manière dont elles sont recueillies, le volume de données recueillies, et le type d'accès et de traitement qui sera nécessaire. Les données stockées peuvent \textbf{perdre de leur pertinence} avec le temps; il peut donc devenir nécessaire de mettre en place des mises à jour régulières. 
+\par
+Jusqu'à très récemment, l'analyse des données se faisaient surtout sur de petits ensembles de données, avec des techniques de collecte produisant des données pouvant, pour la plupart, être stockées sur des ordinateurs personnels ou sur de petits serveurs. L'avènement des données massives a introduit de nouveaux défis vis-\`a-vis la collecte, la capture, l'accès, le stockage, l'analyse et la visualisation de ces dernières; quoique des  solutions efficaces ont déjà été proposées et mises en œuvre, on étudie toujours de nouvelles approches (telles que le stockage par l'ADN \cite{DC_DNA}, pour n'en citer qu'une). Nous ne discuterons pas de ces défis en détail, mais il faut être conscients de leur existence.  

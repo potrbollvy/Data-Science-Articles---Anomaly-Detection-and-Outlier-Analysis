@@ -1,0 +1,59 @@
+\newpage\section{Introduction}
+\begin{tcolorbox}[title=Fisher's Maxim]
+To consult the statistician after an experiment is finished is often merely to ask him to conduct a post mortem examination. He can perhaps say what the experiment died of. \\[-0.6cm]
+\begin{flushright}
+-- R.A. Fisher, Presidential Address to the \textit{First Indian Statistical Congress}, 1938
+\end{flushright}
+\end{tcolorbox}
+\noindent Data analysis tools and techniques work in conjunction with collected data. The type of data that needs to be collected to carry out such analyses, as well as the priority placed on the collection of quality data relative to other demands, will dictate the choice of data collection strategies. The manner in which the resulting outputs of these analyses are used for decision support will, in turn, influence appropriate data presentation strategies and system functionality, which is an important access of the analytical process.  
+\newl Although analysts should always endeavour to work with \textbf{representative} and \textbf{unbiased data}, there will be times when the available data is flawed and not easily repaired. Analysts have a professional responsibility to explore the data, looking for potential fatal flaws \textbf{prior} to  the start of the analysis and to inform their client and stakeholders of any findings that could halt, skew, or simply hinder the analytical process or its applicability to the situation at hand. 
+\par Unless a clause has specifically been put in the contract to allow a graceful exit at this point, you will have to proceed with the analysis, flaws and all. It is  \textbf{EXTREMELY IMPORTANT} that you do not simply sweep these flaws under the carpet. Address them repeatedly in your meetings with the clients, and make sure that  the analysis results you present or report on include an appropriate \textit{caveat}. \subsection{Data Collection System} Analysts might also be called upon to provide suggestions to evaluate or fix the data collection system. The following items could help with that task. 
+\begin{itemize}[noitemsep]
+\item \textbf{Data Validity}: the system must collect the data in such a way that data validity is ensured during initial collection. In particular, data must be collected in a way that ensures sufficient accuracy and precision of the data, relative to its intended use.
+\item \textbf{Data Granularity, Scale of Data}: the system must collect the data at a level of granularity appropriate for future analysis.
+\item \textbf{Data Coverage}: the system must collect data that comprehensively, rather than only partially or unevenly, represents the objects of interest. As well, the system must collect and store the required data over a sufficient amount of time, and at the required intervals, to support data analyses that require data spanning a certain duration.
+\item \textbf{Data Storage}: the system must have the functionality to store the types and amount of data required for a particular analysis.
+\item \textbf{Data Accessibility}: the system must provide access to the data relevant for a particular analysis, in a format that is appropriate for this analysis.
+\item \textbf{Computational/Analytic Functionality}: the system must have the ability to carry out the computations required by relevant data analysis techniques.
+\item \textbf{Reporting, Dashboard, Visualization}: the system must be able to present the results of the data analysis in a meaningful, usable and responsive fashion.
+\end{itemize} 
+A number of different overarching strategies for data collection can be employed. Each of these different strategies will be more or less appropriate under certain data collection circumstances, and will result in different system functional requirements. In this report, we will focus on survey sampling, questionnaire design, and automated data collection. 
+\subsection{Formulating the Problem} The \textbf{objectives} drive all other aspects of quantitative analysis. With a \textbf{question} (or questions) in mind, an investigator can start the process that leads to \textbf{model selection}. With potential models in tow, the next step is to consider what \textbf{variates} (fields, variables) are needed, the \textbf{number} of observations required to achieve a  pre-determined \textbf{precision}, and how to best go about \textbf{collecting}, \textbf{storing} and \textbf{accessing} the data.\newl Another important aspect of the problem is to determine whether the questions are being asked of the data in and of \textbf{itself}, or whether the data is used as a \textbf{stand-in for a larger population}. In the later case, there are other technical issues to incorporate into the analysis in order to be able to obtain generalizable results.  
+\newl Questions do more than just drive the other aspects of data analysis -- they also drive the development of quantitative methods. They come in all flavours and their variability and breadth make attempts to answer them challenging: no single approach can work for all of them, or even for a majority of them, which leads to the discovery of better methods, which are in turn applicable to new situations, and so on, and so on.  
+\newl 
+Not every question is answerable, of course, but a large proportion of them may be answerable partially or completely; quantitative methods can provide insights, estimates and ranges for possible answers, and they can point the way towards possible implementations of the solutions.
+\newl As an illustration, consider the following questions:
+\begin{itemize}[noitemsep]
+\item Is cancer incidence higher for second-hand smokers than it is for smoke-free individuals? 
+\item Using past fatal collision data and economic indicators, can we predict future fatal collision rates given a specific national unemployment rate?   
+\item What effect would moving a central office to a new location have on average employee commuting time?  
+\item Is a clinical agent effective in the treatment against acne?
+\item Can we predict when border-crossing traffic is likely to be higher than usual, in order to appropriately schedule staff rotations? 
+\item Can personalized offers be provided to past clients to increase the likelihood of them becoming repeat customers? 
+\item Has employee productivity increased since the company introduced mandatory language training?   
+\item Is there a link between early marijuana use and heavy drug use later in life? 
+\item How do selfies from over the world differ in everything from mood to mouth gape to head tilt?
+\end{itemize}
+\noindent How can such questions be answered? In many instances, the next step requires obtaining relevant data.   
+\subsection{Data Types} 
+Data has \textbf{attributes} and \textbf{properties}. Fields are classified as \textbf{response}, \textbf{auxiliary}, \textbf{demographic} or \textbf{classification} variables; they can be \textbf{quantitative} or \textbf{qualitative}; \textbf{categorical}, \textbf{ordinal} or \textbf{continuous}; \textbf{text-based} or \textbf{numerical}. Furthermore, data is \textbf{collected} through experiments, interviews, censuses, surveys, sensors, scraped from the Internet, etc. 
+\newl  Collection methods are not always sophisticated, but new technologies usually improves the process in many ways (while introducing new issues and challenges): modern data collection can occur over one pass, in batches, or continuously.
+\par How does one decide which data collection method to use? The type of question to answer obviously has an effect, as do the required precision, cost and timeliness. Statistics Canada's \textit{Survey Methods and Practices} \cite{DC_SC} provides a wealth of information on probabilistic sampling and questionnaire design, which remain relevant in this day of big (and real-time) data. \par The importance of this step cannot be overstated: without a well-designed plan to collect meaningful data, and without safeguards to identify flaws (and possible fixes) as the data comes in, subsequent steps are likely to prove a waste of time and resources. \newl
+As an illustration of the potential effect that data collection can have on the final analysis results, contrast the two following ways to collect similar data.
+\begin{tcolorbox}[title=Yes. I Mean No. ... I Think.]
+The Government of Qu\'ebec has made public its proposal to negotiate a new agreement with the rest of Canada, based on the equality of nations; this agreement would enable Qu\'ebec to acquire the exclusive power to make its laws, levy its taxes and establish relations abroad $-$ in other words, sovereignty $-$ and at the same time to maintain with Canada an economic association including a common currency; any change in political status resulting from these negotiations will only be implemented with popular approval through another referendum; on these terms, do you give the Government of Qu\'ebec the mandate to negotiate the proposed agreement between Qu\'ebec and Canada? \\[-0.6cm]
+\begin{flushright}
+-- 1980 Qu\'ebec sovereignty referendum question
+\end{flushright}
+\end{tcolorbox}
+\begin{tcolorbox}[title=Do You Think They Learned Something From 1980?]
+Should Scotland be an independent country? \\[-0.6cm]
+\begin{flushright}
+-- 2014 Scotland independence referendum question
+\end{flushright}
+\end{tcolorbox}
+\noindent The end result was the same in both instances, but an argument can be made that the 2014 Scottish `No` was a much clearer `No` than the Qu\'ebec `No` of 34 years earlier -- in spite of the smaller 2014 victory margin (55.3\%-44.7\%, as opposed to 59.6\%-40.4\%). 
+\subsection{Data Storage and Access}
+Data \textbf{storage} is also strongly linked with the data collection process, in which decisions need to be made to reflect how the data is being collected (one pass, batch, continuously), the volume of data that is being collected, and the type of access and processing that will be required (how fast, how much, by whom).\par Stored data may go \textbf{stale} (e.g. people move, addresses no longer accurate), so it may be necessary to implement regular updating collection procedures. 
+\newl 
+Until very recently, the story of data analysis has been written for small datasets: useful collection techniques yielded data that could, for the most part, be stored on personal computers or on small servers. The advent of Big Data has introduced new challenges \textit{vis-\`a-vis} the collection, capture, access, storage, analysis and visualisation of datasets; some effective solutions have been proposed and implemented, and intriguing new approaches are on the way (such as DNA storing \cite{DC_DNA}, to name but one). We shall not discuss those challenges in detail, but be aware of their existence.  
