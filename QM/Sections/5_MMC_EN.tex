@@ -1,0 +1,68 @@
+\section{The $M/M/c$ Queuing System}
+An $M/M/c/\textrm{GD}/\infty$ queueing system also has exponential inter-arrival and service times, with rates $\lambda$ and $\mu$, respectively. What sets this system apart is that there are now $c>1$ servers willing to serve from a single line of customers, perhaps like one would find in a bank (see Figure~\ref{fig:MM}). \par If $j \leq c$ customers are present in the system, then every customer is being served and there is no wait time; if $j > c$ customers are in the system, then $c$ customers are being served and the remaining $j - c$ customers are waiting in the queue. \newl
+To model this as a birth-death process, we have to observe that the death rate is dependent on how many servers are actually being used. \par If each server completes service at a rate of $\mu$ (which may not be the case in practice as there might be variations in servers, at least for human servers), then the \textbf{actual death rate} is $\mu \times$ the number of customers actually being served. The parameters for this process are
+\begin{align*}
+\lambda_{n} &= \lambda, \ n=0,1,2,\ldots \\ 
+\mu_n &= n\mu, \ n=0,1,2, \ldots, c \\
+\mu_{n} &= c\mu,\  n=c+1,c+2,\ldots 
+\end{align*}
+The traffic intensity for the $M/M/c$ system is $\rho = \lambda/(c \mu)$ and the steady-state solution is 
+$$
+ \pi_{n} = 
+\begin{cases}
+     \frac{\left(c \rho\right)^{n}}{n!} \pi_{0},      & \text{$1\leq n \leq c$}  \\ 
+     \frac{c^{c} \rho^{n}}{c!} \pi_{0},   & \text{$n \geq c$} 
+\end{cases}
+$$
+where 
+$$
+\pi_{0} = \left[1 + \frac{\left(c \rho\right)^{c}}{c! \left(1-\rho\right)} + \sum^{c-1}_{n=1} \frac{c \rho^{n}}{n!}\right]^{-1}\!\!. $$
+Note that, as was the case in a $M/M/1$ system, if $\rho \geq 1$, there can be no steady state -- in other words, if the arrival rate is at least as large as the maximum possible service rate $\lambda \geq c \mu$, then the system ``blows up''.\newl From the end user's point of view, there might be a desire to ensure that customers do not wait in line an inordinate amount of time, but there might also be a desire to minimise the amount of time for which at least one of the server is idle. In a $M/M/c$ queueing system, this steady-state probability is given by 
+$$ P( n \geq c) =  \frac{\left(c \rho\right)^{c}}{c! \left(1-\rho\right)} \pi_{0}.$$ 
+Table~\ref{tab:pns} shows $P( n \geq c)$ for a variety of situations depending on $s$ and $\rho$.  
+\begin{table}[!t]
+\centering
+\begin{tabular}{ccccccc}
+\hline
+$\rho$ & $c=2$ & $c=3$ & $c=4$ & $c=5$ & $c=6$ & $c=7$ \\
+ \hline
+.10& .02& .00& .00& .00& .00& .00 \\
+.20& .07& .02& .00& .00& .00& .00 \\
+.30& .14& .07& .04& .02& .01& .00 \\
+.40& .23& .14& .09& .06& .04& .03 \\
+.50& .33& .24& .17& .13& .10& .08 \\
+.55& .39& .29& .23& .18& .14& .11 \\
+.60& .45& .35& .29& .24& .20& .17 \\
+.65& .51& .42& .35& .30& .26& .21 \\
+.70& .57& .51& .43& .38& .34& .30 \\
+.75& .64& .57& .51& .46& .42& .39 \\
+.80& .71& .65& .60& .55& .52& .49 \\
+.85& .78& .73& .69& .65& .62& .60 \\
+.90& .85& .83& .79& .76& .74& .72 \\
+.95& .92& .91& .89& .88& .87& .85 \\
+\hline
+\end{tabular}
+\caption{\small Probabilities $P(n\geq c)$ that all servers are busy in an $M/M/c$ system for $c=2,\ldots, 7$ and values of $\rho$ between 0.1 and 0.95. \cite[p.1088]{QS_W}.}\label{tab:pns}\hrule
+\end{table}\afterpage{\FloatBarrier}
+Cumbersome calculations, using $W_{s} = \frac{1}{\mu}$, yield $$ L_{q} = P( n \geq c) \frac{\rho}{1-\rho}, \ 
+W_{q} = \frac{L_{q}}{\lambda}, \ 
+W = \frac{1}{\mu} + W_{q}, \ 
+ L = \frac{\lambda}{\mu} + L_{q}.$$
+\newpage\noindent 
+\begin{Example} Consider, for instance, a bank with two tellers. An average of 80 customers arrive at the bank each hour and wait in a single line for an idle teller. For this specific bank, the average service is 1.2 minutes. Assume that inter-arrival times and service times are exponential. Determine:
+\begin{itemize}[noitemsep]
+	\item[(a)] The expected number of customers in the bank.
+	\item[(b)] The expected length of time a customer spends in the bank.
+	\item[(c)] The fraction of time that a particular teller is idle.
+\end{itemize}
+\textbf{Solutions:} we are dealing with an $M/M/2$ system with $\lambda =80 $ customers/hr and $\mu = 50$ customers/hr. Thus, $\rho = \frac{80}{2\cdot 50} = 0.80 < 1$ and the steady-state exists. 
+\begin{itemize}[noitemsep]
+	\item[(a)]  From the above table, $P(n \geq 2) = 0.71$, from which we compute 
+\begin{align*} L_{q} &= P( n \geq 2)\cdot \frac{.8}{1-.8} = 2.84 \text{ customers}\\
+L& = 	\frac{80}{50} + L_{q}	= 4.44 \text{ customers.} \end{align*}
+\item[(b)]	We know that $W = \frac{L}{\lambda} = \frac{4.44}{80} = 0.055 \text{ hr }= 3.3 $ min.
+\item[(c)] To determine the fraction of time that a particular server is idle, note that tellers are idle during all moments when $n=0 $, and half the time (by symmetry) when $n = 1$. The probability that a server is idle is thus given by $ \pi_{0} + 0.5 \pi_{1}$. But
+ $$\pi_{0} = \left[1 + \frac{\left(2\cdot .8\right)^{2}}{2! \left(1-.8\right)} + \sum^{2-1}_{n=1} \frac{2\cdot .8^{n}}{n!}\right]^{-1}= \frac{1}{9}$$ and $$\pi_{1} = \frac{1.6}{1!} \pi_{0} = 0.176$$ and so the probability that particular teller is idle is $0.11 + 0.5(0.176) = 0.198$.
+\end{itemize}
+\end{Example}
+\noindent \textbf{IMPORTANT NOTE:} general queueing models are not understood to the same extent as $M/M/1$ (and $M/M/c$ to a lesser extent), and their given performance measurements may only be approximate and highly-dependent on the specifics of the problem at hand. \par For this reason, $M/M/c$ models are sometimes used even when their use is not supported by the data (the situation is not unlike the widespread use of the normal distribution in a variety of probability and statistics problems). \par In numerous applications, the empirical distributions of arrivals and service times are nearly Poisson and exponential, respectively, so that the assumption is not entirely off the mark, but numerical simulations should not be eschewed when departures from the $M/M/c$ model are too pronounced.\vfill

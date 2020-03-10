@@ -74,7 +74,7 @@
 \lfoot{\footnotesize\sffamily \authaa\authbb\authcc\authdd\authee\authff\authgg\  (\theyear)} 
 \cfoot{}
 \chead{\includegraphics[width=10pt]{ZZ_Images/cc.png} \includegraphics[width=10pt]{ZZ_Images/by.png} \includegraphics[width=10pt]{ZZ_Images/nc.png} \includegraphics[width=10pt]{ZZ_Images/sa.png}}%
-\rfoot{\footnotesize \sffamily Page \thepage\ of\ \pageref{LastPage}}%
+\rfoot{\footnotesize \sffamily Page \thepage\ de\ \pageref{LastPage}}%
 \renewcommand{\headrulewidth}{0pt}% % No header rule
 \renewcommand{\footrulewidth}{0pt}% % No footer rule
 

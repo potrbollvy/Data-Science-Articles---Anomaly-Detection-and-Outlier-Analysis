@@ -1,0 +1,75 @@
+\section{Terminologie des files d'attente}
+La théorie des files d'attente étudie les systèmes et les processus d'attente en fonction de trois concepts clés:
+\begin{itemize}
+\item les \textbf{clients} sont les unités de travail d\'esservies par le système -- un client peut être une personne réelle, ou il peut s'agir de tout ce que le système est censé traiter et compléter: une requête web, une requête de base de données, une pièce à usiner par une machine, etc;
+\item les \textbf{servers} sont les objets qui effectuent le traitement -- un serveur peut être le caissier de l'épicerie, un serveur web, un serveur de base de données, une fraiseuse, etc., et 
+\item les \textbf{queues} (ou files d'attente) sont les endroits où les unités de travail attendent lorsque le serveur est occupé et ne peut pas commencer le travail dès leur arrivée -- une file d'attente peut être une ligne d'attente physique, elle peut résider en mémoire, etc. 
+\end{itemize}
+Afin de décrire les files d'attente, nous devons d'abord connaître et comprendre certaines distributions utiles, ainsi que les processus d\^{\i}t d'entrée-sortie.
+\subsection{Distributions exponentielle et de Poisson}
+Deux distributions jouent un rôle important dans la théorie des files d'attente. La distribution \textbf{de Poisson} compte le nombre d'événements discrets se produisant dans une période de temps fixe; elle est étroitement liée à la \textbf{distribution exponentielle} (et à la distribution Gamma), qui (entre autres applications) mesure le temps depuis l'arrivée d’un dernier événement. La distribution de Poisson est discrète; la variable aléatoire ne peut prendre que des valeurs entières non négatives. La distribution exponentielle peut prendre n'importe quelle valeur réelle non négative.
+\par Considérons le problème de déterminer la probabilité que $n$ arrivées soient observées sur un intervalle de temps de longueur $t$, en supposant de plus que:
+\begin{itemize}
+\item la probabilité qu'une arrivée soit observée sur un petit intervalle de temps (disons de longueur $\nu$) est proportionnelle à la longueur de l'intervalle et que la constante de proportionnalité soit $\lambda$, de sorte que la probabilité devienne $\lambda\nu$;
+\item la probabilité de deux ou plusieurs arrivées sur ce même petit intervalle est nulle, et 
+\item le nombre d'arrivées dans un intervalle de temps donné est indépendant du nombre d’arrivées dans un intervalle qui ne le chevauche pas (par exemple, le nombre d'arrivées survenant entre 5 et 25 minutes depuis le départ ne fournit pas de renseignements sur le nombre d'arrivées survenant entre  30 et 50 depuis le départ).
+\end{itemize}
+\begin{figure}[!t]
+\centering
+\includegraphics[height=0.25\textheight]{Images/poisson.png}
+\centering\includegraphics[height=0.25\textheight]{Images/exp.png}
+\caption{\small Distribution de Poisson (avec $\lambda t=2.3$, en haut) et distribution exponentielle (avec  paramètre $\lambda$, en bas). La zone ombrée sur cette dernière représente la probabilité d’une attente de $t$ unités de temps si les arrivées sont Poisson de paramètre $\lambda$.}\label{fig:dist1}\hrule
+\end{figure}
+Soit $P(n;t)$ la probabilité d'observer $n$ arrivées dans un intervalle de temps de longueur $t$. La fonction de masse de la distribution du nombre d'arrivées est 
+$$ P_{\lambda}(n; t) = \frac{(\lambda t)^n}{n!} e^{-\lambda t}, \ n=0,1,2,\cdots$$
+pour un $\lambda>0$ spécifique au problème, c'est-\`a-dire que la distribution est Poisson (consulter la figure~\ref{fig:dist1}). Dans un système de file d'attente, ces arrivées sont d\^{\i}tes \textbf{de Poisson}. \newl Le temps d’attente entre deux arrivées successives est l’\textbf{in\-ter\-val\-le d'ar\-ri\-vées}. Si le nombre d'ar\-ri\-vées dans un intervalle de temps donné suit une distribution de Poisson avec paramètre $\lambda t$, les intervalles d’arrivées suivent une distribution exponentielle, dont la fonction densit\'e est donn\'ee par 
+$$ f_{\lambda}(t) = \lambda e^{-\lambda t}, \ \textrm{pour  }t>0,$$ et la probabilité $P(W\leq t)$ que le temps d'attente $W$ pour un utlisateur est inf\'erieur \`a $t$ est 
+$$P(W\leq t) = 1 - e^{-\lambda t}\quad \textrm{(consulter la Figure~\ref{fig:dist1})}.$$
+De manière générale, si le taux d'arrivée est \textbf{stationnaire} et si il n’y a pas d'arrivées \textbf{en vrac} (c’est à dire qu’il n’y a pas d'arrivées simultanées), et si les arrivées passées n'affectent pas les arrivées futures, alors les intervalles d’arrivées suivent une distribution exponentielle avec paramètre~$\lambda$, et le nombre d'arrivées dans tout intervalle de longueur $t$ est Poisson avec paramètre $\lambda t$.
+ \newl L'une des caractéristiques les plus intéressantes de la distribution exponentielle relative aux intervalles d'arrivées est qu'elle est \textbf{sans mémoire} -- si une variable aléatoire $X$ suit une distribution exponentielle, alors pour tout $t,h\geq 0$,
+\begin{equation}
+P(X \geq t + h|X \geq t) = P(X \geq h). 
+\label{eq:1}
+\end{equation}
+C'est la seule fonction de densit\'e qui satisfait \`a cette propri\'et\'e~\cite{QS_R}. Cette propriété est importante car elle implique que la distribution des intervalles d'arrivées est indépendante du temps écoulé depuis la dernière arrivée -- imaginez si c'était le cas dans  les transports publics! \par Par exemple, si nous savons qu'au moins $t$ d'unités de temps se sont écoulées depuis la dernière arrivée, alors l’intervalle $h$ jusqu'à la prochaine arrivée est indépendante de $t$. Si $h=4$, disons, alors $(\ref{eq:1})$ donne 
+$$ P(X>9|X>5)= P(X>7|X>3) = P(X>4).$$
+
+\subsection{Distribution d'Erlang}
+La distribution exponentielle n'est pas toujours un modèle approprié des intervalles d’arrivées; il n’est pas difficile d’imaginer une situation où le temps d’attente ne devrait pas être sans mémoire, par exemple. Une approche alternative utilise la distribution d'\textbf{Erlang} $\mathcal{E}(R,k)$, une variable aléatoire continue à deux paramètres $R>0$  $k\in \mathbb{Z}^+$,  dont la fonction de densité est  
+$$ f_{R,k}(t) = \frac{R (Rt)^{k-1} e^{-Rt}}{(k-1)!},\ t\geq 0.$$
+Lorsque $k=1$, la distribution d'Erlang se r\'eduit \`a la distribution exponentielle $\text{Exp}(R)$. On peut aussi montrer que si $X\sim \mathcal{E}(k\lambda,k)$, alors $X\sim X_{1}+X_{2}+\cdots+X_{k},$ o\`u chaque $X_{i}$ est une variable al\'eatoire exponentielle ind\'ependent, de param\`etre $k \lambda$. \newl En modélisant les intervalles d’arrivées selon une distribution d’Erlang $\mathcal{E}(k\lambda,k)$, nous disons de façon équivalente que les utilisateurs passent par $k$ \textbf{phases} (dont chacune est sans mémoire) avant d'être servi. Pour cette raison, le paramètre de forme est souvent appelé le nombre de phases de la distribution d'Erlang \cite{QS_N}.
+\subsection{Arriv\'ees et entr\'ees}
+Le processus de saisie est généralement appelé \textbf{processus d’arrivée}, les arrivées sont appelées \textbf{clients} (ou utilisateurs). Dans les modèles que nous considérerons, on supposent qu’il n’y a pas d'arrivées simultanées (ce qui peut être irréaliste lorsque l'on modélise les arrivées dans un restaurant, par exemple). Si des arrivées simultanées sont possibles (en théorie et/ou en pratique), nous disons des arrivées en vrac qu'elles sont \textbf{autorisées}. 
+\par En général, nous supposons que le processus d'arrivée \textbf{n’est pas affecté par le nombre de clients} dans le système. Dans le contexte d'une banque, cela impliquerait que le processus régissant les arrivées reste inchangé, qu'il y ait 500 ou 5 personnes attendant qu’un guichet se libère. 
+\newl Il existe deux situations courantes dans lesquelles le processus d'arrivée peut dépendre du nombre de clients présents. La première se produit lorsque les arrivées sont issues d'une petite population -- les modèles dits de \textbf{source limitée} -- si tous les membres de la population sont déjà dans le système, il ne peut y avoir une autre arrivée!\par Une autre situation de ce type se produit lorsque le taux auquel les clients arrivent dans l'établissement diminue lorsque celui-ci devient trop encombré. Par exemple, lorsque les clients constatent que le stationnement d'un restaurant est plein, ils peuvent très bien décider d'aller dans un autre restaurant ou de renoncer complètement à manger à l'extérieur. Si un client arrive mais ne parvient pas à entrer dans le système, nous disons que l'acc\`es au syst\`eme lui a \'et\'e \textbf{bloqu\'e}.
+\subsection{Sorties et services}
+Pour décrire le processus des sorties d’un système de file d'attente (souvent appelé \textbf{processus de service}), nous spécifions généralement une \textbf{distribution du temps de service}  qui régit le temps de service pour les  utilisateurs. \par Dans la plupart des cas, on suppose que cette distribution est indépendante du nombre de clients présents dans le système. Cela signifie, par exemple, que le serveur ne fonctionne pas plus vite lorsque lorsque le nombre de clients augmente.\newl On distingue deux types de serveurs: les serveurs  \textbf{en parallèle} et les serveurs \textbf{en série}. Les serveurs en parallèle fournissent tous le même type de service et les clients ne doivent passer que par l'un d'entre eux pour obternir un service complet. Les guichets d'une banque, par exemple, sont généralement disposés en parallèle; typiquement, les clients sont servis que par un seul guichet, et n'importe quel des  guichets peut offrir le service souhaité. \par Les serveurs sont en série si un client doit passer par plusieurs serveurs avant de terminer son service. Une chaîne de montage est un exemple d'un tel système de mise en file d'attente.
+\newl 
+On retrouve de tels processus dans diverses situations:
+\begin{itemize}
+\item \textbf{situation:} achater des billets pour les Blue Jays au centre Rogers\\ \textit{arriv\'ees:} les partisans arrivent au guichet\\ \textit{sorties:} les guichetiers servent les acheteurs;
+\item \textbf{situation:} pizzéria \\ \textit{arriv\'ees:} les demandes de livraison de pizzas sont reçues \\\textit{output}: la pizzéria prépare et cuit des pizzas, et les envoie pour être livrées; 
+\item \textbf{situation:} centre de services publics\\ \textit{input}: les citoyens/résidents entrent dans le centre de services \\ \textit{sorties:} la réceptionniste les affecte à une file d'attente spécifique en fonction de leurs besoins\\
+\textcolor{white}{.}\qquad \textit{arriv\'ees:} les citoyens/résidents se joignent à une \\ \textcolor{white}{.}\qquad file d'attente spécifique  \\ \textcolor{white}{.}\qquad \textit{sorties:} un fonctionnaire répond à leurs besoins;
+\item \textbf{situation:} banque de sang à l'hôpital\\ \textit{arriv\'ees:} les pintes de sang arrivent \`a l'hôpital\\ \textit{sorties:} les patients utilisent les pintes de sang selon leur type sanguin;
+\item \textbf{situation:} garage\\ \textit{arriv\'ees:} les voitures tombent en panne et sont envoyées au garage afin d'être réparées\\ \textit{sorties:} les voitures sont réparées par des mécaniciens et renvoyées sur les rues.
+\end{itemize}
+Les calculs pertinents sont assez faciles à exécuter, comme le montrent les exemples suivants.
+\begin{Example} En moyenne, on s’attend à ce que 4.6 clients entrent dans un café durant chaque heure où il est ouvert. Si les arrivées respectent un processus de Poisson, la probabilité qu'au plus deux clients entrent pendant une période de 30 minutes est de \begin{align*}P_{\lambda=4.6}&(n\leq 2;t=0.5)=P_{4.6}(0,0.5)+P_{4.6}(1,0.5)+P_{4.6}(2,0.5) \\ &=e^{-4.6\cdot 0.5}\left[\frac{(4.6\cdot 0.5)^0}{0!}+\frac{(4.6\cdot 0.5)^1}{1!}+\frac{(4.6\cdot 0.5)^2}{2!}\right] \\ &\approx 0.5960; \end{align*} the corresponding Poisson distribution is shown in Figure~\ref{fig:dist1}.
+\end{Example}
+\begin{Example}
+ In a fast food restaurant, a cashier serves on average 9 customers in a one-hour time period. If the service time follows an exponential distribution, $77.7\%$ and $1.1\%$ of customers will be served in 10 minutes or less, and after 30 minutes, respectively. Indeed, \begin{align*}P(W\leq 10/60)&=1-e^{-9 \cdot 10/60} \approx 0.7769\\ P(W>30/60)&=e^{-9\cdot 30/60}\approx 0.0111.\end{align*}
+\end{Example}
+
+\subsection{Queue Discipline}
+To describe a queuing system completely, we must also describe the \textbf{queue discipline} and the manner in which customers \textbf{join lines}. The queue discipline describes the method used to determine the order in which customers are served: 
+\begin{itemize}
+\item the most common queue discipline is the \textbf{first come, first served} (FCFS) discipline, in which customers are served in the order of their arrival, as one would expect to see in an Ottawa coffee shop;
+\item under the \textbf{last come, first served} (LCFS) discipline, the most recent arrivals are the first to enter service; for example, if we consider exiting from an elevator to be the service, then a crowded elevator illustrates such a discipline;
+\item sometimes the order in which customers arrive has no effect on the order in which they are served; this would be the case if the next customer to enter service is randomly chosen from those customers waiting for service, a situation referred to as \textbf{service in random order} (SIRO) discipline; when callers to an inter-city bus company are put on hold, the luck of the draw often determines which caller will next be serviced by an operator, 
+\item finally, \textbf{priority} discipline classifies each arrival into one of several categories, each of which is assigned a priority level (a \textbf{triage} process); within each priority level, customers enter the queue on a FCFS basis; such a discipline is often used in emergency rooms to determine the order in which customers receive treatment, and in copying and computer time-sharing facilities, where priority is usually given to jobs with shorter processing times.
+\end{itemize}
+
+\subsection{Method Used by Arrivals to Join Queue}
+Another important factor for the behaviour of the queuing system is the \textbf{method} used by customers to determine which line to join. For example, in some banks, customers must join a single line, but in other banks, customers may choose the line they want to join. \par  When there are several lines, customers often join the shortest line. Unfortunately, in many situations (such as at the supermarket), it is difficult to define the shortest line. If there are several lines at a queuing facility, it is important to know whether or not customers are allowed to \textbf{switch}, or jockey, between lines. In most queuing systems with multiple lines, jockeying is permitted, but jockeying at a custom inspection booth would not be recommended, for instance. 
+
