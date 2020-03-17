@@ -1,71 +1,71 @@
 %%%%%________________Section3_________________________%%%%
 
-\section{Queueing Theory Framework}
-There is a standard notation that is used to describe large families of queueing systems: the \textbf{Kendall-Lee notation} \cite{QS_K}.
-\subsection{Kendall-Lee Notation}
-Queuing systems can be described \textit{via} six characteristics: $$x_1/x_2/x_3/x_4/x_5/x_6.$$
-The first characteristic $x_1$ specifies the nature of the \textbf{arrival process}. The following standard abbreviations are used:
+\section{Cadre th\'eorique}
+La notation de \textbf{Kndall-Lee} permet de décrire de grandes familles de systèmes de files d'attente \cite{QS_K}.
+\subsection{Notation de Kendall-Lee}
+On d\'ecrit les syst\`emes de file d'attente \`a l'aide de  six attributs: $$x_1/x_2/x_3/x_4/x_5/x_6.$$
+La première caractéristique précise la nature du \textbf{processus d'arrivée}. On utilise les abréviations standard suivantes:
 \newl \begin{tabular}{p{0.25cm}p{0.25cm}p{15cm}}
-$M$ &$=$& inter-arrival times are independent identically \\ & & \quad distributed (iid) exponentials\\
-$D$ &$=$& inter-arrival times are iid and deterministic\\
-$E_{k}$ &$=$& inter-arrival times are iid Erlangs with shape \\ & & \quad parameter $k$\\
-$G$ &$=$& inter-arrival times are iid and governed by  \\ & & \quad some general distribution.
+$M$ &$=$& intervalles d’arrivées exponentiels \\ & & \quad   indépendants et identiquement distribués (iid) \\
+$D$ &$=$& intervalles d’arrivées d\'eterministes, iid\\
+$E_{k}$ &$=$& intervalles d’arrivées suivent Erlang $\mathcal{E}(R,k)$, iid  \\
+$G$ &$=$& intervalles d’arrivées iid et r\'egis par  \\ & & \quad une distribution g\'en\'erale.
 \end{tabular}
 \newl
-The second characteristic $x_2$ specifies the nature of the \textbf{service times}:
+La deuxième caractéristique précise la nature du \textbf{temps de service}:
 \newline \newline
 \begin{tabular}{p{0.25cm}p{0,25cm}p{12cm}}
-$M$ &$=$& service times are iid and exponential\\
-$D$ &$=$&  service times are iid and deterministic.\\
-$E_{k}$ &$=$& service times are iid Erlang with shape \\ & & \quad parameter $k$\\
-$G$ &$=$& service times are iid and follow some general \\ & & \quad distribution.
+$M$ &$=$& temps de services exponentiels, iid \\
+$D$ &$=$& temps de services d\'eterministes, iid\\
+$E_{k}$ &$=$& temps de services Erlang $\mathcal{E}(R,k)$, iid \\
+$G$ &$=$& temps de service iid et r\'egis par  \\ & & \quad une distribution g\'en\'erale.
 \end{tabular}
-\newl
-The third characteristic $x_3$ represents the \textbf{number of parallel servers}; it is a positive integer. \newl  The fourth characteristic $x_4$ describes the \textbf{queue discipline}:
+\newpage\noindent
+La troisième caractéristique représente le \textbf{nombre de ser\-veurs parallèles}; c'est un nombre entier positif. \newl  La quatrième caractéristique décrit la \textbf{politique de service}:
 \newl
 \begin{tabular}{ccc}
-FCFS &$=$& first come, first served\\
-LCFS &$=$& last come, first served\\
-SIRO &$=$& service in random order\\
-GD &$=$& general queue discipline.
+FCFS &$=$& premier arriv\'e, premier servi\\
+LCFS &$=$& dernier arriv\'e, dernier servi\\
+SIRO &$=$& service dans un ordre al\'eatoire\\
+GD &$=$& politique de service ge\'en\'erale.
 \end{tabular}
 \newl
-The fifth characteristic $x_5$ specifies the \textbf{maximum allowable number of customers in the system} (including customers who are waiting and customers who are in service).\newl The sixth characteristic $x_6$ gives the \textbf{size of the population} from which customers are drawn. Unless the number of potential customers is of the same order of magnitude as the number of servers, the population size is considered to be infinite. \newl In many important models $x_4/x_5/x_6$ is $\textrm{GD}/\infty/\infty$; when this is the case, these characteristics are often omitted.  For example, $M/M/3/\textrm{FCFS}/20/\infty$ could represent a bank with 3 tellers, exponential arrival times, exponential service times, a ``first come, first served'' queue discipline, a total capacity of 20 customers, and an infinite population pool from which to draw. The situation is partly illustrated in Figure~\ref{fig:1}.
+La cinquième caractéristique précise le \textbf{nombre maximal d’utilisateurs} pouvant être accommodé par le système, tandis que la sixième caractéristique  donne le \textbf{taille de la population} dont sont issus les utilisateurs. À moins que le nombre de clients potentiels ne soit du même ordre de grandeur que le nombre de serveurs, la taille de la population est considérée comme infinie. \newl Dans de nombreux modèles importants, $x_4/x_5/x_6$ correspond à $\textrm{GD}/\infty/\infty$; dans ce cas, ces attributs sont souvent omis de la description de la file d'attente.\newl  Par exemple, $M/M/3/\textrm{FCFS}/20/\infty$ pourrait représenter une banque avec 3 guichets, des temps d'arrivée et de service exponentiels, une politique de service ``premier arrivé, premier servi'', une capacité totale de 20 clients et un bassin de population infini dans lequel puiser. La situation est partiellement illustrée à la Figure~\ref{fig:1}.
 \begin{figure}[t]
 	\centering
-		\includegraphics[width=0.49\textwidth]{Images/fig1Queue.png}
-	\caption[\small Single line at bank with $3$ tellers]{\small Single line at bank with three tellers -- $M/M/3/\textrm{FCFS}/20/\infty$.}
+		\includegraphics[width=0.49\textwidth]{Images/fig1Queue_\ldoc.png}
+	\caption{\small Une file d'attente avec $3$ guichets  -- $M/M/3/\textrm{FCFS}/20/\infty$.}
 	\label{fig:1}
 \end{figure}
-\subsection{Birth-Death Processes}
+\subsection{Processus de naissance et de mort}
 \begin{figure}[!t]
 	\centering
 		\includegraphics[width=0.49\textwidth]{Images/fig2Queue.jpg}
-	\caption[\small Birth-death process]{\small Birth-death process; queueing states indexed by integers; birth rates and death rates indicated by $\lambda_n$ and $\mu_m$, respectively (source unknown).}
+	\caption{\small Processus de naissance et de mort; les taux de natalité et de mortalité sont indiqués par $\lambda_n$ et $\mu_m$, respectivement (source inconnue).}
 	\label{fig:2}\hrule
 \end{figure}
-The \textbf{state of a queueing system} at time $t$ is defined to be the number of customers in the queuing system, either waiting in line or in service, at time $t$. At $t = 0$, the state of the system is  the initial number of customers in the system. This state is worth recording because it clearly affects the state at future times $t$. \par Knowing this, we define $P_{i,j} (t)$ as the probability that the state at time $t$ is $j$, given that the state at $t = 0$ was $i$. For large $t$, $P_{i,j} (t)$ becomes independent of $i$ and approaches a limit $\pi_{j}$. This limit is known as the \textbf{steady-state} of state~$j$.\newpage\noindent It is generally incredibly difficult to determine the steps of arrivals and services that lead to a steady-state $\pi_j$. Likewise, starting from a small $t$, it is difficult to determine exactly when a system will reach its steady state $\pi_j$, if such a state even exists. \par For simplicity's sake, when a queuing system is studied, we begin by assuming that the steady-state has already been reached.\newl  
-A \textbf{birth-death process} is a Markov process in which states are indexed by non-negative integers, and transitions are only permitted between ``neighbouring'' states. After a ``birth'', the state increases from $n$ to $n+1$; after a ``death'', the state decreases from $m$ to $m-1$. Typically, we denote the set of birth rates and death rates by $\lambda_n$ and $\mu_m$, respectively (see Figure~\ref{fig:2}). \textbf{Pure birth} processes are those for which $\mu_m=0$ for all $m$; \textbf{pure death} processes those for which $\lambda_n=0$ for all $n$. The  \textbf{steady-state solution} of a birth-death process, i.e. the probability $\pi_n$ of being in state $n$, \textit{can} actually be computed: 
-\begin{align} \pi_{n} &= \pi_{0}\frac{\lambda_{0} \lambda_{1} \cdots \lambda_{n-1}}{\mu_{1} \mu_{2} \cdots \mu_{n}},\quad  \text{for    } n=1,2,\cdots,\label{eq:ssbr}
+L'\textbf{état} d'un système de file d’attente au temps $t$ est le nombre de clients dans le système de file d’attente (soit en attente en ligne ou en service) au temps $t$. Lorsque $t = 0$, l'état du système est tout simplement le nombre initial de clients dans le système.  Cet état vaut la peine d'être noté car il affecte l'état du syst\`eme pour les autres instants $t$.  \par En conséquence, nous définissons $P_{i,j} (t)$ comme la probabilité que l'état soit $j$ au temps $t$, étant donné que l'état à $t = 0$ était $i$. Pour des valeurs élevées de $t$, $P_{i,j} (t)$ devient indépendant de $i$ et se rapproche d'une limite $\pi_{j}$. Cette limite est le \textbf{régime stable} de l’état $j$.\newl Il est en général difficile de déterminer les étapes des arrivées et des services qui mènent à un état stable $\pi_j$. De même, à partir d'un $t$ près du début, il est difficile de déterminer exactement quand un système atteindra son état stable $\pi_j$, et même si un tel état existe. \par Par souci de simplicité, lorsqu'on étudie un système de file d'attente, on commence par supposer que l'état d'équilibre a déjà été atteint.\newl  
+Un \textbf{processus de naissance et de mort} est un processus de Markov dans lequel les états sont indexés par des entiers non négatifs, et les transitions d’états ne sont autorisées qu'entre états ``voisins.'' Après une ``naissance,'' l'état du système passe de $n$ à $n+1$; après une ``mort,'' de $m$ à $m-1$. En général, les taux de natalité et de mortalité sont représenté spar $\lambda_n$ et $\mu_m$, respectivement (comme on peut le constater à la Figure~\ref{fig:2}). Les processus de nature  \textbf{purement naissance} sont ceux pour lesquels $\mu_m=0$ pour tout $m$; pour ceux de nature \textbf{purement mort}, on a $\lambda_n=0$ pour tout $n$. La \textbf{solution d'état stable} d'un processus de naissance-mort, c'est-à-dire la probabilité $\pi_n$ que le système se retrouve dans l'état $n$, \textit{peut} en fait être calculée: 
+\begin{align} \pi_{n} &= \pi_{0}\frac{\lambda_{0} \lambda_{1} \cdots \lambda_{n-1}}{\mu_{1} \mu_{2} \cdots \mu_{n}},\quad  \text{pour    } n=1,2,\cdots,\label{eq:ssbr}
 \end{align}
-where $\pi_{0}$ is  the probability of being in state 0. It can further be shown  \cite{QS_K1} that:
+où $\pi_{0}$ est la probabilité que le système se retrouve dans l'état 0 (c’est-à-dire sans utilisateurs). On peut également montrer \cite{QS_K1} que:
 $$ \pi_{0} = \frac{1}{1+ \sum^{\infty}_{n=1} \prod^{n-1}_{j=0} \frac{\lambda_{j}}{\mu_{j+1}}}.$$ 
 
-\subsection{Little's Queuing Formula}
-It is often the case that clients and end users are interested in determining the amount of time that a typical customer spends in the queuing system. Let $W$ be the \textbf{expected waiting time} spent in the queuing system, including time in line plus time in service, and $W_{q}$ be the \textbf{expected time a customer spends waiting in line}. Both $W$ and $W_{q}$ are computed under the assumption that the steady state has been reached. By using a powerful result known as \textbf{Little's queuing formula}, $W$ and $W_{q}$ are easily related to the number of customers in the queue and those waiting in line. \newl  For any queuing system (or any subset of a queuing system), consider the following quantities:
+\subsection{Loi de Little}
+Les analystes et les clients souhaitent souvent déterminer combien temps l'utilisateur moyen passe dans le système de file d'attente. Soit $W$ le \textbf{temps d'attente prévu passé dans le système de file d’attente}, y compris le temps passé dans la file et le temps de service, et $W_{q}$ le \textbf{temps d'attente prévu d'un client dans la file}. Les deux valeurs $W$ et $W_{q}$ sont calculés en supposant que l'état d'équilibre du système a été atteint. En utilisant un puissant résultat connu sous le nom de \textbf{loi de Little}, $W$ et $W_{q}$ sont facilement liés au nombre de clients dans la file d'attente et à ceux qui font la queue. \newl  Pour tout système de file d'attente (ou tout sous-ensemble d'un système de file d'attente), on considère les quantités suivantes:
 \begin{itemize}[noitemsep]
-\item $\lambda = $  average number of arrivals entering the system per unit time; 
-\item $L =$  average number of customers present in the queuing system;
-\item $L_{q} = $  average number of customers waiting in line;
-\item $L_{s} = $  average number of customers in service;
-\item $W = $  average time a customer spends in the system;
-\item $W_{q} = $  average time a customer spends in line, and
-\item $W_{s} = $  average time a customer spends in service.
+\item $\lambda = $  nombre moyen d'arrivées dans le système par unité de temps;  
+\item $L =$  le nombre moyen d'utilisateurs présents dans le système de file d'attente;
+\item $L_{q} = $  le nombre moyen d'utilisateurs qui font la queue;
+\item $L_{s} = $  le nombre moyen d'utilisateurs en service;
+\item $W = $  le temps moyen qu'un utilisateur passe dans le système;
+\item $W_{q} = $  le temps moyen qu'un utilisateur passe dans la file d'attente, et
+\item $W_{s} = $  le temps moyen qu'un utilisateur passe en service.
 \end{itemize}
-Customers in the system can only be found in the queue or being serviced, so that $L = L_{q} + L_{s}$ and $W = W_{q} + W_{s}$. In these definitions, all averages are steady-state averages. For most queuing systems in which a steady-state exists, Little's queuing formula can be summarized as 
+Les utilisateurs du système ne peuvent que se trouver dans la file d'attente ou en service, de sorte que $L = L_{q} + L_{s}$ et $W = W_{q} + W_{s}$ (dans ces définitions, toutes les moyennes sont des moyennes de régime permanent (``steady-state’’)). Pour la plupart des systèmes de file d'attente dans lesquels un tel régime existe, la loi de Little se résume par 
 \begin{align*}
-L &=  \lambda W, \quad L_{q} = \lambda W_{q}, \quad\mbox{and}
+L &=  \lambda W, \quad L_{q} = \lambda W_{q}, \quad\mbox{et}
 \quad L_{s}= \lambda W_{s}.
 \end{align*}
-\begin{Example} If, on average, 46 customers enter a restaurant each hour it is opened, and if they spend, on average, 10 minutes waiting to be served, then we should expect $46\cdot 1/6 \approx 7.7$ customers in the queue at all time (on average).   \end{Example}
+\begin{Example} Si, en moyenne, 46 clients entrent dans un restaurant à chaque heure où il est ouvert, et s'ils passent, en moyenne, 10 minutes à attendre d'être servis, nous devrions nous attendre à ce que $46\cdot 1/6 \approx 7.7$ clients se retrouve dans la file d'attente à tout moment, en moyenne. \end{Example}
 
