@@ -1,0 +1,107 @@
+\section{Introduction}
+Bayesian statistics is a system for describing epistemiological uncertainty using the mathematical language of probability; Bayesian inference is the process of fitting a probability model to a set of data and summarizing the result with a probability distribution on the parameters of the model and on
+unobserved quantities (such as predictions).
+\subsection{Background } % Sub-section
+In 1763, Thomas Bayes published a paper on the problem of induction, that is, arguing from the specific to the general. In modern language and notation, Bayes wanted to use binomial data comprising $r$ successes out of $n$ attempts to learn about the underlying chance $\theta$ of each attempt succeeding. Bayes' key contribution was to use a probability distribution to represent uncertainty about $\theta$. This distribution represents 'epistemiological' uncertainty, due to lack of knowledge about the world, rather than 'aleatory' probability arising from the essential unpredictability of future events, as may be familiar from games of chance. \par In this framework, a probability represents a `degree-of-belief' about a proposition; it is possible that the probability of an event will be recorded differently by two different observers, based on the respective background information to which they have access. 
+
+\newpage\noindent Modern Bayesian statistics is still based on formulating probability distributions to express uncertainty about unknown quantities. These can be underlying parameters of a system (induction) or future observations (prediction).
+\subsection{Bayes' Theorem } % Sub-section
+Bayes' Theorem provides an expression for the conditional probability of $A$ given $B$, that is:
+	$$P(A|B) = \frac{P(B|A) P(A)}{P(B)}.$$
+Bayes' Theorem can be thought of as way of coherently updating our uncertainty in the light of new evidence. The use of a probability distribution as a `language' to express our uncertainty is not an arbitrary choice: it can in fact be determined from deeper principles of logical reasoning or rational behaviour.
+\begin{Example} Consider a medical clinic.
+\begin{itemize}[noitemsep]
+	\item $A$  could represent the event ``Patient has liver disease.'' Past data suggests that 10\% of patients entering the clinic have liver disease: $P(A) = 0.10$.
+	\item $B$  could represent the litmus test ``Patient is alcoholic.'' Perhaps 5\% of the clinic's patients are alcoholics:  $P(B) = 0.05$.
+	\item $B|A$ could represent the scenario that a patient is alcoholic, given that they have liver disease: perhaps we have $P(B|A) = 0.07$, say.
+\end{itemize}
+ According to Bayes' Theorem, then, the probability that a patient has liver disease assuming that they are alcoholic is $$P(A|B) = \frac{0.07 \times 0.10}{0.05} = 0.14$$ 
+While this is a (large) increase over the original 10\% suggested by past data, it remains unlikely that any particular patient has liver disease.
+\end{Example}
+\subsubsection*{Bayes' Theorem with Multiple Events}
+Let $D$ represent some observed data and let $A$, $B$, and $C$ be mutually exclusive (and exhaustive) events conditional on $D$.  Note that
+\begin{equation*}
+\begin{aligned}
+P( D )&= P( A \cap D ) + P( B \cap D )+P(C \cap D)  & \\
+      &= P(D|A) P(A) + P(D|B) P(B) + P(D|C) P(C).&
+\end{aligned}
+\end{equation*}
+According to Bayes' theorem, 
+\begin{equation*}
+\begin{aligned}
+P( A|D )&= \frac{P(D|A) P(A)}{P(D)}  & \\
+        &= \frac{P(D|A) P(A)}{P(D|A) P(A) + P(D|B) P(B) + P(D|C) P(C)}.&
+\end{aligned}
+\end{equation*}
+In general, if there are $n$ exhaustive and mutually exclusive outcomes $A_{1},..., A_{n}$, we have, for any $i\in\left\{1,..., n\right\}$: 
+$$ P(A_{i}|D) = \frac{P(A_{i}) P(D|A_{i})}{\sum^{n}_{k=1} P(A_{k}) P(D|A_{k})} $$ 
+The denominator is simply $P(D)$, the \textbf{marginal distribution of the data}. 
+
+Note that, if the values of $A_{i}$ are portions of the continuous real line, the sum may be replaced by an integral.
+\begin{Example}
+In the 1996 General Social Survey, for males (age 30+):
+\begin{itemize}[noitemsep]
+\item 11\% of those in the lowest income quartile were college graduates.
+\item 19\% of those in the second-lowest income quartile were college graduates.
+\item 31\% of those in the third-lowest income quartile were college graduates.
+\item 53\% of those in the highest income quartile were college graduates.
+\end{itemize}
+What is the probability that a college graduate falls in the lowest income quartile? 
+\newl Let $Q_{i}, i =1, 2, 3, 4$ represent the income quartiles (i.e.\@ $P(Q_{i}) =0.25$) and $D$ represent the event that a male over 30 is a college graduate. Then
+\begin{equation*}
+\begin{aligned}
+P( Q_{1}|D )&= \frac{P(D|Q_{1}) P(Q_{1})}{\sum^{4}_{k=1} P(Q_{k}) P(D|Q_{k})}  & \\
+            &= \frac{(0.11)(0.25)}{(0.11+0.19+0.31+0.53)(0.25)} = 0.09.&
+\end{aligned}
+\end{equation*}
+\end{Example}
+\subsection{Bayesian Inference Basics} 
+Bayesian statistical methods start with existing {prior} beliefs, and update these using data to provide {posterior} beliefs, which may be used as the basis for inferential decisions:
+$$ \large \underbrace{P( \theta | D )}_{\textbf{posterior}} = \underbrace{P(\theta)}_{\textbf{prior}} \times  \underbrace{P(D|\theta)}_{\textbf{likelihood}} /\underbrace{P(D)}_{\textbf{evidence}}, $$
+where the evidence is 
+$$ P(D) = \int P(D|\theta) P(\theta) d\theta.$$
+In the vernacular of Bayesian data analysis (BDA), 
+\begin{itemize}[noitemsep]
+\item the \textbf{prior}, $P(\theta)$, represents the strength of the belief in $\theta$ without taking the observed data $D$ into account;
+\item the \textbf{posterior}, $P( \theta | D )$, represents the strength of our belief in $\theta$ when the observed data $D$ is taken into account; \item the \textbf{likelihood}, $P(D|\theta)$, is the probability that the observed data $D$ would be generated by the model with parameter values $\theta$, and 
+\item the \textbf{evidence}, $P(D)$, is the probability of observing the data $D$ according to the model, determined by summing (or integrating) across all possible parameter values and weighted by the strength of belief in those parameter values.
+\end{itemize}
+\begin{Example}
+\textit{Application to neuroscience.}
+Cognitive neuroscientists investigate which areas of the brain are active during particular mental tasks. In many situations, researchers observe that a certain region of the brain is active and infer that a particular cognitive function is therefore being carried out; \cite{BDA_Poldrack} cautioned that such inferences are not necessarily firm and need to be made with Bayes' rule in mind. The same paper reports the following frequency table of previous studies that involved any language-related task (specifically phonological and semantic processing) and whether or not a particular \textbf{region of interest} (ROI) in the brain was activated:
+
+\begin{center}
+ \begin{tabular}{ccc} 
+ $ $& \textbf{\textrm{Language}} $(L)$& \textbf{Other} $(\overline{L})$\\ [0.5ex] 
+ \textbf{Activated} $(A)$ & 166 & 199  \\ 
+  \textbf{Not Activated} $(\overline{A})$ & 703 & 2154 \\ [1ex] 
+\end{tabular}
+\end{center}
+Suppose that a new study is conducted and finds that the ROI is activated ($A$). If the prior probability that the task involves language processing is $P(L)=0.5$, what is the posterior probability, $P(L|A)$, given that the ROI is activated?
+
+\begin{equation*}
+\begin{aligned}
+P(L|A)&= \frac{P(A|L) P(L)}{P(A|L) P(L) + P(A | \overline{L}) P(\overline{L}) }& \\
+                     &= \frac{(166/(166+703))0.5}{(166/(166+703))0.5 + (199/(199+2154))0.5 } & \\
+							       &= 0.693 &
+\end{aligned}
+\end{equation*}
+Notice that the posterior probability of involving language processes is slightly higher than the prior.
+\end{Example}
+
+\subsection*{Exercises}
+\begin{Exercise}%Hitchcock/stat535slidesday2.pdf
+\label{ex1.4.1}
+(1975 British national referendum on whether the UK should remain part of the European Economic Community). Suppose 52\% of voters supported the Labour Party and 48\% the Conservative Party. Suppose 55\% of Labour voters wanted the UK to remain part of the EEC and 85\% of Conservative voters wanted this. What is the probability that a person voting ``Yes'' to remaining in EEC is a Labour voter?	\cite{BDA_H}				
+\end{Exercise} 
+
+\begin{Exercise} %http://www.statisticshowto.com/bayes-theorem-problems/
+ \label{ex1.4.2}					
+ Given the following statistics, what is the probability that a woman has cancer if she has a positive mammogram result? \cite{BDA_N6}
+\begin{itemize}[noitemsep]
+	\item 1\% of women over 50 have breast cancer.
+	\item 90\% of women who have breast cancer test positive on mammograms.
+	\item 8\% of women will have false positives.
+\end{itemize}	
+\end{Exercise} 
+

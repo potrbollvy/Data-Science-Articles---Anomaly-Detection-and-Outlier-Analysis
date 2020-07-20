@@ -51,9 +51,9 @@ $$ L = \frac{\rho}{1-\rho} = 5 \text{ cars, and } W = \frac{L}{\lambda} = \frac{
 Thus, panic buying has more than doubled the wait time in line.
 \end{enumerate}
 \end{Example}
-\newpage\noindent In a $M/M/1$ queueing system, we have $$L=\frac{\rho}{1-\rho}=-1+\frac{1}{1-\rho}, $$ and it is easy to see that $L\to\infty$ as $\rho\to 1$. The $5-$fold increase in $L$ when $\rho$ jumps from $1/2$ to $5/6$ (with accompanying jumps in $W$) illustrate that fact. 
+\newpage\noindent In a $M/M/1$ queueing system, we have $$L=\frac{\rho}{1-\rho}=-1+\frac{1}{1-\rho}, $$ and it is easy to see that $L\to\infty$ as $\rho\to 1$. The $5-$fold increase in $L$ when $\rho$ jumps from $1/2$ to $5/6$ (with accompanying jumps in $W$) illustrates that fact. 
 \subsection{Limited Capacity}
-In the real world, queues never become infinite -- they are limited due to requirements of {space} and/or {time}, or service operating policy. Such a queuing model falls under the purview of \textbf{finite queues}. \par Finite queue models restrict the number of customers allowed in the service system. Let $N$ represent the maximum allowable number of customers in the system. If the system is at \textbf{capacity}, the arrival of a $(N+1)^{\textrm{th}}$ customer results in a failure to enter the queue -- the customer is assumed balk and depart without seeking service.\newl Finite queues can also be modeled as a birth-death process, but with a slight modification in its parameters:  with these parameters:
+In the real world, queues never become infinite -- they are limited due to requirements of {space} and/or {time}, or service operating policy. Such a queuing model falls under the purview of \textbf{finite queues}. \par Finite queue models restrict the number of customers allowed in the service system. Let $N$ represent the maximum allowable number of customers in the system. If the system is at \textbf{capacity}, the arrival of a $(N+1)^{\textrm{th}}$ customer results in a failure to enter the queue -- the customer is assumed to balk and depart without seeking service.\newl Finite queues can also be modeled as a birth-death process, but with a slight modification in its parameters: 
 \begin{align*}
 \lambda_{j} &= \lambda, \ j=0,1,2,\ldots,N-1 \\ 
 \lambda_{N} &= 0,\ \mu_{0} = 0 \\

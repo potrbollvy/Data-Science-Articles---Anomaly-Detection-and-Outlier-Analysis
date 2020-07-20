@@ -2,165 +2,155 @@
 \section{Valeurs aberrantes et donn\'ees quantitatives}\label{Section:2}
 % by Richard Millson
 Les méthodes quantitatives de d\'etection des valeurs aberrantes sont bas\'ees soient sur la distance, soit sur la densité. 
-\subsection{Méthodes basées sur la distance}
+\subsection{Méthodes reposant sur la distance}
 Afin de déterminer si une observation est anormale ou non, elle doit être comparée à un ensemble d'autres observations (les anomalies sont relatives, et non absolues). Dans le \textbf{contexte basé sur la distance}, une façon naturelle de le faire est de considérer la distance de chaque observation par rapport aux autres; les distances plus \'elev\'ees évoquent un statut anormal.
 
 Cette approche fonctionne et pour les donn\'ees continues et pour la donn\'ees discr\`etes, pour autant qu'une \textbf{fonction de distance} ou qu'un \textbf{tableau de distances} entre les observations soit disponible. 
 
 Le choix des ensembles de points à utiliser dans cette comparaison distingue les différents algorithmes basés sur la distance.
-\newl This discussion begins with the introduction of some notation.
-Let $D \subset \mathbb{R}^n$ be an $n$-dimensional data set, 
+\newl Nous introduisons la notation en usage. Soient $D \subset \mathbb{R}^n$ un ensemble de donn\'ees de dimension $n$, 
 $\mathbf{p},\mathbf{q}\in D$, 
-$P \subset D$ be a subset of $D$, 
-and $d: D \times D \to \mathbb{R}$ be the distance between $\mathbf{p}$ and $\mathbf{q}$, written $d(\mathbf{p},\mathbf{q})$.
+$P \subset D$ un sous-ensemble de $D$, et $d: D \times D \to \mathbb{R}$ une fonction distance; la distance entre  $\mathbf{p}$ et $\mathbf{q}$ est d\'enot\'ee par  $d(\mathbf{p},\mathbf{q})$.
 
-An anomaly detection algorithm provides a function $a : D \to \mathbb{R}$ that describes how anomalous a given point is. This induces an ordering on the points of $D$: 
-if $a(\mathbf{p}) < a(\mathbf{q})$ for $\mathbf{p},\mathbf{q} \in D$, then $\mathbf{p}$ is \textbf{less anomalous} than $\mathbf{q}$.
+Un algorithme de détection des anomalies produit une fonction $a : D \to \mathbb{R}$ qui décrit le degré d'anomalie d'un point donné. Cela induit un ordre sur les points de $D$: pour $\mathbf{p},\mathbf{q} \in D$, si $a(\mathbf{p}) < a(\mathbf{q})$, alors $\mathbf{p}$ est \textbf{moins anormal}~que~$\mathbf{q}$.
 
-It could be necessary to define a threshold beyond which a point is considered anomalous; if $\alpha \in \mathbb{R}$ is such a threshold, then any $\mathbf{p} \in D$ is \textbf{absolutely anomalous} if  $a(\mathbf{p}) > \alpha$.
+On définit souvent un seuil au-delà duquel un point est considéré anormal; si $\alpha \in \mathbb{R}$ est un tel seuil, alors tout $\mathbf{p} \in D$ pour lequel $a(\mathbf{p}) > \alpha$ est \textbf{absolument anormal}.
 
-\subsubsection*{Similarity Measures}
+\subsubsection*{Mesures de similitude}
 
-A \textbf{similarity measure} is a real-valued function that describes the similarity between two objects.
-A common construction is to define the similarity $w$ between two points $\mathbf{p},\mathbf{q}$ as $$w(\mathbf{p},\mathbf{q})=\frac{1}{1+d(\mathbf{p},\mathbf{q})}, \text{ for some distance }d,$$ so that $w\to 1$ as $d\to 0$, and $w\to 0$ as $d\to \infty$. \par  
-A similarity measure can also be constructed between probability distributions.
-Let $X$ and $Y$ be two $n$-dimensional random vectors of (possibly) different distribution with probability mass/density functions (p.m.f./p.d.f.) $f_X$ and $f_Y$, respectively. Let $\Omega$ be their shared domain.
-For discrete random variables, the \textbf{Hellinger distance} is defined by 
+Une \textbf{mesure de similitude} (ou similarit\'e) est une fonction à valeur réelle qui décrit la similitude entre deux objets.
+Une construction courante consiste à définir la similitude $w$ entre deux points $\mathbf{p},\mathbf{q}$ par $$w(\mathbf{p}, \mathbf{q})=\frac{1}{1+d(\mathbf{p},\mathbf{q})}, \text{ pour une distance }d,$$ de sorte que $w\to 1$ lorsque $d\to 0$, et $w\to 0$ lorsque $d\to \infty$. \par  
+%On peut aussi construire une mesure de similarité entre deux distributions de probabilité. 
+Soient $X$ et $Y$ deux vecteurs aléatoires de dimension $n$ provenant de deux distribution (possiblement) différentes avec des fonctions de masse/densité de probabilité $f_X$ et $f_Y$, respectivement. Soit $\Omega$ leur domaine partagé.
+Dans le cas de variables al\'eatoires discr\`etes For discrete random variables, la  \textbf{distance de Hellinger} est donn\'ee par  
 \begin{align*}
 H(X,Y)&=\left(1- \sum_{\mathbf{z} \in \Omega} \sqrt{f_X(\mathbf{z}) f_Y(\mathbf{z})}\right)^{1/2}\,;
 \end{align*}
-for continuous random variables, it is defined by
+dans le cas de variables continues, la distance est 
 \begin{align*}
 H(X,Y)= \left(1-\int_{\Omega} \sqrt{f_X(\mathbf{z}) f_Y(\mathbf{z})}\, d\mathbf{z}\right)^{1/2}\,. 
 \end{align*} 
-If $f_X=f_Y$ (or $f_X=f_Y$ almost everywhere in the continuous case, that is, except over a countable set), then $$\sum_{\Omega}\sqrt{f_xf_Y}=1 \quad\mbox{or} \quad \int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}=1$$ and $H(X,Y)=0$. The fact that $H(X,Y)\in [0,1]$ is a consequence of Cauchy's inequality, with $f_X^*=\sqrt{f_X}$ and $f_Y^*=\sqrt{f_Y}$: \begin{align*}\int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}&=\int_{\Omega}f_X^*f_Y^*\, d\mathbf{z}\\ &\leq \left(\int_{\Omega}|f_X^*|^2\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}|f_Y^*|^2\, d\mathbf{z}\right)^{1/2} \\ &=\left(\int_{\Omega}f_X\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}f_Y\, d\mathbf{z}\right)^{1/2}=1;\end{align*}
-(a similar argument holds for discrete random variables). 
-\newline\newline Recall that the covariance matrices $\Sigma_X$ and $\Sigma_Y$ are $n \times n$-matrix whose $(i,j)$-entries the covariance between the $i$-th and $j$-th positions of $X$ and $Y$, respectively. Given a collection of identically distributed samples, these covariance matrices can be estimated.
+Si $f_X=f_Y$ (ou si $f_X=f_Y$ presque partout dans le cas continu), alors $$\sum_{\Omega}\sqrt{f_xf_Y}=1 \quad\mbox{ou} \quad \int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}=1$$ et $H(X,Y)=0$. On d\'emontre que  $H(X,Y)\in [0,1]$ \`a l'aide de l'in\'egalit\'e de Cauchy, avec $f_X^*=\sqrt{f_X}$ et $f_Y^*=\sqrt{f_Y}$: \begin{align*}0\leq\int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}&=\int_{\Omega}f_X^*f_Y^*\, d\mathbf{z}\\ &\leq \left(\int_{\Omega}|f_X^*|^2\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}|f_Y^*|^2\, d\mathbf{z}\right)^{1/2} \\ &=\left(\int_{\Omega}f_X\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}f_Y\, d\mathbf{z}\right)^{1/2}\!\!\!\!=1;\end{align*}
+(un argument semblable est invoqué dans le cas discret). 
+\newline\newline Rappelons que les matrices de covariance $\Sigma_X$ et $\Sigma_Y$ sont des matrices $n \times n$ dont les valeurs $(i,j)$ repr\'esentent la covariance entre la $i^{\text{e}}$ et la $j^{\text{e}}$ position de $X$ (et de $Y$, respectivement). Ces matrices de covariance peuvent être estimées \`a l'aide d'échantillons distribués de manière identique, 
 
-We can also consider a single point $\mathbf{p}$ to be a probability distribution. In that case, the Hellinger distance between that point distribution and any another distribution with mean $\mathbf{\mu}$ and covariance matrix $\Sigma$ can be studied using the framework above, using the  \textbf{Mahalanobis distance}:
-
+On peut aussi considérer que $\mathbf{p}$ représente une distribution ponctuelle. Dans ce cas, la distance de Hellinger entre $\mathbf{p}$ et toute autre distribution de moyenne  $\mathbf{\mu}$ et de covariance $\Sigma$ peut être étudiée à l'aide du cadre ci-dessus, en utilisant la \textbf{distance de Mahalanobis}:
 $$
 M(\mathbf{p})=\sqrt{(\mathbf{p} - \mathbf{\mu})^{\!\top} \Sigma^{-1} (\mathbf{p} - \mathbf{\mu}).}
 $$
 
-\noindent Alternatively, if $\mathbf{p}$ and $\mathbf{q}$ are drawn from the same distribution with covariance $\Sigma$, then the Mahalanobis distance is a dissimilarity measure between $\mathbf{p}$ and $\mathbf{q}$: 
+\noindent Par ailleurs, si $\mathbf{p}$ et $\mathbf{q}$ sont tirés de la même distribution de covariance $\Sigma$, alors la distance de Mahalanobis est une mesure de dissimilarité entre $\mathbf{p}$ et $\mathbf{q}$: 
 
 $$
 d_M(\mathbf{p},\mathbf{q})=\sqrt{(\mathbf{p} - \mathbf{q})^{\!\top} \Sigma^{-1} (\mathbf{p} - \mathbf{q}).}
 $$
 
-\noindent Now, if  $\Sigma$ is diagonal, then 
+\noindent Si  $\Sigma$ est diagonale, la distance de Mahalanobis devient 
 
 $$
-d_M(\mathbf{p},\mathbf{q})=\sqrt{\sum_{i=1}^n \frac{(p_i - q_i)^2}{\sigma_i^2}}
+d_M(\mathbf{p},\mathbf{q})=\sqrt{\sum_{i=1}^n \frac{(p_i - q_i)^2}{\sigma_i^2}},
 $$
-where $\sigma_i^2$ is the standard deviation of the $i$-th dimension.
-If $\Sigma$ is the identity matrix, then we recover the \textbf{Euclidean distance}
+o\`u $\sigma_i^2$ est la variance le long de la $i^{\text{e}}$ dimension.\newl
+Si $\Sigma=I_n$, on récupère tout simplement la \textbf{distance euclidienne}
 
 $$
 d_2(\mathbf{p},\mathbf{q})=\sqrt{\sum_{i=1}^n (p_i - q_i)^2}.
 $$
-\noindent When using the Euclidean distance in an anomaly detection context, a \textbf{linear normalization} is usually applied to each dimension so that each entry lies between $[-1,1]^n$.
-\newpage\noindent The \textbf{Minkowski distance} of order $\mathbf{p}$ is a generalization of the Euclidean distance:
+\noindent Lorsque l'on utilise cette derni\`ere dans un contexte de détection d'anomalie, on applique g\'en\'eralement une  \textbf{renormalisation linéaire} sur chaque dimension, de sorte que chaque observation se trouve \`a  m\^eme l'hypercube $[-1,1]^n$.
+\newpage\noindent La  \textbf{distance de Minkowski} d'ordre $\mathbf{p}$ généralise la distance euclidienne:
 
 $$
 d_p(\mathbf{p},\mathbf{q})=\left( \sum_{i=1}^n |p_i - q_i|^p \right)^{1/p}
 $$
-For $p=2$ we recover the Euclidean distance $d_2$, for $p=1$ the \textbf{Manhattan distance} $$d_1(\mathbf{p},\mathbf{q})=\sum_{i=1}^n|p_i-q_i|,$$ and for $p=\infty$ the \textbf{supremum distance} $$d_{\infty}(\mathbf{p},\mathbf{q})=\max_{i=1}^n |p_i - q_i|.$$ The Minkowski distance $d_p$ is only actually a distance function (i.e., a \textbf{metric}) when  $p \geq 1$, but an exception is made for 
+Lorsque $p=2$, on r\'ecup\`ere la distance euclidienne $d_2$; lorsque  $p=1$, on fait affaire \`a la  \textbf{distance de Manhattan} $$d_1(\mathbf{p},\mathbf{q})=\sum_{i=1}^n|p_i-q_i|;$$ lorsque  $p=\infty$, elle devient la  \textbf{distance du supremum} $$d_{\infty}(\mathbf{p},\mathbf{q})=\max_{i=1}^n |p_i - q_i|.$$ La distance de Minkowski $d_p$ n'est en fait qu'une fonction de distance (c'est-à-dire une \textbf{m\'etrique}) que lorsque $p \geq 1$, mais on accepte \'egalement le cas exceptionnel 
 $$
-d_{-\infty}(\mathbf{p},\mathbf{q})=\min_{i=1}^n |p_i - q_i|
+d_{-\infty}(\mathbf{p},\mathbf{q})=\min_{i=1}^n |p_i - q_i|,
 $$
-to fall within the same framework. \newline\newline For two datasets $P$ and $Q$, their \textbf{Jaccard similarity} is defined as the size of their intersection divided by the size of their union
+question de s'inscrire dans le même cadre. \newline\newline L'\textbf{indice de Jaccard} des deux ensembles $P$ et $Q$ est le rapport entre la taille de leur intersection et la taille de leur union
 $$
 J(\mathbf{p}, \mathbf{q})
 = \frac{|P \cap Q|}{|P \cup Q|}
 = \frac{|P \cap Q|}{|P| + |Q| - |P \cap Q|}
 $$
-Their \textbf{Jaccard distance} is then taken to be $1 - J(\mathbf{p}, \mathbf{q})$.
+La \textbf{distance de Jaccard} est alors $1 - J(\mathbf{p}, \mathbf{q})$.
 
-This definition can be extended to compare binary vectors  (i.e. vectors with entries of only ones and zeros) of the same length.
-Given two binary vectors $\mathbf{p}$ and $\mathbf{q}$ of length $n$, consider an arbitrary $n-$dimensional set $D$. Then $\mathbf{p}$ and $\mathbf{q}$ can be viewed as subsets of $D$: if $p_i=1$ then $\mathbf{p}$ is said to contain the $i$-th element of $D$, while if $p_i=0$ then it does not. Viewing $\mathbf{p}$ and $\mathbf{q}$ in this way allows us to compute their Jaccard similarity, and thus their Jaccard distance. \newline\newline
-Finally, let $\mathbf{p},\mathbf{q}\neq \mathbf{0}$. Recall that 
+Cette définition peut être étendue \`a la comparaison de vecteurs binaires (c'est-à-dire des vecteurs avec des entrées dans $\{0,1\}$) de même longueur.
+Étant donné deux vecteurs binaires $\mathbf{p}$ et $\mathbf{q}$ de longueur $n$, on considère un ensemble arbitraire $D$ de taille $n$. On peut alors consid\'erer $\mathbf{p}$ et $\mathbf{q}$ comme sous-ensembles de $D$: si $p_i=1$ alors $\mathbf{p}$ contient le $i^{\text{e}}$ élément de $D$; si $p_i=0$. il ne le contient pas.  En visualisant $\mathbf{p}$ et $\mathbf{q}$ de cette façon, nous pouvons calculer leur index de Jaccard, et ainsi leur distance de Jaccard. \newline\newline
+Si $\mathbf{p},\mathbf{q}\neq \mathbf{0}$, on rappelle que 
 $\mathbf{p} \cdot \mathbf{q} 
 = \lVert p \rVert \lVert q \rVert \cos\theta,$
-where $\theta$ is the angle between $\mathbf{p}$ and $q$.
-The \textbf{cosine similarity} between $\mathbf{p}$ and $\mathbf{q}$ is the cosine of $\theta$, which can be computed as
+o\`u $\theta$ d\'enote l'angle entre $\mathbf{p}$ et $q$.
+La \textbf{mesure cosinus} entre $\mathbf{p}$ et $\mathbf{q}$ est $\cos\theta$, que l'on calcule \`a l'aide de 
 $$
 \cos\theta
 = \frac{p \cdot q}{\lVert p \rVert \lVert q \rVert}
 = \frac{\sum_{i=1}^n p_i q_i}{\sqrt{\sum_{i=1}^n p_i^2} \sqrt{\sum_{i=1}^n q_i^2}}.
 $$
-This value ranges between $1$ and $-1$, with 1 attained when $\mathbf{p}=\mathbf{q}$, $-1$ when $\mathbf{p}=-\mathbf{q}$, and $0$ when $\mathbf{p}$ and $\mathbf{q}$ are perpendicular.\newline\newline
-Armed with these concepts, we can now explore distance- and density-based methods for anomaly detection. 
+Cette valeur se retrouve entre $1$ et $-1$; elle est 1 lorsque  $\mathbf{p}=\mathbf{q}$, $-1$ lorsque  $\mathbf{p}=-\mathbf{q}$, et $0$ lorsque $\mathbf{p}$ et $\mathbf{q}$ sont orthogonaux (perpendiculaires).\newline\newline
+Forts de ces concepts, nous pouvons maintenant explorer des méthodes de détection des anomalies reposant sur la distance (et plus tard, sur la densité). 
 
-\subsubsection*{Distance-Based Approaches}
+\subsubsection*{M\'ethodes}
 
-These distance functions can be applied to create some basic anomaly detection algorithms.
-These ideas will later be extended to more complex algorithms.
-\newline\newline Given some distance function $d$, dataset $D$, and integers $k,\nu\leq |D|$, 
-the \textbf{distance to all points} anomaly detection algorithm considers each point $\mathbf{p}$ in $D$ and adds the distance from $\mathbf{p}$ to every other point in $D$, i.e.
+Toutes ces fonctions de distance peuvent être utilisées afin de b\^atir des algorithmes de détection de valeurs aberrantes.% (les idées peuvent aussi \^etre appliqu\'ees à des algorithmes plus complexes).
+\newline\newline Étant donnés une fonction de distance $d$, un ensemble de données $D$ et des entiers $k,\nu\leq |D|$, 
+l'algorithme de détection  \textbf{par distance \`a tous les points} considère chaque point $\mathbf{p}$ en $D$ et ajoute la distance de $\mathbf{p}$ à chaque autre point de~$D$:
 $$
 a(\mathbf{p}) 
 = \sum_{\mathbf{q}\neq \mathbf{p} \in D} d(\mathbf{q}, \mathbf{p}).
 $$
-The $\nu$ points that maximize $a$ are then said to be \textbf{anomalous}; this will often select the most extreme values as anomalous, which may be of limited use. 
-
-The \textbf{distance to nearest neighbour} algorithm defines 
+Les observations correspondant aux $\nu$ plus grande valeurs de $a$ forment l'\textbf{ensemble des $\nu$ valeurs aberrantes selon} $a$. Cette approche rep\^eche  souvent les observations les plus ext\^emes, ce qui peut ne pas s'av\'erer tr\`es utile en pratique. \par
+L'algorithme de d\'etection \textbf{par distance au voisin imm\'ediat} utilise 
 $$
 a(\mathbf{p}) 
-= \min_{\mathbf{q}\neq \mathbf{p} \in D} d(\mathbf{q}, \mathbf{p}),
-$$
-with a similar definition for the $\nu$ anomalous points. 
+= \min_{\mathbf{q}\neq \mathbf{p} \in D} d(\mathbf{q}, \mathbf{p});
+$$ les algorithmes \textbf{par distance moyenne et/ou m\'ediane aux $k$ voisins imm\'ediats} sont semblables -- la d'efinition de l'ensemble des $\nu$ valeurs aberrantes demeure la m\^eme.
 
-The \textbf{average distance to $k$ nearest neighbours} and \textbf{median distance to $k$ nearest neighbours} are defined similarly. 
+\subsection{M\'ethodes reposant sur la densit\'e} % p97
 
-\subsection{Density-Based Methods} % p97
-
-Density-based approaches, on the other hand, view points as anomalous if they occur in \textbf{low density regions}.
+Les approches reposant sur la densité, en revanche, considèrent les points comme anormaux s'ils se trouvent dans des \textbf{régions de faible densité}.
 % Three density-based methods are presented in this section, however there are many 
 
-\subsubsection*{Local Outlier Factor (LOF)} % p110
+\subsubsection*{Facteur aberrant local} % p110
 
 \begin{algorithm}[ht]
-\SetAlgoLined
-\textbf{Input:} dataset $D$, point $\mathbf{p} \in D$, integer $k$ for number of nearest neighbours to consider, distance function $d$
-\\ Compute the distance between all points in $D$
+\SetAlgorithmName{Algorithme}{}\SetAlgoLined
+\textbf{Entr\'ees:} donn\'ees $D$, observation $\mathbf{p} \in D$, \# de voisins imm\'ediats $k$, distance $d$
+\\ Calculer toutes les paires de distance dans $D$
 \\\For{$\mathbf{p} \in D$}{
 \For{$\mathbf{q} \in D \setminus \{\mathbf{p}\}$}{
-Compute $d(\mathbf{p}, \mathbf{q})$
+Calculer $d(\mathbf{p}, \mathbf{q})$
 }
-Order $D$ by increasing distance from $\mathbf{p}$
-\\Set $d_k(\mathbf{p}) = d(\mathbf{p}, \mathbf{q}_k)$
+Classer les observations de $D$ de la plus petite distance \`a $\mathbf{p}$ \`a la plus grande
+\\ D\'efinir  $d_k(\mathbf{p}) = d(\mathbf{p}, \mathbf{q}_k)$
 }
-Find the $k$ nearest neighbours of $\mathbf{p}$ 
+Trouver les $k$ voisins imm\'ediats de $\mathbf{p}$ 
 %\\(accepting more than $k$ if there is a tie)
-\\ Set $N_k(\mathbf{p}) = \{ \mathbf{q} \in D \setminus \{\mathbf{p}\} : d(\mathbf{p}, \mathbf{q}) \leq d_k(\mathbf{p}) \}$
-\\ Define the reachability distance
-$d_{\text{reach}}(\mathbf{p},\mathbf{q}) = \max\{d_k(\mathbf{q}), d(\mathbf{p},\mathbf{q})\}$
-\\ Define the average reachability distance $\overline{d_{\text{reach}}}(\mathbf{p}) 
-= \frac{\sum_{\mathbf{q} \in N_k(\mathbf{p})} d_{\text{reach}}(\mathbf{p},\mathbf{q})}{\lvert N_k(\mathbf{p}) \rvert}$
-\\Define the local reachability density
-$\ell_k(\mathbf{p}) = \left( \overline{d_{\text{reach}}}(\mathbf{p}) \right)^{-1}$
-\\Compute the local outlier factor
+\\ D\'efinir $N_k(\mathbf{p}) = \{ \mathbf{q} \in D \setminus \{\mathbf{p}\} : d(\mathbf{p}, \mathbf{q}) \leq d_k(\mathbf{p}) \}$
+\\ D\'efinir la distance d'accessibilité
+$d_{\text{acc}}(\mathbf{p},\mathbf{q}) = \max\{d_k(\mathbf{q}), d(\mathbf{p},\mathbf{q})\}$
+\\ D\'efinir la distance d'accessibilité moyenne  $\overline{d_{\text{acc}}}(\mathbf{p}) 
+= \frac{\sum_{\mathbf{q} \in N_k(\mathbf{p})} d_{\text{acc}}(\mathbf{p},\mathbf{q})}{\lvert N_k(\mathbf{p}) \rvert}$
+\\ D\'efinir la densit\'e d'accessibilité locale
+$\ell_k(\mathbf{p}) = \left( \overline{d_{\text{acc}}}(\mathbf{p}) \right)^{-1}$
+\\Calculer le facteur aberrant local (LOF) 
 $a_k(\mathbf{p})
 = \frac{\sum_{\mathbf{q} \in N_k(\mathbf{p})} \frac{\ell_k(\mathbf{q})}{\ell_k(\mathbf{p})}}{\lvert N_k(\mathbf{p}) \rvert}$
-\\ \textbf{Output:} LOF $a_k(\mathbf{p})$
+\\ \textbf{Sortie:} LOF $a_k(\mathbf{p})$
 % \KwResult{Result}
-\caption{Local Outlier Factor (LOF)}
+\caption{Facteur aberrant local (LOF)}
 \label{alg:LOF}
 \end{algorithm}
 
-The Local Outlier Factor (LOF) algorithm was proposed in 2000 by \cite{LOF} and has been summarized in Section 6.4.2 of \cite{A10}. LOF works by measuring the local deviation of each point in a dataset from its $k$ nearest neighbours, with a point said to be anomalous if this \textbf{deviation is large}.
+L'algorithme du \textbf{facteur aberrant local} (LOF, pour ``Local Outlier Factor'') a été proposé en 2000 dans \cite{LOF} (on en trouve un résumé à la section 6.4.2 de \cite{A10}). Le LOF fonctionne en mesurant l'écart local de chaque point d'un ensemble de données par rapport à ses $k$ voisins immédiats, un point étant considéré  anormal si cet \textbf{écart est important}.
 
-A \textbf{local $k-$region} around a point $\mathbf{p}$ is defined as the $k$ nearest neighbours of $\mathbf{p}$. The density of points in each of their respective local $k-$neighbourhoods is estimated, and compared to the density of the local $k-$neighbourhoods of the point within their own $k-$neighbourhood.
+L'ensemble des $k$ voisins imm\'ediats de $\mathbf{p}$ dans $D$ est le  \textbf{$k-$voisinage local} de  $\mathbf{p}$. La densité des observations dans leurs $k-$voisinages locaux respectifs est estimée et comparée à la densité des $k-$voisinage locaux de chaque point \`a m\^eme leur propre $k-$voisinage local.
 
-This can then be used to identify outliers that inhabit regions of lower density than their neighbours,
-as $\mathbf{p}$ would be in Figure \ref{lofoutlier}. The formal procedure is shown in Algorithm~\ref{alg:LOF}. 
+On peut se servir de cette notion afin d'identifier les valeurs aberrantes qui habitent des régions de plus faible densité que leurs voisins, comme on peut le voir \`a la Figure \ref{lofoutlier}. La procédure formelle est pr\'esent\'ee \`a l'Algorithme~\ref{alg:LOF}. 
 
 \begin{figure}[H]
 \hrule \vspace{0.4cm}
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[x=0.85cm,y=0.85cm]
 \filldraw[black] (0,0) circle (2pt) node[anchor=west] {$\mathbf{p}$};
 \draw[dashed] (0,0) circle (2);
 \filldraw[black] (1.6,0.2) circle (2pt);
@@ -170,26 +160,26 @@ as $\mathbf{p}$ would be in Figure \ref{lofoutlier}. The formal procedure is sho
 \filldraw[black] (2.5,0) circle (2pt);
 \draw[dashed] (2,0) circle (0.5);
 \end{tikzpicture}
-\caption{For $k=2$, $\mathbf{p}$ is an outlier as it has lower density than its neighbours.}
+\caption{Lorsque $k=2$, $\mathbf{p}$ est une valeur aberrante puisque sa densit\'e est plus faible que celle de ces voisins.}
 \label{lofoutlier}
 \end{figure}
-\noindent LOF is able to identify \textbf{local outliers}, but selecting a threshold beyond which a point is considered an outlier is difficult. \newl LOF introduces the idea of a \textbf{reachability distance}, which improves the stability of results within clusters/regions: within a local $k-$region around $\mathbf{p}$, it is simply the maximal distance to its $k-$neighbours; outside of that region, it is the actual distance from $\mathbf{p}$. 
-\par In Figure \ref{reachability} (with $k=3$), for instance, the points $\mathbf{q}_1, \mathbf{q}_2, \mathbf{q}_3$ all have the same reachability distance from $\mathbf{p}$ as they are all $3$-neighbours of $\mathbf{p}$, that is, 
+\noindent L'algorithme LOF peut identifier les \textbf{observations aberrantes locales}, mais il n'est pas \'evident de choisir un seuil de densit\'e au-delà duquel un point est considéré comme une aberration. L'algorithme introduit aussi l'idée d'une \textbf{distance d'accessibillité}, ce qui améliore la stabilité des résultats au sein des groupes/régions: dans un $k-$voisinage local de $\mathbf{p}$, c'est tout simplement la distance maximale à ses $k$ voisins imm\'ediats; \`a l'ext\'erieur de cette région, c'est la distance actuelle de $\mathbf{p}$. 
+\par \'A la figure \ref{reachability} (o\`u $k=3$), par exemple, les points $\mathbf{q}_1, \mathbf{q}_2, \mathbf{q}_3$ ont tous la même distance d'accessibilité de $\mathbf{p}$ car ce sont les 3 voisins imm\'ediats de $\mathbf{p}$, c'est-à-dire, 
 $$
-d_{\text{reach}}(\mathbf{p}, \mathbf{q}_1) 
-= d_{\text{reach}}(\mathbf{p}, \mathbf{q}_2)
-= d_{\text{reach}}(\mathbf{p}, \mathbf{q}_3)
+d_{\text{acc}}(\mathbf{p}, \mathbf{q}_1) 
+= d_{\text{acc}}(\mathbf{p}, \mathbf{q}_2)
+= d_{\text{acc}}(\mathbf{p}, \mathbf{q}_3)
 = d(\mathbf{p}, \mathbf{q}_3)
 .$$
-The point $\mathbf{q}_4$, on the other hand, has 
-$d_{\text{reach}}(\mathbf{p}, \mathbf{q}_4)
+Pour $\mathbf{q}_4$, en revanche, nous avons  
+$d_{\text{acc}}(\mathbf{p}, \mathbf{q}_4)
 = d(\mathbf{p}, \mathbf{q}_4)
 $
-as it is not a $k$-neighbour of $\mathbf{p}$.
+puisque ce n'est pas un des 3 voisins imm\'ediats de $\mathbf{p}$.
 
 \begin{figure}[H]
 \hrule \vspace{0.4cm} \centering
-\begin{tikzpicture}[x=0.96cm,y=0.96cm]
+\begin{tikzpicture}[x=0.85cm,y=0.85cm]
 \filldraw[black] (0,0) circle (2pt) node[anchor=west] {$\mathbf{p}$};
 \filldraw[black] (1,0) circle (2pt) node[anchor=west] {$\mathbf{q}_1$};
 \filldraw[black] (1,-1) circle (2pt) node[anchor=west] {$\mathbf{q}_2$};
@@ -197,71 +187,25 @@ as it is not a $k$-neighbour of $\mathbf{p}$.
 \filldraw[black] (2,2) circle (2pt) node[anchor=west] {$\mathbf{q}_4$};
 \draw[dashed] (0,0) circle (2);
 \end{tikzpicture}
-\caption{The region of uniform reachability distance around $\mathbf{p}$ for $k=3$.}
+\caption{Zone uniforme de distance d'accessibilit\'e autour de $\mathbf{p}$ pour $k=3$.}
 \label{reachability}
 \end{figure}
 \newpage\noindent  
 
 \subsubsection*{DBSCAN}
-Density-Based Spatial Clustering of Applications with Noise (DBSCAN) was proposed in 1996 by \cite{DBSCAN} (a summary can be found in Section 4.1.5 of \cite{A10}). As its name suggests, it is a density-based clustering algorithm that groups nearby points together and labels points that do not fall in the clusters as \textbf{anomalies}.
-
-Hierarchical DBSCAN (HDBSCAN) \cite{HDBSCAN} was introduced in 2013 and removes the problem of choosing the parameter for the radius of a neighbourhood by considering all possible radii. Further documentation can be found at \cite{HDBSCAN_code}. \newl 
-In DBSCAN, 
-\begin{itemize}[noitemsep]
-\item a point $\mathbf{p}$ is a \textbf{core point} if there are a minimum number $m$ of points within distance $r$ of $\mathbf{p}$;
-\item a point $\mathbf{q}$ is a \textbf{border point} if it is not itself a core point but is within distance $r$ of one, and 
-\item a point $\mathbf{o}$ is an \textbf{outlier} if it is neither a core nor a border point.
+L'algorithme ``Density-Based Spatial Clustering of Applications with Noise'' (DBSCAN) a \'et\'e proposed en 1996 dans \cite{DBSCAN} (on en trouve un r\'esum\'e \`a la section 6.4.2 de \cite{A10}). Comme son nom l'indique, il s'agit d'un algorithme de regroupement ("clustering") reposant sur la densité qui regroupe les points voisins et identifie les points qui ne tombent pas dans les groupes comme  \textbf{anomalies}:
+%Hierarchical DBSCAN (HDBSCAN) \cite{HDBSCAN} was introduced in 2013. It notably removes the problem of choosing the parameter for the radius of a neighbourhood by considering all possible radii. 
+%Further documentation can be found at \cite{HDBSCAN_code}. 
+ \begin{itemize}[noitemsep]
+\item $\mathbf{p}$ est un \textbf{central} si au moins $m$ autres observations sont \`a une distance au plus $r$ de $\mathbf{p}$;
+\item $\mathbf{q}$ est un \textbf{point frontière} s'il n'est pas lui-même un point central mais se trouve à une distance au plus $r$ d'un tel point, and 
+\item $\mathbf{o}$ est une \textbf{anomalie} si ce n'est ni un point central ni un point frontière.
 \end{itemize}
-\begin{algorithm}[h]
-\SetAlgoLined
-\textbf{Input:} dataset $D$,
-distance function $d$,
-neighbourhood radius $r>0$,
-minimum number of points to be considered a cluster $m\in\mathbb{N}$
-\\$\textit{Clusters} = \{\}$
-\\$\textit{Outliers} = \{\}$
-\\\For{$\mathbf{p} \in D$}{
-\If{$\mathbf{p} \in \textrm{Outliers} \cup \left( \cup_{C \in \textit{Clusters}} C \right)$}{
-\textbf{continue}
-}
-Set $N(\mathbf{p}) = \{ \mathbf{q} \in D : d(\mathbf{p},\mathbf{q}) \leq r \}$
-\\\If{$|N(\mathbf{p})| < m$}{
-Add $\mathbf{p}$ to $\textit{Outliers}$
-\\\textbf{continue}
-}
-\Else{
-$\textit{Cluster} = N(\mathbf{p})$
-\\\For{$\mathbf{q} \in \text{Cluster} \setminus \{\mathbf{p}\}$}{
-\If{$\mathbf{q} \in \textit{Outliers}$}{
-Remove $q$ from $\textit{Outliers}$
-}
-\ElseIf{$\mathbf{q} \in \cup_{C \in \textit{Clusters}} C$}{
-\textbf{continue}
-}
-Set $N(\mathbf{q}) = \{ q' \in D : d(q,q') \leq r \}$
-\\\If{$|N(\mathbf{q})| \geq m$}{
-$\text{Cluster} = \text{Cluster} \cup N(\mathbf{q})$
-}
-}
-}
-Add $\textit{Cluster}$ to $\textit{Clusters}$
-}
-return $\textit{Outliers}$
-\\\textbf{Output: a list of \textit{outliers}}
-\caption{DBSCAN}
-\label{dbscan}
-\end{algorithm}
-
-
-
-
-
-
 
 \begin{figure}[b]
 \hrule \vspace{0.4cm}
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[x=0.9cm,y=0.9cm]
 \filldraw[black] (-3.5,0) circle (2pt) node[anchor=north] {$\mathbf{o}$};
 \draw[dashed] (-3.5,0) circle (1);
 \filldraw[black] (0,0) circle (2pt) node[anchor=north] {$\mathbf{p}$};
@@ -271,24 +215,60 @@ return $\textit{Outliers}$
 \filldraw[black] (0.5,0) circle (2pt) node[anchor=north] {$\mathbf{q}_2$};
 \draw[dashed] (0.5,0) circle (1);
 \end{tikzpicture}
-\caption{For minimum neighbourhood size $m=2$ and this fixed radius $r$, $\mathbf{o}$ is an outlier, $\mathbf{p}$ a core point, and $\mathbf{q}_1$ and $\mathbf{q}_2$ are border points.}
+\caption{Avec $m=2$ et un rayon fixe $r$, $\mathbf{o}$ est une anomalie, $\mathbf{p}$ un point central, et $\mathbf{q}_1$ et $\mathbf{q}_2$ sont des points frontières.}
 \label{DBSCANlabels}
 \end{figure}
-\noindent DBSCAN considers each point in the dataset individually. If that point is an outlier, then it is added to a list of outliers. Otherwise if it is a core point, then its $r$-neighbourhood forms the beginning of a new cluster. Each point in this $r$-neighbourhood is then considered in turn, with the $r$-neighbourhoods of other core points contained in the neighbourhood being added to the cluster. \par This expansion repeats until all points have been examined. During this step points that were previously labelled as outliers may be updated as they become border points in this new cluster. This process continues until every point has either been assigned to a cluster or labelled as an outlier (see Algorithm~\ref{dbscan} and Figure~\ref{DBSCANlabels}).
+\noindent DBSCAN considère chaque point de l'ensemble de données individuellement. Si ce point est une anomalie, il est ajouté à une liste d'anomalie. Sinon, s'il s'agit d'un point central, son $r-$voisinage forme le point de d\'epart d'un nouveau groupe (``cluster''). Chaque point du voisinage est alors considéré à son tour, et les $r-$voisinages des autres points centraux contenus dans le voisinage sont ajoutés au groupe. \par Cette expansion se répète jusqu'à ce que tous les points aient été examinés. \`A ce stage, les points qui étaient auparavant considérés comme des points aberrants peuvent être mis à jour à mesure qu'ils deviennent des points frontaliers dans ce nouveau groupe. Ce processus se poursuit jusqu'à ce que chaque point ait été soit attribué à un groupe, soit étiqueté comme une valeur aberrante (cf.\@ l'Algorithme~\ref{dbscan} et la Figure~\ref{DBSCANlabels} pour plus de d\'etails).
 
-While DBSCAN's dual use as a clustering algorithm may seem irrelevant in the outlier detection setting,
-its ability to succesfully identify clusters is crucial to being able to label the remaining points as outliers.
+Bien que la double utilisation de DBSCAN en tant qu'al\-go\-rith\-me de regroupement puisse sembler non pertinente dans le cadre de la détection des observations aberrantes, sa capacité à identifier avec succès les groupes naturels est cruciale car elle permet d'étiqueter les points qui subsistent comme des observations aberrantes.
 \newl 
-On the one hand, in DBSCAN the number of clusters does not need to be known beforehand (unlike in $k-$means and other clustering algorithms) and clusters of arbitrary shape can be detected. \par Furthermore, when using HDBSCAN, only the parameter for the minimum cluster size $m$ is required, which can be set fairly intuitively, which is not the case for the parmaters in general clustering algorithms: if the elements of $D$ are $n-$dimensional, take $m\geq n+1$ (larger values of $m$ allow for the better noise identification).
-\newl On the other hand, DBSCAN is not deterministic, as border points can be assigned to different clusters depending on the order in which core points are considered (this does not affect its use as an anomaly detection algorithm, however).
-\par In high dimensions, the ability of any distance function based on Euclidean distance to distinguish near and distant points diminishes due to the \textbf{Curse of Dimensionality}; thus in high dimension spaces, it  become ineffective (as do  other clustering algorithms). \par  Finally, DBSCAN cannot handle differences in local densities as the radius of a neighbourhood $r$ is fixed; this could lead to sparser clusters being labelled as outliers, or to outliers surrounding a denser cluster being included in the cluster.
+D'une part, le nombre de groupes n'a pas besoin d'être connu à l'avance (contrairement au  partitionnement en $k-$moyennes) et des groupes de forme arbitraire peuvent être détectés. \par Par ailleurs, seul le paramètre de la taille minimale des groupes ($m$) est requis. Ce dernier peut être défini de manière assez intuitive (ce qui n'est pas le cas pour les algorithmes partitionnement généraux): si les éléments de $D$ sont de dimension $n$, on choisit $m\geq n+1$ (plus la valleur de $m$ est grande, meilleure est l'identification du bruit). \begin{algorithm}[t]
+\SetAlgorithmName{Algorithme}{}\SetAlgoLined
+\textbf{Entr\'ees:} donn\'ees $D$,
+distance $d$,
+rayon de voisinage $r>0$,
+taille maximale $m\in\mathbb{N}$ des groupes  
+\\$\textit{Groupes} = \{\}$
+\\$\textit{Anomalies} = \{\}$
+\\\For{$\mathbf{p} \in D$}{
+\If{$\mathbf{p} \in \textrm{Outliers} \cup \left( \cup_{C \in \textit{Clusters}} C \right)$}{
+\textbf{continue}
+}
+D\'efinir $N(\mathbf{p}) = \{ \mathbf{q} \in D : d(\mathbf{p},\mathbf{q}) \leq r \}$
+\\\If{$|N(\mathbf{p})| < m$}{
+Ajouter $\mathbf{p}$ aux $\textit{Anomalies}$
+\\\textbf{continue}
+}
+\Else{
+$\textit{Groupe} = N(\mathbf{p})$
+\\\For{$\mathbf{q} \in \text{Groupe} \setminus \{\mathbf{p}\}$}{
+\If{$\mathbf{q} \in \textit{Anomalies}$}{
+\'Eliminer $q$ des $\textit{Anomalies}$
+}
+\ElseIf{$\mathbf{q} \in \cup_{C \in \textit{Groupes}} C$}{
+\textbf{continue}
+}
+D\'efinir $N(\mathbf{q}) = \{ q' \in D : d(q,q') \leq r \}$
+\\\If{$|N(\mathbf{q})| \geq m$}{
+$\text{Cluster} = \text{Cluster} \cup N(\mathbf{q})$
+}
+}
+}
+Ajouter $\textit{Groupe}$ \`a $\textit{Groupes}$
+}
+\textbf{Sortie:} liste des  \textit{anomalies}
+\caption{DBSCAN}
+\label{dbscan}
+\end{algorithm}
+\newl D'autre part, DBSCAN n'est pas un algorithme déterministe, car les points frontaliers peuvent être affectés à différents groupes selon l'ordre dans lequel les points centraux sont considérés (cela n'affecte toutefois pas son utilisation comme algorithme de détection des anomalies).
+\par Dans des ensembles de haute dimension, la capacité de toute fonction de distance basée sur la distance euclidienne à distinguer les points proches et éloignés diminue en raison du \textbf{fl\'eau de la dimensionalit\'e}; et DBSCAN devient une m\'ethode de d\'efction inefficace (tout comme les autres algorithmes de partitionnement). \par Finalement, DBSCAN ne peut pas gérer les différences de densités locales car le rayon d'un$r-$voisinage est fixe; cela peut mener à des groupes plus éparses \'etant étiquetés comme observation aberrante, ou à ce que les observations aberrantes entourant un groupe plus dense \'etant incluses dans le groupe. Ce problème est surmonté dans HDBSCAN.
 
-\subsubsection*{Isolation Forest}
-The previously discussed approaches first construct models of what normal points look like, and then identify points that do not fit this model.
-The Isolation Forest algorithm \cite{A15} introduced in 2008 instead tries to explicitly identify outliers under the assumptions that there are few outliers and that these outliers have very different attributes compared to normal points. Doing so allows the use of sampling techniques that increase algorithmic speed while decreasing memory requirements.
+\subsubsection*{Forêt d'isolement}
+Les approches discutées précédemment construisent d'abord des modèles de ce à quoi ressemblent les points normaux, puis identifient les points qui ne correspondent pas à ce modèle.
+En revanche, l'algorithme de la forêt d'isolement \cite{A15} tente plutôt d'identifier explicitement les valeurs aberrantes en partant de l'hypothèse qu'il y a peu de valeurs aberrantes et que ces valeurs aberrantes ont des attributs très différents des points normaux. Cela permet d'utiliser des techniques d'échantillonnage, ce qui augmente la vitesse de traitement de l'algorithme tout en diminuant les besoins en mémoire.
 \begin{figure}[b]
 \hrule \vspace{0.4cm}\centering
-\begin{tikzpicture}[x=0.75cm,y=0.75cm]
+\begin{tikzpicture}[x=0.58cm,y=0.58cm]
 \filldraw[black] (0,0) circle (2pt);
 \filldraw[black] (4,2) circle (2pt);
 \filldraw[black] (4.5,-2) circle (2pt);
@@ -301,80 +281,79 @@ The Isolation Forest algorithm \cite{A15} introduced in 2008 instead tries to ex
 \draw (2,-1) -- (5,-1);
 \draw (4.25,2) -- (4.25,-1);
 \end{tikzpicture}
-\caption{A partitioning constructed during Isolation Tree generation.}
+\caption{Une partition construite pendant la génération d'un arbre d'isolement.}
 \label{isolationtree}
 \end{figure}
 
-The Isolation Forest algorithm tries to isolate anomalous points. It does this by randomly selecting an attribute and then randomly selecting a split value between that attribute's min and max values. This recursively partitions the points until every point is isolated in its own partition.
-\newl Recursive partitioning yields a binary tree called an \textbf{Isolation Tree}. The root of this tree is the entire dataset; each node is a subset of the observations, and each branch corresponds to one of the generated partitions. The leaf nodes are singleton sets containing a single isolated point. Each point is then assigned a score derived from how deep in the tree its singleton partition appears (see Figure~\ref{isolationtree} and Algorithm~\ref{iTree}). 
-\par As points that are shallower in the tree were easier to separate from the rest, these are the likely \textbf{outliers}. Since only shallow points are of interest, once the height of the tree has reached a given threshold (the expected height of a random binary tree, say), further construction of the tree can be stopped to decrease computational cost. \par 
-Additionally, instead of building a tree from the entire dataset, a tree can be constructed from a subset. The location of any point within this smaller tree can then be estimated, again saving computational and memory resources. These two improvements are detailed in the original paper \cite{A15}. 
-\newl Once a number of Isolation Trees have been randomly generated (\textbf{Isolation Forest}), a score can be computed for each point. This is done by searching each tree for the location of a given point and noting the path length required to reach it. Once a point's path length in each tree has been computed, the average path length is taken to be its score.
-\newpage\noindent  It 
+L'algorithme de la forêt d'isolement tente d'isoler les points anormaux. Pour ce faire, on sélectionne un attribut de manière aléatoire, puis une valeur de séparation entre les valeurs minimale et maximale de cet attribut. De cette mani\`ere, on isole chaque observations dans sa propre partition.
+\newl Ce partitionnement récursif produit un arbre binaire appelé \textbf{arbre d'isolement}. La racine de cet arbre est l'ensemble des données dans son intégralité; chaque nœud est un sous-ensemble des observations, et chaque branche correspond à l'une des partitions générées. Les feuilles représentent des ensembles simples contenant un seul point isolé. Chaque point se voit ensuite attribuer une note dérivée de la profondeur à laquelle sa partition isolée apparaît dans l'arbre (cf.\@ la  Figure~\ref{isolationtree} et l'Algorithme~\ref{iTree} pour plus de d\'etails). 
+\par Comme les points qui se retrouvent moins profondément dans l'arbre sont plus faciles à séparer du reste, ce sont des \textbf{anomalies} probables. Seuls les points peu profonds présentent un intérêt; une fois que l'arbre atteint une hauteur donnée (la hauteur attendue d'un arbre binaire aléatoire, par exemple), la construction de l'arbre peut être arrêtée, ce qui réduit le coût de calcul. \par 
+De plus, au lieu de construire un arbre à partir de l'ensemble des données, on peut construire un arbre à partir d'un sous-ensemble. L'emplacement de n'importe quel point dans ce plus petit arbre peut alors être estimé, ce qui permet d'économiser des ressources de calcul et de mémoire. Ces deux améliorations sont détaillées dans l'article original \cite{A15}. 
+\newl Une fois qu'un certain nombre d'arbres d'isolement ont été générés de manière aléatoire (ce qu'on appelle une \textbf{forêt d'isolement}), un score peut être calculé pour chaque observation. Pour ce faire, on recherche son emplacement dans chaque arbre et on note la longueur du chemin nécessaire pour l'atteindre. La longueur moyenne du chemin est le score d\'esir\'e.
+\newpage 
 \begin{algorithm}[t]
-\SetAlgoLined
-\textbf{Input:} dataset $D$ % , integer $e$ current tree height, integer $\ell$ max tree height
+\SetAlgorithmName{Algorithme}{}\SetAlgoLined
+\textbf{\'Entr\'ees:} donn\'ees $D$ % , integer $e$ current tree height, integer $\ell$ max tree height
 \\\If{$|D| \leq 1$}{ % $e \geq \ell$ \textbf{or} 
 return $\{\}$
 }
 \Else{
-Let $\overline{A}$ be a list of attributes in $D$
-\\Randomly select an attribute $A \in \overline{A}$
-\\Randomly sample a point $s$ from $[\min_{\mathbf{q} \in D} A(\mathbf{q}), \max_{\mathbf{q} \in D} A(\mathbf{q})]$
+Soit $\overline{A}$ la liste des variables de $D$
+\\Choisir une variable  $A \in \overline{A}$ fa\c{c}on al\'eatoire
+\\Choisir au hasard une valeur $s\in  [\min_{\mathbf{q} \in D} A(\mathbf{q}), \max_{\mathbf{q} \in D} A(\mathbf{q})]$
 \\Return 
 $\text{Node}\begin{cases}
 \text{LeftChild} &= \text{iTree}(\{\mathbf{q} \in D : A(\mathbf{q}) \leq s\}) % , e+1, \ell\})
 \\\text{RightChild} &= \text{iTree}(\{\mathbf{q} \in D : A(\mathbf{q}) > s\}) % , e+1, \ell\})
 \\\text{NodeValue} &= D
 \end{cases}$
+\\ Répéter 2-9 avec $D=$LeftChild et $D=$RightChild
 }
-\textbf{Output:} Binary tree with node values that are subsets of $D$ % of height $\leq \ell - e$ 
-\caption{Recursive Isolation Tree Construction: $\text{iTree}(D)$} % , e, \ell)$
+\textbf{Sortie:} arbre d'isolement binaire% of height $\leq \ell - e$ 
+\caption{Arbre d'isolement: $\text{iTree}(D)$} % , e, \ell)$
 \label{iTree}
 \end{algorithm}
-can 
-\begin{algorithm}[h]
-\SetAlgoLined
-\textbf{Input:} dataset $D$, integer $t$ number of Isolation Trees % , integer $n$ subsampling size
-\\\textit{Forest} = \{\}
-% \\Set max tree height 
-% $\ell = \lceil \log_2(n) \rceil$
-\\\For{$i=1$ to $t$}{
-% \\$D' \leftarrow sample(D, n)$
-\textit{Tree} = $\text{iTree}(D)$ % , 0, \ell)$
-\\Add \textit{Tree} to \textit{Forest}
-}
-\For{$\mathbf{p} \in D$}{
-$\textit{PathLengths} = \{\}$
-\\\For{\textit{Tree} in \textit{Forest}}{
-% \\\If{$\{\mathbf{p}\}$ not a node of Tree}{
-% }
-% \\\Else{
-Find the path length $\ell$ from the root of Tree to node $\{\mathbf{p}\}$
-\\Add $\ell$ to $\textit{PathLengths}$
-}
-$\textit{AveragePathLength} = \frac{\sum_{\ell \in \textit{PathLengths}} \ell}{t}$
-\\Set $a(\mathbf{p}) = 2^{- \frac{\textit{AveragePathLength}}{c(|D|)}} $
-}
-\textbf{Output:} Anomaly score $a(\mathbf{p}) \in [0,1]$ for each $\mathbf{p} \in D$
-\caption{Isolation Forest}
-\label{iForest}
-\end{algorithm}
-be desirable to construct a normalized anomaly score that is independent of the size of the dataset.
-In order to do this, the expected path length of a random point in an Isolation Tree (i.e. binary tree) must be estimated. With $n = |D|$, it can be shown that the expected length is 
+
+\noindent Il peut être souhaitable de construire un score d'anomalie normalisé, qui soit indépendant de la taille de l'ensemble de données.
+Pour ce faire, on approxime la longueur de trajet prévue d'un point aléatoire dans un arbre d'isolation (c'est-à-dire un arbre binaire). Avec $n = |D|$, on peut montrer que la longueur moyenne est 
 $$
 c(n) 
 = 2 H(n-1) - \frac{2(n-1)}{n},
 $$
-where $H(n-1)$ is the $(n-1)^{\text{th}}$ harmonic number, which can be approximated by $\ln(n-1) + 0.577$;
-$c(n)$ is then used to normalize the final anomaly score $a(\mathbf{p})$ for $\mathbf{p} \in D$, which is given by
+o\`u $H(n-1)$ est le $(n-1)^{\text{e}}$ nombre harmonique, dont la valeur approximative est $\ln(n-1) + 0.577$;
+on utilise $c(n)$ afin de normaliser le score d'anomalie $a(\mathbf{p})$, $\mathbf{p} \in D$, which is given by
 $$
 \log_2 a(\mathbf{p})
-= -\frac{\text{average path length to $\mathbf{p}$ in the Isolation Trees}}{c(n)}.
+= -\frac{\text{hauteur moyenne de $\mathbf{p}$ dans $\text{iTrees}(D)$}}{c(n)}.
 $$
-Thus defined, $a(\mathbf{p})\in [0,1]$, with $a(\mathbf{p}) \approx 1$ suggesting $\mathbf{p}$ is an \textbf{anomaly}, $a(\mathbf{p}) \leq 0.5$ suggesting $\mathbf{p}$ is a normal point;
-if all points receive a score around $0.5$, this suggests that there are no anomalies present.
-\newl Isolation Forests have small time and memory requirements; can handle high dimensional data, and do not need observations to have been labeled anomalies in the training set, but the anomaly score assigned to a given point can have high variance over multiple runs of the algorithm. The authors of \cite{EIF} propose some solutions.
+Ainsi défini, $a(\mathbf{p})\in [0,1]$. Si $a(\mathbf{p}) \approx 1$, on consid\`ere que $\mathbf{p}$ est une \textbf{anomalie}; si $a(\mathbf{p}) \leq 0.5$, on consid\`ere que $\mathbf{p}$ est un point r\'egulier; si tous les points reçoivent un score pr\`es de $0.5$, cela suggère qu'il n'y a pas d'anomalie dans l'ensemble de donn\'ees.
+\newl Les forêts d'isolement demandent  tr\`es peu de resources de temps et de mémoire; elles peuvent traiter des données de grande dimension, et n'ont pas besoin d observations  étiquetées, ce qui est un \'enorme avantage, mais le score d'anomalie attribué à un point donné peut avoir une variance élevée apr\`es plusieurs r\'ep\'etitions de l'algorithme. Les auteurs de \cite{EIF} proposent des solutions \`a ce problème.
 \begin{center}\rule{0.5\linewidth}{.4pt}\end{center}
-In general, \text{density-based} schemes are more powerful than distance-based schemes when a dataset contains patterns with diverse characteristics, but less effective when the patterns are of comparable densities with the outliers \cite{JZ}.
-
+En général, les m\'ethodes reposant sur la densit\'e sont plus efficaces que celles reposant sur la distance lorsqu'un ensemble de données contient des structures ayant des caractéristiques diverses, mais moins efficaces lorsque les structures sont de densités comparables avec les observations aberrantes \cite{JZ}.
+\begin{algorithm}[h]
+\SetAlgorithmName{Algorithme}{}\SetAlgoLined
+\textbf{\'Entr\'ees:} donn\'ees $D$, nombre d'arbres d'isolement $t$ % , integer $n$ subsampling size
+\\\textit{For\^et} = \{\}
+% \\Set max tree height 
+% $\ell = \lceil \log_2(n) \rceil$
+\\\For{$i=1$ to $t$}{
+% \\$D' \leftarrow sample(D, n)$
+\textit{Arbre} = $\text{iTree}(D)$ % , 0, \ell)$
+\\Ajouter \textit{Arbre} \`a \textit{For\^et}
+}
+\For{$\mathbf{p} \in D$}{
+$\textit{HauteurChemin} = \{\}$
+\\\For{\textit{Arbre} in \textit{For\^et}}{
+% \\\If{$\{\mathbf{p}\}$ not a node of Tree}{
+% }
+% \\\Else{
+Calculer la hauteur $\ell$ du noeud $\{\mathbf{p}\}$ dans l'Arbre
+\\Ajouter $\ell$ \`a $\textit{HauteurChemin}$
+}
+$\textit{HauteurCheminMoy} = \frac{\sum_{\ell \in \textit{HauteurChemin}} \ell}{t}$
+\\D\'efinir $a(\mathbf{p}) = 2^{- \frac{\textit{HauteurCheminMoy}}{c(|D|)}} $
+}
+\textbf{Sortie:} score d'anomalie $a(\mathbf{p}) \in [0,1]$ pour chaque observation $\mathbf{p} \in D$
+\caption{For\^et d'isolement}
+\label{iForest}
+\end{algorithm}

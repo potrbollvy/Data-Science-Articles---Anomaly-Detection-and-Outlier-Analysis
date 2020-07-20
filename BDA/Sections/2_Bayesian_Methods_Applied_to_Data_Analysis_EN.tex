@@ -1,0 +1,13 @@
+\section{Bayesian Methods Applied to Data Analysis}% Major section
+The essential characteristic of Bayesian methods is their explicit use of probability for quantifying uncertainty in inferences based on statistical data analysis.
+\subsection{The 3 Steps of Bayesian Data Analysis} 
+ The process of Bayesian data analysis (BDA) can be idealized by dividing it into the following 3 steps:
+\begin{enumerate}[noitemsep]
+\item Setting up a full probability model (the \textbf{prior}) -- a joint probability distribution for all observable and
+unobservable quantities in a problem. The model should be consistent with knowledge about the underlying scientific problem and the data collection process (when available).
+\item Conditioning on observed data (\textbf{new data}) -- calculating and interpreting the appropriate posterior
+distribution (i.e.\@ the conditional probability distribution of the unobserved quantities of ultimate interest, given the observed data).
+\item Evaluating the fit of the model and the implications of the resulting posterior distribution (the \textbf{posterior}) -- how well does the model fit the data? are the substantive conclusions reasonable? how sensitive are the results to the modeling assumptions made in step 1? Depending on the responses, one can alter or expand the model and repeat the 3 steps.
+\end{enumerate}
+The essence of Bayesian methods consists in identifying the \textbf{prior beliefs} about what results are likely, and then updating those according to the \textbf{collected data}.
+\newl For example, if the current success rate of a gambling strategy is 5\%, we may say that it's reasonably likely that a small strategy modification could further improve that rate by 5 percentage points, but that it is most likely that the change will have little effect, and that it is entirely unlikely that the success rate would shoot up to 30\% (after all, it is only a small modification). \par As the data start coming in, we start updating our beliefs. If the incoming data points to an improvement in the success rate, we start moving our prior estimate of the effect upwards; the more data we collect, the more confident we are in the estimate of the effect and the further we can leave the prior behind. \par The end result is called the \textbf{posterior} -- a probability distribution describing the likely effect of the strategy.

@@ -1,0 +1,13 @@
+
+\section{Méthodes bayésiennes et analyse des données}
+% Major section
+La caractéristique essentielle des méthodes bayésiennes est l'utilisation explicite de la probabilité pour quantifier l'incertitude dans les inférences statistiques.
+\subsection{Les trois étapes de l'analyse bayésienne des données} 
+ Le processus de l'analyse bayésienne des données  (ABD) peut être idéalisé en le divisant en trois étapes:
+\begin{enumerate}[noitemsep]
+\item Mise en place d'un modèle de probabilité complet (la \textbf{distribution a priori}) -- une loi conjointe de probabilité pour toutes les quantités observables et non-observables dans un problème; le modèle doit être cohésif avec ce qui est connu du problème scientifique sous-jacent et avec la d\'emarche de saisie des données.
+\item Le conditionnement sur les données observées (\textbf{nou\-vel\-les observations}) -- on calcule et interprète la distribution a posteriori appropriée (c'est-à-dire la loi conditionnelle de probabilité des quantités non-observées d'int\'er\^et, étant donné les données observées). 
+\item L'évaluation de l'ajustement du modèle et des  implications de la probabilit\'e conditionnelle obtenue (la  \textbf{distribution a posteriori}) -- à quel point le modèle s'adapte-t-il aux données? ses conclusions sont-elles raisonnables? dans quelle mesure les résultats sont-ils sensibles aux hypothèses de modélisation faites à l'étape 1? Selon les réponses, on peut modifier ou redévelopper le modèle et répéter les 3 étapes.
+\end{enumerate}
+L'essence des méthodes bayésiennes consiste à identifier les convictions sur les résultats probables a priori, et de les mettre à jour en fonction des \textbf{données observ\'ees}.
+\newpage\noindent Par exemple, si le taux de réussite actuel d'une stratégie de jeu de hasard est de 5\%, il est raisonnable de s'attendre \`a ce qu'une petite modification de la stratégie améliore ce taux de 5\% points de pourcentage, mais il est très probable que la modification n'aura qu'un petit effet; de m\^eme, il est improbable que le nouveau taux de réussite atteigne 30\% (après tout, ce n'est qu'une petite modification). \par Lorsque les données entrent, nous commençons à mettre à jour nos croyances. Si les données entrantes indiquent une amélioration du taux de réussite, nous dépla\c{c}ons vers le haut notre estimation a priori de l'effet; plus nous recueillons de données, plus nous sommes confiants par rapport \`a l'estimation de l'effet de la strat\'egie et plus nous pouvons laisser de c\^ot\'e la distribution a priori dans notre compr\'ehension des effets de la strat\'egie. \par La distribution des effets r\'esultante fournit de l'information \textbf{a posteriori} -- c'est une loi de probabilité décrivant l'effet probable de la strat\'egie.

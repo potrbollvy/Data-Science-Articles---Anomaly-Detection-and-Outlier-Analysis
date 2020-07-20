@@ -33,12 +33,12 @@ for continuous random variables, it is defined by
 \begin{align*}
 H(X,Y)= \left(1-\int_{\Omega} \sqrt{f_X(\mathbf{z}) f_Y(\mathbf{z})}\, d\mathbf{z}\right)^{1/2}\,. 
 \end{align*} 
-If $f_X=f_Y$ (or $f_X=f_Y$ almost everywhere in the continuous case, that is, except over a countable set), then $$\sum_{\Omega}\sqrt{f_xf_Y}=1 \quad\mbox{or} \quad \int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}=1$$ and $H(X,Y)=0$. The fact that $H(X,Y)\in [0,1]$ is a consequence of Cauchy's inequality, with $f_X^*=\sqrt{f_X}$ and $f_Y^*=\sqrt{f_Y}$: \begin{align*}\int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}&=\int_{\Omega}f_X^*f_Y^*\, d\mathbf{z}\\ &\leq \left(\int_{\Omega}|f_X^*|^2\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}|f_Y^*|^2\, d\mathbf{z}\right)^{1/2} \\ &=\left(\int_{\Omega}f_X\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}f_Y\, d\mathbf{z}\right)^{1/2}=1;\end{align*}
+If $f_X=f_Y$ (or $f_X=f_Y$ almost everywhere in the continuous case, that is, except over a countable set), then $$\sum_{\Omega}\sqrt{f_xf_Y}=1 \quad\mbox{or} \quad \int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}=1$$ and $H(X,Y)=0$. The fact that $H(X,Y)\in [0,1]$ is a consequence of Cauchy's inequality, with $f_X^*=\sqrt{f_X}$ and $f_Y^*=\sqrt{f_Y}$: \begin{align*}0\leq \int_{\Omega}\sqrt{f_Xf_Y}\, d\mathbf{z}&=\int_{\Omega}f_X^*f_Y^*\, d\mathbf{z}\\ &\leq \left(\int_{\Omega}|f_X^*|^2\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}|f_Y^*|^2\, d\mathbf{z}\right)^{1/2} \\ &=\left(\int_{\Omega}f_X\, d\mathbf{z}\right)^{1/2}\left(\int_{\Omega}f_Y\, d\mathbf{z}\right)^{1/2}\!\!\!\!=1;\end{align*}
 (a similar argument holds for discrete random variables). 
 \newline\newline Recall that the covariance matrices $\Sigma_X$ and $\Sigma_Y$ are $n \times n$-matrices whose $(i,j)$-th entries are the covariance between the $i$-th and $j$-th positions of $X$ and $Y$, respectively. 
 Given a collection of identically distributed samples, these covariance matrices can be estimated.
 
-We can also consider a single point $\mathbf{p}$ to be a probability distribution. In that case, the Hellinger distance between that point distribution and any other distribution with mean $\mathbf{\mu}$ and covariance matrix $\Sigma$ can be studied using the framework above, using the \textbf{Mahalanobis distance}:
+We can also consider a single point $\mathbf{p}$ to be represent probability distribution. In that case, the Hellinger distance between that point and any other distribution with mean $\mathbf{\mu}$ and covariance matrix $\Sigma$ can be studied using the framework above, using the \textbf{Mahalanobis distance}:
 
 $$
 M(\mathbf{p})=\sqrt{(\mathbf{p} - \mathbf{\mu})^{\!\top} \Sigma^{-1} (\mathbf{p} - \mathbf{\mu}).}
@@ -53,16 +53,16 @@ $$
 \noindent Now, if  $\Sigma$ is diagonal, then 
 
 $$
-d_M(\mathbf{p},\mathbf{q})=\sqrt{\sum_{i=1}^n \frac{(p_i - q_i)^2}{\sigma_i^2}}
+d_M(\mathbf{p},\mathbf{q})=\sqrt{\sum_{i=1}^n \frac{(p_i - q_i)^2}{\sigma_i^2}},
 $$
-where $\sigma_i^2$ is the standard deviation of the $i$-th dimension.
+where $\sigma_i^2$ is the variance along the $i$-th dimension.
 If $\Sigma$ is the identity matrix, then we recover the \textbf{Euclidean distance}
 
 $$
 d_2(\mathbf{p},\mathbf{q})=\sqrt{\sum_{i=1}^n (p_i - q_i)^2}.
 $$
-\noindent When using the Euclidean distance in an anomaly detection context, a \textbf{linear normalization} is usually applied to each dimension so that each entry lies between $[-1,1]^n$.
-\newpage\noindent The \textbf{Minkowski distance} of order $\mathbf{p}$ is a generalization of the Euclidean distance:
+\noindent When using the Euclidean distance in an anomaly detection context, a \textbf{linear normalization} is usually applied to each dimension so that each entry lies in the hypercube  $[-1,1]^n$.
+\newpage\noindent The \textbf{Minkowski distance} of order $p$ is a generalization of the Euclidean distance:
 
 $$
 d_p(\mathbf{p},\mathbf{q})=\left( \sum_{i=1}^n |p_i - q_i|^p \right)^{1/p}
@@ -74,7 +74,7 @@ The Minkowski distance $d_p$ is only actually a distance function (i.e., a \text
 $$
 d_{-\infty}(\mathbf{p},\mathbf{q})=\min_{i=1}^n |p_i - q_i|
 $$
-to fall within the same framework. \newline\newline For two datasets $P$ and $Q$, their \textbf{Jaccard similarity} is defined as the size of their intersection divided by the size of their union
+to fall within the same framework. \newline\newline The \textbf{Jaccard similarity} of two datasets $P$ and $Q$, is defined as the size of their intersection divided by the size of their union
 $$
 J(\mathbf{p}, \mathbf{q})
 = \frac{|P \cap Q|}{|P \cup Q|}
@@ -82,8 +82,8 @@ J(\mathbf{p}, \mathbf{q})
 $$
 Their \textbf{Jaccard distance} is then taken to be $1 - J(\mathbf{p}, \mathbf{q})$.
 
-This definition can be extended to compare binary vectors  (i.e. vectors with entries of only ones and zeros) of the same length.
-Given two binary vectors $\mathbf{p}$ and $\mathbf{q}$ of length $n$, consider an arbitrary $n-$dimensional set $D$. Then $\mathbf{p}$ and $\mathbf{q}$ can be viewed as subsets of $D$: if $p_i=1$ then $\mathbf{p}$ is said to contain the $i$-th element of $D$, while if $p_i=0$ then it does not. Viewing $\mathbf{p}$ and $\mathbf{q}$ in this way allows us to compute their Jaccard similarity, and thus their Jaccard distance. \newline\newline
+This definition can be extended to compare binary vectors  (i.e. vectors with entries in $\{0,1\}$) of the same length.
+Given two binary vectors $\mathbf{p}$ and $\mathbf{q}$ of length $n$, consider an arbitrary set $D$ of size $n$. Then $\mathbf{p}$ and $\mathbf{q}$ can be viewed as subsets of $D$: if $p_i=1$ then $\mathbf{p}$ is said to contain the $i$-th element of $D$, while if $p_i=0$ then it does not. Viewing $\mathbf{p}$ and $\mathbf{q}$ in this way allows us to compute their Jaccard similarity, and thus their Jaccard distance.\newline\newline
 Finally, let $\mathbf{p},\mathbf{q}\neq \mathbf{0}$. Recall that 
 $\mathbf{p} \cdot \mathbf{q} 
 = \lVert p \rVert \lVert q \rVert \cos\theta,$
@@ -95,19 +95,18 @@ $$
 = \frac{\sum_{i=1}^n p_i q_i}{\sqrt{\sum_{i=1}^n p_i^2} \sqrt{\sum_{i=1}^n q_i^2}}.
 $$
 This value ranges between $1$ and $-1$, with 1 attained when $\mathbf{p}=\mathbf{q}$, $-1$ when $\mathbf{p}=-\mathbf{q}$, and $0$ when $\mathbf{p}$ and $\mathbf{q}$ are perpendicular.\newline\newline
-Armed with these concepts, we can now explore distance- and density-based methods for anomaly detection. 
+Armed with these concepts, we can now explore distance- (and eventually density-) based methods for anomaly detection. 
 
 \subsubsection*{Distance-Based Approaches}
 
-These distance functions can be applied to create some basic anomaly detection algorithms.
-These ideas will later be extended to more complex algorithms.
+All these distance functions can be used to create basic anomaly detection algorithms (the ideas can also be extended to more complex algorithms).
 \newline\newline Given some distance function $d$, dataset $D$, and integers $k,\nu\leq |D|$, 
 the \textbf{distance to all points} anomaly detection algorithm considers each point $\mathbf{p}$ in $D$ and adds the distance from $\mathbf{p}$ to every other point in $D$, i.e.
 $$
 a(\mathbf{p}) 
 = \sum_{\mathbf{q}\neq \mathbf{p} \in D} d(\mathbf{q}, \mathbf{p}).
 $$
-The $\nu$ points that maximize $a$ are then said to be \textbf{anomalous}; this will often select the most extreme values as anomalous, which may be of limited use. 
+The $\nu$ points with largest values for $a$ are then said to be \textbf{anomalous according to} $a$. This approach often selects the most extreme observations as anomalous, which may be of limited use in practice. 
 
 The \textbf{distance to nearest neighbour} algorithm defines 
 $$
@@ -123,7 +122,7 @@ The \textbf{average distance to $k$ nearest neighbours} and \textbf{median dista
 Density-based approaches, on the other hand, view points as anomalous if they occur in \textbf{low density regions}.
 % Three density-based methods are presented in this section, however there are many 
 
-\subsubsection*{Local Outlier Factor (LOF)} % p110
+\subsubsection*{Local Outlier Factor} % p110
 
 \begin{algorithm}[ht]
 \SetAlgoLined
@@ -154,7 +153,7 @@ $a_k(\mathbf{p})
 \label{alg:LOF}
 \end{algorithm}
 
-The Local Outlier Factor (LOF) algorithm was proposed in 2000 by \cite{LOF} 
+The \textbf{Local Outlier Factor} (LOF) algorithm was proposed in 2000 by \cite{LOF} 
 (a summary can be found in Section 6.4.2 of \cite{A10}). 
 LOF works by measuring the local deviation of each point in a dataset from its $k$ nearest neighbours, with a point said to be anomalous if this \textbf{deviation is large}.
 
@@ -257,7 +256,7 @@ $\text{Cluster} = \text{Cluster} \cup N(\mathbf{q})$
 Add $\textit{Cluster}$ to $\textit{Clusters}$
 }
 return $\textit{Outliers}$
-\\\textbf{Output: a list of \textit{outliers}}
+\\\textbf{Output:} a list of \textit{outliers}
 \caption{DBSCAN}
 \label{dbscan}
 \end{algorithm}
@@ -289,7 +288,7 @@ return $\textit{Outliers}$
 While DBSCAN's dual use as a clustering algorithm may seem irrelevant in the outlier detection setting,
 its ability to succesfully identify clusters is crucial to being able to label the remaining points as outliers.
 \newl 
-On the one hand, in DBSCAN the number of clusters does not need to be known beforehand (unlike in $k-$means and other clustering algorithms) and clusters of arbitrary shape can be detected. \par Furthermore, when using HDBSCAN, only the parameter for the minimum cluster size $m$ is required, which can be set fairly intuitively, which is not the case for the parmaters in general clustering algorithms: if the elements of $D$ are $n-$dimensional, take $m\geq n+1$ (larger values of $m$ allow for the better noise identification).
+On the one hand, in DBSCAN the number of clusters does not need to be known beforehand (unlike in $k-$means and other clustering algorithms) and clusters of arbitrary shape can be detected. \par Furthermore, when using HDBSCAN, only the parameter for the minimum cluster size $m$ is required, which can be set fairly intuitively, which is not the case for the parameters in general clustering algorithms: if the elements of $D$ are $n-$dimensional, take $m\geq n+1$ (larger values of $m$ allow for better noise identification).
 \newl On the other hand, DBSCAN is not deterministic, as border points can be assigned to different clusters depending on the order in which core points are considered (this does not affect its use as an anomaly detection algorithm, however).
 \par In high dimensions, the ability of any distance function based on Euclidean distance to distinguish near and distant points diminishes due to the \textbf{Curse of Dimensionality}; thus in high dimension spaces, it  become ineffective (as do  other clustering algorithms). \par  Finally, DBSCAN cannot handle differences in local densities as the radius of a neighbourhood $r$ is fixed; this could lead to sparser clusters being labelled as outliers, or to outliers surrounding a denser cluster being included in the cluster.
 This issue is overcome in HDBSCAN.
@@ -299,7 +298,7 @@ The previously discussed approaches first construct models of what normal points
 The Isolation Forest algorithm \cite{A15} introduced in 2008 instead tries to explicitly identify outliers under the assumptions that there are few outliers and that these outliers have very different attributes compared to normal points. Doing so allows the use of sampling techniques that increase algorithmic speed while decreasing memory requirements.
 \begin{figure}[b]
 \hrule \vspace{0.4cm}\centering
-\begin{tikzpicture}[x=0.75cm,y=0.75cm]
+\begin{tikzpicture}[x=0.6cm,y=0.6cm]
 \filldraw[black] (0,0) circle (2pt);
 \filldraw[black] (4,2) circle (2pt);
 \filldraw[black] (4.5,-2) circle (2pt);

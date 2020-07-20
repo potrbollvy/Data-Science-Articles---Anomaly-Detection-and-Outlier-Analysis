@@ -1,61 +1,70 @@
 \section{Qualitative Methods of Anomaly Detection}\label{Section:3}
 % \textcolor{red}{Soufiane} 
-%
+New challenges are presented by non-numerical variables. 
 \subsection{Definitions and Challenges}
-%
-A categorical variable, belonging to the nominal scale ( Examples of this type are colour, direction, language, etc.). 
-The central tendency of the values of a categorical variable is given by its mode, while numerical values may appear corresponding to a categorical variable, they each represent a distinct concept and cannot be treated as numbers. 
-A categorical variable that can take exactly two values is called a dichotomous (binary) variable. Variables with more than two possible values are called polytomous variables. Regression analysis on categorical variables is performed by multinomial logistic regression.
+\subsubsection*{Categorical Variables}
+A \textbf{categorical variable} (or qualitative variable) is one whose levels are measured on a nominal scale; examples include an object's colour, the mother tongue of an individual, her favourite meal, and so forth.  
+
+The \textbf{central tendency} of the values of a categorical variable is usually given by its \textbf{mode}; measures of spread are harder to define consistently (the proportion of levels with more than a certain percentage of the observations above a given threshold could be used as rough gauge, but difficulties with this approach are readily apparent). 
+
+We often associate qualitative feature to numerical values, but with the caveat that these should not be interpreted as numerals; if we use the code  ``red'' $=1$ and ``blond'' $=2$ to represent hair colour, for instance, we obviously cannot conclude that ``blond'' $>$ ``red'', even though $2>1$.   
+
+A categorical variable that has exactly two \text{levels} is called a \textbf{dichotomous feature} (or a binairy variable); those with more than two levels are called  \textbf{polytomous variables}. %Regression analysis on categorical variables is performed by multinomial logistic regression.
 
 
 
-\subsubsection*{Challenges with categorical data}
-When processing data with categorical attributes, it is assumed that these attributes could easily be represented in numerical values. However, there are examples of categorical attributes, in which such representation into numerical attributes is not a simple process. Therefore, methods such as those based on distance or density measurements are not acceptable, requiring a necessary modification of their formulations.
+\subsubsection*{Challenges of Anomaly Detection with  Categorical Data}
+Representing categorical variables with numerical features can lead to traps; consequently, using anomaly detection methods based on distance metrics or on density is not recommended in the qualitiative context, unless they have first been modified appropriately. 
+\subsection{Review of Two Methods}
+We present two of the categorical methods below. 
+\subsubsection*{AVF Algorithm}
+The \textbf{Attribute Value Frequency} (AVF) algorithm offers a fast and simple way to detect outlying observations in categorical data, which minimizes the amount of data analyses, without having to create or search through various combinations feature levels (which increase the search time).  \newline\newline Intuitively, outlying observations are points which occur relatively infrequently in the (categorical) dataset;  an ``ideal'' anomalous point is one for which  \textbf{each feature value is extremely anomalous} (or relatively infrequent). 
+\newline\newline The \textbf{rarity} of an attribute level can be measured by summing the number of times the corresponding feature takes that value in the dataset. 
 
-\subsection{Review of some methods}
-\subsubsection*{Algorithm AVF}
-The Attribute Value Frequency (AVF) algorithm is a quick and simple approach to detecting outliers in categorical data, minimizing analysis on the data without the need to create or search through different combinations of attributes or element sets.  \\
-
-\noindent It is intuitive that outliers are points that are infrequent in the data set, and that the "ideal" outlier in a categorical data set is a point where each value is extremely irregular (or infrequent). \\
-
-
-\noindent The rarity of an attribute value can be measured by calculating the number of times that value is assumed by the corresponding attribute in the data set. \\
-
-\noindent Suppose there are $n$ points in the data set: $x_i$ , $I = 1 \cdots n$ and each data point has m attributes. We can write that $x_{i} = [x_{i1}, \cdots , x_{il}, \cdots, x_{im}]$, where $x_{il}$ is the value of the l-th attribute of $x_i$. Following the reasoning given above, the AVF score below is a good indicator for deciding whether $x_i$ is an outlier:
-
-$$AVFscore(x_i) = \frac{1}{m} \sum_{l=1}^{m}f(x_{il})$$
-
-
-\noindent where $f(x_{il})$ is the number of times the l-th attribute value of $x_i$ appears in the data set. A lower AVF score means that the point is more likely to be an outlier. Since $AVFscore(x_i) $ is essentially a sum of $m$ positive numbers, the AVF score is minimal when each of the terms in the sum is minimized individually. Thus, the "ideal" outlier as defined above will have the minimum AVF score. The minimum score will be reached when each value of the data point appears only once.  
-
+Let's say that there are $n$ observations in the dataset: $\{\mathbf{x}_i\}$, $i = 1, \ldots, n$, and that each observation is a collection of $m$ features. We write $$\mathbf{x}_{i} = (x_{i,1}, \cdots , x_{i,\ell}, \cdots, x_{i,m}),$$ where  $x_{i,\ell}$ $\ell$th feature's level. Using the reasoning presented above, the \textbf{AVF score} (shown below) is a good tool to determine whether  $\textbf{x}_i$ should be considered an outlier or not:
+$$\text{AVFscore}(\mathbf{x}_i) = \frac{1}{m} \sum_{\ell=1}^{m}f(x_{i,\ell}),$$
+where $f(x_{i,\ell})$ is the number of observations $\mathbf{x}_i$ for which the  $\ell$th feature takes on the level ${x}_{i,\ell}$. A low AVF score indicates that the observation is more likely to be an outlier. 
+\newline\newline Since $\text{AVFscore}(\mathbf{x}_i) $ is essentially a sum of $m$ positive numbers, it is minimized when each of the sum's term is minimized, individually. Thus, the ``ideal'' anomalous observation described above minimizes the AVF score; the minimal score is reached when each of the observation's features' levels occurs only once in the dataset.
 
 \begin{algorithm}
 \SetAlgoLined
-Label all data points as non-aberrant;
+\textbf{Inputs:} dataset $D$ ($n$ observations, $m$ features), number of anomalous observations $k$ \\
 
-Calculate the frequency of each attribute value, $f(x_{il})$ \;
-
-i = 1 \;
-
-\While{Until $i \leq n$ }{
+\While{ $i \leq n$ }{
 	j = 1
-  	\While{As long as $j \leq m$}{
-	$AVFscore(x_i) += f(x_{il})$\;
-	 $j =  j +1$\; 
+  	
+  	$\text{AVFscore}(\mathbf{x}_i)=f(x_{i,j})$
+  	
+  	\While{$j \leq m$}{
+	$\text{AVFscore}(\mathbf{x}_i) = \text{AVFscore}(\mathbf{x}_i)+f(x_{i,j})$;
+	$j =  j +1$ 
 	}
-	Average( $AVFscore(x_i)$)\;
-	$i = i + 1$\;
+	$\text{AVFscore}(\mathbf{x}_i)=$Mean($\text{AVFscore}(\mathbf{x}_i)$)
+	
+	$i = i + 1$
 }
-
-\KwResult{ top $k$ outliers with minimum AVF Score}
-\caption{AVF Pseudocode $D$: data ($n$ points, $m$ attributes)}
+\textbf{Outputs:} $k$ observations with smallest AVF scores
+\caption{AVF}
 \label{alg:AVF}
 \end{algorithm}%\newl
-
-\noindent As shown by the AVF pseudocode (see Algorithm~\ref{alg:AVF}), once the AVF score is calculated for all points, the $k$ outliers returned are the k points with the smallest AVF scores. 
-
-\noindent The complexity of the AVF is $O(n\times m)$, where $n$ is the number of data points and $m$ is the dimensionality of the data set.
+\ \\ \noindent As shown by the AVF pseudocode (see Algorithm~\ref{alg:AVF}), once the AVF score is calculated for all points, the $k$ outliers returned by the algorithms are the $k$ observations with the smallest AVF scores (the algorithm's complexity is $\mathcal{O}(nm)$). 
 
 
-\subsubsection*{Greedy algorithm}
+\subsubsection*{Greedy Algorithm}
+The \textbf{greedy} algorithm ``greedyAlg1'' is an  algorithm   which identifies the set \text{OS} of candidate anomalous observations in an efficient manner. 
+\newline\newline The mathematical formulation of the problem is simple -- given a dataset $D$ and a number $k$ of anomalous observations to identify, we solve the optimization problem 
+$$\text{OS}=\arg\min_{O\subseteq D} \{H(D\setminus O)\}, \quad \text{subject to }|O|=k,$$
+where the \textbf{entropy} of the subset  $D\setminus O$ is the sum of the entropy of each of feature on $D\setminus O$:
+$$H(D\setminus O)=H(X_1;D\setminus O)+\cdots + H(X_m;D\setminus O)$$ et $$H(X_{\ell};D\setminus O)=-\!\!\!\!\!\!\!\!\!\!\!\sum_{z_{\ell}\in S(X_{\ell};D\setminus O)}\!\!\!\!\!\!\!\!\!\!\! p(z_{\ell})\log p(z_{\ell}),$$ where $S(X_{\ell};D\setminus O)$ is the set of levels that the $\ell$th feature takes in  $D\setminus O$.
+\newline\newline The "greedyAlg1" algorithm solves the optimization problem as follows:
+\begin{enumerate}
+\item The set of outlying and/or anomalous observations $\text{OS}$ is initially set to be empty, and all observations of $D\setminus \text{OS}$ are identified as normal (or regular).
+\item Compute $H(D\setminus \text{OS})$. 
 
+\item Scan the dataset in order to select a candidate anomalous observation: every normal observation $\mathbf{x}$ is temporarily taken out of $D\setminus \text{OS}$ to create a subset $D'_{\mathbf{x}}$, whose entropy $H(D'_{\mathbf{x}})$ is also computed.
+\item The observation $\mathbf{z}$ which provides the \textbf{maximal entropy impact}, i.e.\@ the one that minimizes $$H(D\setminus \text{OS})-H(D'_{\mathbf{x}}),\quad \mathbf{x}\in D\setminus \text{OS}, $$ is added to  \text{OS}.
+
+\item Repeat steps 2-4 another $k-1$ times to obtain a set \text{OS} of $k$ candidate anomalous observations.
+\end{enumerate}
+
+\noindent You can find more details in the in the source article \cite{Article_source}; an interesting detail is that the complexity of the algorithm is expected to be $\mathcal{O}(nmp)$, which implies that it is \textbf{scalable}.

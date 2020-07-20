@@ -1,0 +1,104 @@
+\section{Introduction}
+La statistique bayésienne est un système qui permet de décrire l'incertitude épistémologique en utilisant le langage mathématique de la probabilité. L'inférence bayésienne, quant \`a elle, est le processus qui consiste à ajuster un mo\-dè\-le de probabilité à un ensemble de données et à résumer le résultat par une loi de probabilités sur les paramètres du modèle et sur les quantités non observées (i.e.\@  prédictions).
+\subsection{Historique} %Sub-section
+En 1763, Thomas Bayes publie un article sur le problème de l'induction, c'est-à-dire le fait d'argumenter du spécifique au général. En langage et notation moderne, Bayes voulait utiliser des données binomiales ($r$ succès sur $n$ tentatives) afin d'apprendre la chance sous-jacente $\theta$ que chaque tentative réussisse. Sa contribution principale a été d'utiliser une loi probabiliste qui représente l'incertitude sur $\theta$. Cette loi mesure l'incertitude ``épistémologique,'' due au manque de connaissance, plutôt qu'une probabilité ``aléatoire'' découlant de l'imprévisibilité essentielle des événements futurs comme on la retrouve dans les jeux de hasard. 
+\par Dans ce cadre, une probabilité représente un ``degré de croyance'' (une conviction) à propos d'une proposition; il est possible que la probabilité d'un événement soit enregistrée différemment par deux observateurs différents basée sur des informations de base auxquelles ils ont accès. \newl Les statistiques bayésiennes modernes reposent \'egalement sur la formulation des lois de probabilités pour exprimer l'incertitude sur des quantités inconnues. Il peut s'agir des paramètres sous-jacents d'un système (induction) ou des observations à venir (prédiction).
+\subsection{Théorème de Bayes} %Sub-section
+Le théorème de Bayes fournit une expression pour la probabilité conditionnelle de $A$ sachant $B$, c'est-à-dire:
+	$$P(A\mid B) = \frac{P(B\mid A) P(A)}{P(B)}.$$
+Le théorème de Bayes peut être considéré comme un moyen d'actualiser de façon cohérente notre incertitude à la lumière de nouvelles preuves. L'utilisation d'une loi de probabilités comme ``langage'' pour exprimer notre incertitude n'est pas un choix arbitraire: elle peut en fait être déterminée à partir de principes plus profonds de raisonnement logique ou de comportement rationnel.
+\begin{Exemple} Consid\'erons une clinique m\'edicale. 
+\begin{itemize}[noitemsep]
+	\item Supposons que $A$  représente l'événement ``Le patient a une maladie hépatique.'' Les données obtenues par le pass\'e suggèrent que 10\% des patients qui se présentent à la clinique souffrent d'une maladie hépatique  $P(A) = 0.10$.
+	\item L'événement $B$ représente le  test décisionnel ``Le patient est alcoolique.'' Disons que 5\% des patients de la clinique sont alcooliques:  $P(B) = 0.05$.
+	\item L'événement $B\mid A$ représente alors le scénario o\`u un patient est alcoolique, étant donné qu'il est atteint d'une maladie hépatique: disons que $P(B\mid A) = 0.07$.
+\end{itemize}
+ Selon le théorème de Bayes, la probabilité qu'un patient soit atteint d'une maladie hépatique en supposant qu'il soit alcoolique est donc la suivante: $$P(A\mid B) = \frac{0.07 \times 0.10}{0.05} = 0.14$$ 
+Bien qu'il s'agisse d'une augmentation notable par rapport  10\% précédemment suggéré par les expériences passées, il demeure peu probable qu'un patient en particulier souffre d'une maladie hépatique.
+\end{Exemple}
+\subsubsection*{Le théorème de Bayes avec des événements multiples}
+Soient $D$ certaines données observées et $A$, $B$, et $C$ des événements mutuellement exclusifs (et exhaustifs) conditionnels à $D$. On note que 
+\begin{equation*}
+\begin{aligned}
+P(D)&= P(A \cap D) + P(B \cap D)+P(C \cap D)  & \\
+      &= P(D\mid A) P(A) + P(D\mid B) P(B) + P(D\mid C) P(C).&
+\end{aligned}
+\end{equation*}
+Selon le théorème de Bayes, nous obtenons alors 
+\begin{equation*}
+\begin{aligned}
+P(A\mid D)&= \frac{P(D\mid A) P(A)}{P(D)}  & \\
+        &= \frac{P(D\mid A) P(A)}{P(D\mid A) P(A) + P(D\mid B) P(B) + P(D\mid C) P(C)}.&
+\end{aligned}
+\end{equation*}
+En général, s'il y a $n$ \'ev\'enements exclusifs et exhaustifs $A_{1},..., A_{n}$, on a, pour tout $i\in\left\{1,..., n\right\}$: 
+$$ P(A_{i}\mid D) = \frac{P(A_{i}) P(D\mid A_{i})}{\sum^{n}_{k=1} P(A_{k}) P(D\mid A_{k})} $$ 
+Le dénominateur est tout simplement $P(D)$, la  \textbf{distribution marginale} des données. Notez que si les \'ev\'enements $A_{i}$ repr\'esentent des portions de la ligne réelle continue, la somme est remplacée par une intégrale.
+\begin{Exemple}
+Selon l'Enquête sociale générale de 1996 au Canada, chez les hommes de 30 ans ou plus:
+\begin{itemize}[noitemsep]
+\item 11\% des r\'epondants se situant dans le quartile de revenu le plus bas étaient des diplômés collégiaux.
+\item 19\% des r\'epondants se situant dans le deuxième quartile de revenu le plus bas étaient des diplômés collégiaux.
+\item 31\% des r\'epondants se situant dans le tRDIsième quartile de revenu le plus bas étaient des diplômés collégiaux.
+\item 53\% des r\'epondants se situant dans le quartile de revenu le plus élevé étaient des diplômés collégiaux.
+\end{itemize}
+Quelle est la probabilité qu'un diplômé coll\'egial se situe dans le quartile de revenu le moins \'elev\'e? 
+\newl Soient $Q_{i}, i =1, 2, 3, 4$ des \'ev\'enements correspondant aux quartiles de revenu (c-à-dire\@ $P(Q_{i}) =0.25$) et $D$ l'événement qu'un homme de plus de 30 ans est un diplômé coll\'egial. Alors
+
+\begin{equation*}
+\begin{aligned}
+P(Q_{1}\mid D)&= \frac{P(D\mid Q_{1}) P(Q_{1})}{\sum^{4}_{k=1} P(Q_{k}) P(D\mid Q_{k})}  & \\
+            &= \frac{(0.11)(0.25)}{(0.11+0.19+0.31+0.53)(0.25)} = 0.09.&
+\end{aligned}
+\end{equation*}
+\end{Exemple}
+\subsection{Les fondements de l'inférence bayésienne} 
+Les méthodes statistiques bayésiennes d\'ebutent avec des convictions a priori d\'ej\`a existantes, et elles les mettent à jour en utilisant les données observ\'ees afin de fournir des convictions a posteriori sur lesquelles on peut \'etablir des décisions inférentielles:
+$$ \large \underbrace{P(\theta \mid  D)}_{\textbf{a posteriori}} = \underbrace{P(\theta)}_{\textbf{a priori}} \times  \underbrace{P(D\mid \theta)}_{\textbf{vraisemblance}} /\underbrace{P(D)}_{\textbf{évidence}}, $$
+où l'évidence est donn\'ee par 
+$$ P(D) = \int P(D\mid \theta) P(\theta) d\theta.$$
+Dans la langue vernaculaire de l'analyse bayésienne des données (ABD),
+\begin{itemize}[noitemsep]
+\item la \textbf{distribution a priori}, $P(\theta)$, représente la force de conviction envers $\theta$ (sans tenir compte des données observées $D$);
+\item la \textbf{distribution a posteriori}, $P(\theta \mid  D)$, représente la force de conviction envers $\theta$ lorsque les données observées $D$ sont prises en compte; 
+\item la \textbf{vraisemblance}, $P(D\mid \theta)$, repr\'esente la probabilité que les données observées $D$ soient générées par le modèle avec valeurs de paramètres $\theta$, et
+\item l'\textbf{évidence}, $P(D)$, est la probabilité d'observer les données $D$ selon le modèle, déterminée en additionnant (ou en intégrant) toutes les valeurs possibles des paramètres et pondérée par la conviction envers ces valeurs de paramètre.
+\end{itemize}
+\begin{Exemple}
+\textit{Application aux neurosciences.}
+Les neuroscientifiques cognitifs étudient les zones du cerveau qui sont actives pendant des tâches mentales particulières. Dans de nombreuses situations, les chercheurs observent qu'une certaine région du cerveau est active et en déduisent qu'une fonction cognitive particulière est donc en cours d'exécution; \cite{BDA_Poldrack} rappelle que de telles conclusions ne sont pas nécessairement fermes et doivent être fa\^{\i}tes en tenant compte de la règle de Bayes. \par Le même article présente le tableau de fréquence des études précédentes qui ont porté sur toute tâche liée à la langue (en particulier le traitement phonologique et sémantique) et si une \textbf{région d'intérêt} particulière (RDI) dans le cerveau a été activée ou non:
+
+\begin{center}
+ \begin{tabular}{ccc} 
+ $ $& \textbf{\textrm{Langue}} $(L)$& \textbf{Autre} $(\overline{L})$\\ [0.5ex] 
+ \textbf{Activée} $(A)$ & 166 & 199  \\ 
+  \textbf{Non Activée} $(\overline{A})$ & 703 & 2154 \\ [1ex] 
+\end{tabular}
+\end{center}
+Supposons qu'une nouvelle étude soit menée et qu'elle constate que le RDI est activé  ($A$). Si la probabilité a priori que la tâche implique un traitement du langage est $P(L)=0.5$, quelle est la probabilité a posteriori, $P(L\mid A)$, étant donné que le RDI est activé?
+\newl On se sert tout simplement de la r\`egle de Bayes: 
+\begin{equation*}
+\begin{aligned}
+P(L\mid A)&= \frac{P(A\mid L) P(L)}{P(A\mid L) P(L) + P(A \mid  \overline{L}) P(\overline{L}) }& \\
+                     &= \frac{(166/(166+703))0.5}{(166/(166+703))0.5 + (199/(199+2154))0.5 } & \\
+				&= 0.693 &
+\end{aligned}
+\end{equation*}
+On remarque que la probabilité a posteriori d'impliquer des processus linguistiques est légèrement plus élevée que la probabilité a priori.
+\end{Exemple}
+
+\subsection*{Exercices}
+\begin{Exercice}%Hitchcock/stat535slidesday2.pdf
+\label{ex1.4.1}
+(En 1975, un référendum national a eu lieu pour d\'eterminer si le Royaume-Uni (R.U.) evrait rester membre de la Communauté économique Européenne (C.E.E)). Supposons que 52\% des électeurs soutiennent le Parti travailliste et que 48\% soutiennent le Parti conservateur. Supposons que 55\% des électeurs du Parti travailliste et 85\% des \'electeurs du Parti conservateur pr\'ef\'errent que le R.U. reste dans la C.E.E. Quelle est la probabilité qu'une personne votant ``Oui'' (en faveur de rester dans la C.E.E.) soit un électeur du Parti travailliste?	\cite{BDA_H}	
+\end{Exercice} 
+
+\begin{Exercice} %http://www.statisticshowto.com/bayes-theorem-problems/
+ \label{ex1.4.2}					
+ Étant donné les statistiques suivantes, quelle est la probabilité qu'une femme ait un cancer du sein si le résultat de sa mammographie est positif? \cite{BDA_N6}
+\begin{itemize}[noitemsep]
+	\item 1\% des femmes de plus de 50 ans ont un cancer du sein.
+	\item 90\% des femmes atteintes d'un cancer du sein ont un résultat positif à la mammographie.
+	\item 8\% des femmes auront des résultats faussement positifs.
+\end{itemize}	
+\end{Exercice} 

@@ -1,79 +1,85 @@
 \section{Valeurs aberrantes et données qualitatives}  \label{Section:3}
 % \textcolor{red}{Soufiane} 
-%
+Nous rencontrons de nouveaux défis lorsque les variables ne sont pas num\'eriques. 
+%\subsection{Definitions and Challenges}
+% examples include colour, direction, language, etc. The central tendency of the values of a categorical variable is usually given by its \textbf{mode}, and While numerical values may appear corresponding to a categorical variable, they each represent a distinct concept and cannot be treated as numbers. 
 \subsection{D\'efinitions et défis}
-%
 
 \subsubsection*{Variables catégoriques}
-Une variable catégorique, appartenant à l’échelle nominale  ( Des exemples de ce type sont la couleur, la direction, la langue, etc.). 
-La tendance centrale des valeurs d'une variable catégorique est donnée par son mode, alors que des valeurs numériques puissent apparaître correspondant à une variable catégorique, elles représentent chacune un concept distinct et ne peuvent pas être traitées comme des nombres. 
-Une variable catégorielle pouvant prendre exactement deux valeurs est appelée variable dichotomique (binaire). Les variables avec plus de deux valeurs possibles sont appelées variables polytomiques. L'analyse de régression sur les variables catégorielles est réalisée par régression logistique multinomiale.
+Une \textbf{variable catégorique} (ou \textbf{qualitative}) est une variable dont les valeurs sont mesurées sur une échelle nominale; la couleur d'un object, la langue maternelle d'un individu, son repas préféré, et ainsi de suite.
 
+La \textbf{tendance centrale} des valeurs d'une telle variable est donnée par son \textbf{mode};
+ il est moins ais\'e, cependant, de d\'efinir des mesures de dispersion dans ce cas (la proportion des niveaux avec plus d'un certain pourcentage des observations au del\`a d'un seuil donn\'e offre une fa\c{c}on de le faire, mais les inconv\'enients de cette approche grossi\`ere sont facilement visibles).
+ 
+On associe souvent les variables qualitatives \`a des nombres, mais il faut \'eviter d'interpr\'eter ces derniers de  fa\c{c}on numérique; si on utilise le code  ``roux'' $=1$ et ``blond'' $=2$ afin de repr\'esenter les couleurs de cheveux, par exemple, on comprend qu'on ne peut conclure que ``blond'' $>$ ``roux'', m\^eme si $2>1$.   
 
+Une variable qualitative ne pouvant prendre que deux valeurs est appelée \textbf{variable dichotomique} (ou binaire); celles avec plus de deux valeurs sont appelées \textbf{variables polytomiques}. %Au besoin, l'analyse de régression sur les variables cat\'egoriques est réalisée par régression logistique multinomiale.
 
 \subsubsection*{Défis avec les données catégoriques}
-Lorsqu'on traite des données ayant des attributs catégoriels, on suppose que ces attributs  pourraient facilement être representer en valeurs numériques. Cependant, il existe des exemples d'attributs catégoriels, dans lesquels ces represenration en attributs numériques n'est pas un processus simple. Par conséquent, des méthodes telles que celles basées sur des mesures de distance ou de densité ne sont pas acceptables, nécessitant une modification nécessaire de leurs formulations.
+La representation de variables cat\'egoriques par des attributs numériques m\`ene \`a des guets-apens; par conséquent, les méthodes reposant sur des mesures de distance ou de densité ne sont pas sugg\'er\'ees, \`a moins de modifier  leurs formulations au pr\'ealable.
 
-\subsection{Revue de quelques méthodes}
+\subsection{Revue de deux méthodes}
+\subsubsection*{Algorithme AVF}
+L'\textbf{algorithme AVF} (pour ``Attribute Value Frequency'') offre une approche simple et rapide afin de détecter les valeurs aberrantes dans les données catégoriques, ce qui minimise les analyses sur les données, sans pour autant avoir besoin de créer ou de chercher parmi différentes combinaisons d’attributs ou d'ensembles d'éléments (ce qui ralentie la recherche consid\'erablement, en g\'en\'eral).  \newline\newline De mani\`ere intuitive,  les valeurs aberrantes sont les points qui sont peu fréquents dans l'ensemble de données;  le point aberrant ``idéal'' dans un ensemble de données catégoriques est une observation  dont \textbf{chaque valeur est extrêmement irrégulière} (ou peu fréquente). 
+\newline\newline La \textbf{rareté} d'une valeur d'attribut peut être mesurée en calculant le nombre de fois où cette valeur est assumée par l'attribut correspondant dans l'ensemble de données. 
 
-
-\subsubsection*{Algorithm AVF}
-
-L'algorithme AVF (Attribute Value Frequency) est une approche simple et rapide pour détecter les valeurs aberrantes dans les données catégorielles, ce qui minimise les analyses sur les données, sans avoir besoin de créer ou de chercher parmi différentes combinaisons d’attributs ou d'ensembles d'éléments.  \\
-
-\noindent Il est intuitif que les valeurs aberrantes sont les points qui sont peu fréquents dans l'ensemble de données, et que le point aberrant «idéal» dans un ensemble de données catégoriel est un point dont chaque valeur est extrêmement irrégulière (ou peu fréquente). \\
-
-
-\noindent La rareté d'une valeur d'attribut peut être mesurée en calculant le nombre de fois où cette valeur est assumée par l'attribut correspondant dans l'ensemble de données. \\
-
-\noindent Supposons qu'il y ait $n$ points dans l'ensemble de données : $x_i$ , $I = 1 \cdots n$ et chaque point de données a m attributs. Nous pouvons écrire que $x_{i} = [x_{i1}, \cdots , x_{il}, \cdots, x_{im}]$, avec $x_{il}$ est la valeur du l-ième attribut de $x_i$. Suivant le raisonnement donné ci-dessus, le score AVF ci-dessous est un bon indicateur pour décider si $x_i$ est une valeur aberrante:
-
-$$AVFscore(x_i) = \frac{1}{m} \sum_{l=1}^{m}f(x_{il})$$
-
-
-\noindent où $f(x_{il})$ est le nombre de fois où la l-ième valeur d'attribut de $x_i$ apparaît dans l'ensemble de données. Un score AVF inférieur signifie qu'il est plus probable que le point soit une valeur aberrante. Étant donné que $AVFscore(x_i) $ est essentiellement une somme de $m$ nombres positifs, le score AVF est minimal lorsque chacun des termes de la somme est minimisé individuellement. Ainsi, la valeur aberrante «idéale» telle que définie ci-dessus aura le score AVF minimum. Le score minimum sera atteint lorsque chaque valeur du point de données n'apparaît qu'une seule fois.  
+Supposons qu'il y ait $n$ observations dans l'ensemble de données $\{\mathbf{x}_i\}$, $i = 1, \ldots, n$, et que chaque observation poss\`ede $m$ attributs. Nous écrivons alors $$\mathbf{x}_{i} = (x_{i,1}, \cdots , x_{i,\ell}, \cdots, x_{i,m}),$$ o\`u $x_{i,\ell}$ est la valeur du $\ell-$ième attribut de $\mathbf{x}_i$. Avec le  raisonnement pr\'esent\'e ci-dessus, le \textbf{score AVF} est un bon indicateur quand le temps vient de décider si $\textbf{x}_i$ est une observation aberrante:
+$$\text{scoreAVF}(\mathbf{x}_i) = \frac{1}{m} \sum_{\ell=1}^{m}f(x_{i,\ell}),$$
+où $f(x_{i,\ell})$ est le nombre de fois où la $\ell-$ième valeur d'attribut de $\mathbf{x}_i$, $x_{i,\ell}$ apparaît dans l'ensemble de données. Un score AVF inférieur signifie qu'il est plus probable que l'observation soit aberrante. 
+\newline\newline Étant donné que $\text{scoreAVF}(\mathbf{x}_i) $ est une somme de $m$ nombres positifs, il est minimal lorsque chacun des termes de la somme est minimisé individuellement; ainsi, la valeur aberrante ``idéale'' (telle que définie ci-dessus) minimise l'AVF. Ce score minimum est atteint lorsque chaque valeur d'attribut de l'observation en question n'apparaît qu'une seule fois dans l'ensemble de donn\'ees.
 
 
 \begin{algorithm}
+\SetAlgorithmName{Algorithme}{}
 \SetAlgoLined
-Étiquetez tous les points de données comme non aberrants \;
+\textbf{\'Entr\'ees:} donn\'ees $D$ ($n$ observations, $m$ attributs), nombre de donn\'ees aberrantes $k$ \\
+%Étiqueter toutes les observations comme non aberrants;
 
-Calculez la fréquence de chaque valeur d'attribut, $f(x_{il})$ \;
+%Calculer la fréquence de chaque valeur d'attribut, $f(x_{i,\ell})$ \;
 
-i = 1 \;
+i = 1
 
 \While{ $i \leq n$ }{
 	j = 1
+  	
+  	$\text{scoreAVF}(\mathbf{x}_i)=f(x_{i,j})$
+  	
   	\While{$j \leq m$}{
-	$AVFscore(x_i) += f(x_{il})$\;
-	 $j =  j +1$\; 
+	$\text{scoreAVF}(\mathbf{x}_i) = \text{scoreAVF}(\mathbf{x}_i)+f(x_{i,j})$;
+	$j =  j +1$ 
 	}
-	Moyenne( $AVFscore(x_i)$)\;
-	$i = i + 1$\;
+	$\text{scoreAVF}(\mathbf{x}_i)=$Moyenne($\text{scoreAVF}(\mathbf{x}_i)$)
+	
+	$i = i + 1$
 }
 
-\KwResult{ top $k$ outliers with minimum AVF Score}
-\caption{AVF Pseudocode $D$: Données ($n$ points, $m$ attributes)}
+\textbf{Sorties:} $k$ observations de score AVF minimal
+\caption{AVF}
 \label{alg:AVF}
 \end{algorithm}%\newl
 
-\noindent Comme le montre le pseudocode de l'AVF (voir  Algorithm~\ref{alg:AVF}), une fois le score AVF est calculé pour tous les points, les $k$ valeurs aberrantes renvoyées sont les k points avec les scores AVF les plus petits. 
-
-\noindent La complexité de l'AVF est $O(n\times m)$, où $n$ est le nombre de points de données et $m$ est la dimensionnalité de l'ensemble de données.
-
-
-\subsubsection*{Algorithm Greedy}
-
-Dans cette section, nous présentons un algorithme  "Greedy", not é greedyAlg1, qui est efficace  pour identifier les valeurs aberrantes.
-Notre algorithme "greedyAlg1" prend le nombre de valeurs aberrantes souhaitées (supposé être k) en entrée et sélectionne les points comme des valeurs aberrantes d'une manière "Greedy". 
-Initialement, l'ensemble des valeurs aberrantes (désigné par "OS") estspécifié comme étant vide et tous les points sont marqués comme non aberrants. 
-Ensuite, nous avons besoin de "k" scans sur l'ensemble de données pour sélectionner "k" points comme valeurs aberrantes. 
-Dans chaque balayage, pour chaque point étiqueté comme non aberrant, il est temporairement retiré de l'ensemble de données comme valeur aberrante et l'objectif d'entropie est le réévalué.
-Un point qui produit "un impact d'entropie maximal", c'est-à-dire la diminution maximale de l'entropie implique la suppression de ce point est sélectionnée comme valeur aberrante dans l'analyse en cours et ajoutée au "OS". L'algorithmese termine lorsque la taille du "OS" atteint $k$.
+\ \\
+\noindent Comme on peut le voir au pseudocode de l'AVF (consulter l'Algorithme~\ref{alg:AVF}), une fois le score AVF calculé pour toutes les observations, les $k$ valeurs aberrantes renvoyées sont les $k$ observations dont les scores AVF sont les plus petits (l'agorithme est de complexit\'e $\mathcal{O}(nm)$). 
 
 
-Pour plus de details sur l'Algorithme voici la l'article source : \url{https://arxiv.org/pdf/cs/0507065.pdf} 
 
+\subsubsection*{Algorithme ``Greedy''}
 
+Nous présentons maintenant un algorithme  \textbf{avare} (d\'enoté par ``greedyAlg1''), qui identifie les valeurs aberrantes de fa\c{c}on efficace. 
+\newline\newline La formulation math\'ematique du probl\`eme est simple -- \'etant donn\'es $D$ et $k$, on r\'esoud le probl\`eme d'optimisation $$\text{OS}=\arg\min_{O\subseteq D} \{H(D\setminus O)\}, \quad \text{t.q. }|O|=k,$$
+o\`u l'\textbf{entropie} du sous-ensemble $D\setminus O$ est la somme de l'entropie de chacuns des attributs des observations de $D\setminus O$:
+$$H(D\setminus O)=H(X_1;D\setminus O)+\cdots + H(X_m;D\setminus O)$$ et $$H(X_{\ell};D\setminus O)=-\!\!\!\!\!\!\!\!\!\!\!\sum_{z_{\ell}\in S(X_{\ell};D\setminus O)}\!\!\!\!\!\!\!\!\!\!\! p(z_{\ell})\log p(z_{\ell}),$$ o\`u $S(X_{\ell};D\setminus O)$ repr\'esente l'ensemble des valeurs que le $\ell-$i\`eme attribut peut prendre dans $D\setminus O$.
+\newline\newline L'algorithme "greedyAlg1" r\'esoud le probl\`eme comme suit:
+\begin{enumerate}
+\item Initialement, l'ensemble des valeurs aberrantes \text{OS} est vide et toutes les observations de $D\setminus \text{OS}$ sont identifi\'es comme r\'eguli\`eres.
+\item On calcule $H(D\setminus \text{OS})$. 
+
+\item Ensuite, on effectue un balayage (``scan'') sur l'ensem\-ble de données afin de sélectionner une observation aberrante: cChaque observation r\'eguli\`ere $\mathbf{x}$ est temporairement retirée de $D\setminus \text{OS}$ pour cr\'eer un sous-ensemble $D'_{\mathbf{x}}$, duquel on calcule l'entropie $H(D'_{\mathbf{x}})$. 
+\item L'observation $\mathbf{z}$ qui produit un \textbf{impact d'entropie maximal}, c'est-à-dire celle qui minimise $$H(D\setminus \text{OS})-H(D'_{\mathbf{x}}),\quad \mathbf{x}\in D\setminus \text{OS},$$ est ajout\'ee \`a \text{OS}.
+
+\item On r\'ep\`ete les \'etapes 2-4 \`a $k-1$ reprise(s) afin d'obtenir un ensemble \text{OS} contenant $k$ candidats-anomalies.
+\end{enumerate}
+
+\noindent Plus de details sont disponibles dans l'article source \cite{Article_source}. Remarque imporante: l'algorithme est de complexit\'e $\mathcal{O}(nmp)$, et est donc \'egalement  \textbf{extensible}. 
 
 

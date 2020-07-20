@@ -1,12 +1,13 @@
-\section{The $M/M/c$ Queuing System}
-An $M/M/c/\textrm{GD}/\infty$ queueing system also has exponential inter-arrival and service times, with rates $\lambda$ and $\mu$, respectively. What sets this system apart is that there are now $c>1$ servers willing to serve from a single line of customers, perhaps like one would find in a bank (see Figure~\ref{fig:MM}). \par If $j \leq c$ customers are present in the system, then every customer is being served and there is no wait time; if $j > c$ customers are in the system, then $c$ customers are being served and the remaining $j - c$ customers are waiting in the queue. \newl
-To model this as a birth-death process, we have to observe that the death rate is dependent on how many servers are actually being used. \par If each server completes service at a rate of $\mu$ (which may not be the case in practice as there might be variations in servers, at least for human servers), then the \textbf{actual death rate} is $\mu \times$ the number of customers actually being served. The parameters for this process are
+\section{Le système $M/M/c$}
+Dans un système $M/M/c/\textrm{GD}/\infty$, les intervalles d'arrivées et les temps de service suivent également des distributions exponentielles, de paramètre respectif $\lambda$ et $\mu$. Ce qui distingue ce système de celui que nous avons déjà étudié, c'est qu'il y a maintenant  $c>1$ serveurs/guichets prêts à servir une ligne de clients, comme on en trouve dans une banque, par exemple (cf. Figure~\ref{fig:MM}). \par Avec $j \leq c$ utilisateur dans le système,  chaque client est servi et il n'y a pas de temps d'attente; mais s'il y $j > c$ utlisateurs dans le système, $c$ se font servir et $j - c$ clients  restent en attente dans la file. \newl
+On peut modéliser la situation à l'aide d'un processus de naissance-mort; il suffit de remarquer que le taux de mortalité dépend du nombre effectif de serveurs utilisés. \par Si chaque serveur fournit un service à un taux $\mu$ (ce qui peut ne pas être le cas dans la pratique car il peut y avoir des variations dans les serveurs, tout du moins pour les serveurs humains), alors le taux de mortalité réel est $\mu$ multiplié par le nombre de clients desservis. Les paramètres de ce processus sont
 \begin{align*}
 \lambda_{n} &= \lambda, \ n=0,1,2,\ldots \\ 
-\mu_n &= n\mu, \ n=0,1,2, \ldots, c \\
-\mu_{n} &= c\mu,\  n=c+1,c+2,\ldots 
+\mu_n &= \begin{cases}n\mu, \ n=0,1,2, \ldots, c \\
+ c\mu,\  n=c+1,c+2,\ldots
+\end{cases}
 \end{align*}
-The traffic intensity for the $M/M/c$ system is $\rho = \lambda/(c \mu)$ and the steady-state solution is 
+L'intensité du trafic d'un système $M/M/c$ est $\rho = \lambda/(c \mu)$ et la solution de régime stable est 
 $$
  \pi_{n} = 
 \begin{cases}
@@ -14,12 +15,19 @@ $$
      \frac{c^{c} \rho^{n}}{c!} \pi_{0},   & \text{$n \geq c$} 
 \end{cases}
 $$
-where 
+où
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.45\textwidth]{Images/MM12.png}\qquad\qquad 
+\includegraphics[width=0.45\textwidth]{Images/MMc.png}\\
+\includegraphics[width=0.45\textwidth]{Images/Tandem.png}
+\caption{\small Schéma de systèmes de file d'attente ($M/M/1$, $M/M/c$, en tandem); les clients arrivent par la gauche, entrent dans la file d'attente, y demeurent jusqu'à ce qu'ils soient servis, puis sortent de la file.}\label{fig:MM}\hrule
+\end{figure*}%\afterpage{\FloatBarrier}
 $$
 \pi_{0} = \left[1 + \frac{\left(c \rho\right)^{c}}{c! \left(1-\rho\right)} + \sum^{c-1}_{n=1} \frac{c \rho^{n}}{n!}\right]^{-1}\!\!. $$
-Note that, as was the case in a $M/M/1$ system, if $\rho \geq 1$, there can be no steady state -- in other words, if the arrival rate is at least as large as the maximum possible service rate $\lambda \geq c \mu$, then the system ``blows up''.\newl From the end user's point of view, there might be a desire to ensure that customers do not wait in line an inordinate amount of time, but there might also be a desire to minimise the amount of time for which at least one of the server is idle. In a $M/M/c$ queueing system, this steady-state probability is given by 
-$$ P( n \geq c) =  \frac{\left(c \rho\right)^{c}}{c! \left(1-\rho\right)} \pi_{0}.$$ 
-Table~\ref{tab:pns} shows $P( n \geq c)$ for a variety of situations depending on $s$ and $\rho$.  
+Notons que, comme c'était le cas dans un système $M/M/1$, si $\rho \geq 1$, il ne peut y avoir d'état stable -- c'est-à-dire que si le taux d'arrivée est au moins aussi important que le taux de service maximum possible ($\lambda \geq c \mu$), le système ``explose''. \newl  Du point de vue du propriétaire, on peut vouloir s'assurer que les clients ne font pas la queue pendant un temps excessif, tout en réduisant au minimum le temps pendant lequel les serveurs restent en veille.  Dans un système $M/M/c$, la  probabilité que tous les guichets soient occupés (dans le régime stable) est donnée par 
+$$ P( n \geq c) = \frac{\left(c \rho\right)^{c}}{c ! \left(1-\rho\right)} \pi_{0}.$$ 
+Le tableau~\ref{tab:pns} donnent les valeur de $P( n \geq c)$ dans diverses situations.  
 \begin{table}[!t]
 \centering
 \begin{tabular}{ccccccc}
@@ -42,27 +50,25 @@ $\rho$ & $c=2$ & $c=3$ & $c=4$ & $c=5$ & $c=6$ & $c=7$ \\
 .95& .92& .91& .89& .88& .87& .85 \\
 \hline
 \end{tabular}
-\caption{\small Probabilities $P(n\geq c)$ that all servers are busy in an $M/M/c$ system for $c=2,\ldots, 7$ and values of $\rho$ between 0.1 and 0.95. \cite[p.1088]{QS_W}.}\label{tab:pns}\hrule
-\end{table}\afterpage{\FloatBarrier}
-Cumbersome calculations, using $W_{s} = \frac{1}{\mu}$, yield $$ L_{q} = P( n \geq c) \frac{\rho}{1-\rho}, \ 
+\caption{\small Probabilités $P(n\geq c)$ que tous les serveurs/guichets soient occupés dans un système $M/M/c$ pour $c=2,\ldots, 7$ et $\rho\in (0.1,0.95)$ \cite[p.1088]{QS_W}.}\label{tab:pns}\hrule
+\end{table}%\afterpage{\FloatBarrier}
+On peut effectuer des calculs (assez difficiles, au demeurant) à l'aide de $W_{s} = \frac{1}{\mu}$, afin de montrer que $$ L_{q} = P( n \geq c) \frac{\rho}{1-\rho}, \ 
 W_{q} = \frac{L_{q}}{\lambda}, \ 
 W = \frac{1}{\mu} + W_{q}, \ 
- L = \frac{\lambda}{\mu} + L_{q}.$$
-\newpage\noindent 
-\begin{Example} Consider, for instance, a bank with two tellers. An average of 80 customers arrive at the bank each hour and wait in a single line for an idle teller. For this specific bank, the average service is 1.2 minutes. Assume that inter-arrival times and service times are exponential. Determine:
+ L = \frac{\lambda}{\mu} + L_{q}.$$ 
+\begin{Exemple} Une banque a deux guichets. \`A chaque heure, 80 clients arrivent à la banque en moyenne et attendent dans une file unique qu'un guichet se libère. Supposons que le temps de service moyen est de 1.2 minute, et que les intervalles d'arrivée et les temps de service suivent des distributions enponentielles. Que sont:
 \begin{itemize}[noitemsep]
-	\item[(a)] The expected number of customers in the bank.
-	\item[(b)] The expected length of time a customer spends in the bank.
-	\item[(c)] The fraction of time that a particular teller is idle.
+	\item[(a)] le nombre prévu de clients dans la banque;
+	\item[(b)] la durée prévue du séjour dans la banque pour le client moyen, et
+	\item[(c)] la proportion du temps pendant laquelle les caissiers son inactifs.
 \end{itemize}
-\textbf{Solutions:} we are dealing with an $M/M/2$ system with $\lambda =80 $ customers/hr and $\mu = 50$ customers/hr. Thus, $\rho = \frac{80}{2\cdot 50} = 0.80 < 1$ and the steady-state exists. 
-\begin{itemize}[noitemsep]
-	\item[(a)]  From the above table, $P(n \geq 2) = 0.71$, from which we compute 
-\begin{align*} L_{q} &= P( n \geq 2)\cdot \frac{.8}{1-.8} = 2.84 \text{ customers}\\
-L& = 	\frac{80}{50} + L_{q}	= 4.44 \text{ customers.} \end{align*}
-\item[(b)]	We know that $W = \frac{L}{\lambda} = \frac{4.44}{80} = 0.055 \text{ hr }= 3.3 $ min.
-\item[(c)] To determine the fraction of time that a particular server is idle, note that tellers are idle during all moments when $n=0 $, and half the time (by symmetry) when $n = 1$. The probability that a server is idle is thus given by $ \pi_{0} + 0.5 \pi_{1}$. But
- $$\pi_{0} = \left[1 + \frac{\left(2\cdot .8\right)^{2}}{2! \left(1-.8\right)} + \sum^{2-1}_{n=1} \frac{2\cdot .8^{n}}{n!}\right]^{-1}= \frac{1}{9}$$ and $$\pi_{1} = \frac{1.6}{1!} \pi_{0} = 0.176$$ and so the probability that particular teller is idle is $0.11 + 0.5(0.176) = 0.198$.
+\textbf{Solutions:} nous faison affaire à un système $M/M/2$ avec $\lambda =80 $ clients/h et $\mu = 50 $ clients/h. Ainsi, l'intensité de trafic est $\rho = \frac{80}{2\cdot 50} = 0.80 < 1$ et le système admet un régime stable. \begin{itemize}[noitemsep]
+	\item[(a)] En consultant la table~\ref{tab:pns}, on constate que $$P(n \geq 2) = 0.71$$ pour $\rho=0.8$, d'où 
+\begin{align*} L_{q} &= P( n \geq 2)\cdot \frac{.8}{1-.8} = 2.84 \text{ clients}\\
+L& = 	\frac{80}{50} + L_{q}	= 4.44 \text{ clients.} \end{align*}
+\item[(b)]	On a $W = \frac{L}{\lambda} = \frac{4.44}{80} = 0.055 \text{ hr }= 3.3 $ min.
+\item[(c)] On détermine la proportion du temps pendant lequel un serveur est inactif en notant que les guichets sont inactifs à tout instant où $n=0 $, et la moitié du temps lorsque $n = 1$ (par symétrie) . La probabilité qu'un serveur reste inactif est donc donnée par $ \pi_{0} + 0,5 \pi_{1}$. Mais
+ $$\pi_{0} = \left[1 + \frac{\left(2\cdot .8\right)^{2}}{2! \left(1-.8\right)} + \sum^{2-1}_{n=1} \frac{2\cdot .8^{n}}{n!}\right]^{-1}= \frac{1}{9}$$ et $$\pi_{1} = \frac{1.6}{1!} \pi_{0} = 0.176,$$ d'où la probabilité qu'un caissier spécifique est inactif est de $0.111 + 0.5(0.176) = 0.199$.
 \end{itemize}
-\end{Example}
-\noindent \textbf{IMPORTANT NOTE:} general queueing models are not understood to the same extent as $M/M/1$ (and $M/M/c$ to a lesser extent), and their given performance measurements may only be approximate and highly-dependent on the specifics of the problem at hand. \par For this reason, $M/M/c$ models are sometimes used even when their use is not supported by the data (the situation is not unlike the widespread use of the normal distribution in a variety of probability and statistics problems). \par In numerous applications, the empirical distributions of arrivals and service times are nearly Poisson and exponential, respectively, so that the assumption is not entirely off the mark, but numerical simulations should not be eschewed when departures from the $M/M/c$ model are too pronounced.\vfill
+\end{Exemple}
+\noindent \textbf{Remarque importante:} en général, les modèles de files d'attente ne sont pas compris dans la même mesure que le $M/M/1$ (et le $M/M/c$ dans une moindre mesure), et les mesures de performance ne sont souvent que des approximations fortement dépendantes des spécificités du problème en question. \par C'est pourquoi les modèles $M/M/c$ sont parfois utilisés même lorsque leur emploi n'est pas justifié par les données et observations (la situation n'est pas sans rappeler l'utilisation répandue de la distribution normale dans divers problèmes de probabilité et de statistiques). \par Dans de nombreuses applications, les distributions empiriques des arrivées et des temps de service approchent une distribution de Poisson et une distribution exponentielle, respectivement, de sorte que l'hypothèse n'est pas entièrement erronée, mais les simulations numériques ne devraient pas être évitées lorsque les écarts par rapport au modèle $M/M/c$ sont trop prononcés.

@@ -1,0 +1,46 @@
+# Number of replicates from the prior
+n.draws <- 200000
+
+# Prior
+# This generates a probability of 
+# success for mailings A and B, 
+# for each of the replicates
+prior <- data.frame(p.A = runif(n.draws, 0, 1), p.B = runif(n.draws, 0, 1))
+
+# Generative model
+# This tells us how many visitors to expect
+# for mailing types A, B 
+generative.model <- function(p.A, p.B) {
+  visitors.A <- rbinom(1, 16, p.A)
+  visitors.B <- rbinom(1, 16, p.B)
+  c(visitors.A = visitors.A, visitors.B = visitors.B)
+}
+
+# Simulate data using the parameters 
+# from the prior and the gen. model
+# This generates the actual number of 
+# visitors for each replicate 
+sim.data <- as.data.frame( t(sapply(1:n.draws, function(i) {
+  generative.model(prior$p.A[i], prior$p.B[i])})))
+
+# Only those prior probabilities for 
+# which the generative model match the 
+# observed data are retained
+posterior <- prior[sim.data$visitors.A == 4 & sim.data$visitors.B == 8, ] 
+
+# Visualize the posteriors
+par(mfrow = c(2,3))
+hist(posterior$p.A, main = "Posterior -- mailing A", xlab="p.A") 
+hist(posterior$p.B, main = "Posterior -- mailing B", xlab="p.B")
+plot(posterior,main = "Success for mailing types A and B", xlab="p.A", ylab="p.B")
+
+# Compute the estimated average profit per mailing
+avg.profit.A <- -30 + posterior$p.A * 1000 
+avg.profit.B <- -300 + posterior$p.B * 1000 
+hist(avg.profit.A, main = "Average Profit -- mailing A", xlab="profit.A") 
+hist(avg.profit.B, main = "Average Profit -- mailing B", xlab="profit.B")
+
+# Total expected profit
+hist(avg.profit.A - avg.profit.B, main="Posterior -- profit A - profit B")
+expected.avg.profit.diff <- mean(avg.profit.A - avg.profit.B)
+abline(v = expected.avg.profit.diff , col = "red", lwd =2)

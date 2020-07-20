@@ -1,0 +1,125 @@
+---
+title: "Bayesian Data Analysis Tutorial"
+output: html_notebook
+---
+(based on R. Baath's UseR! 2015 tutorial)
+# Model 1 -- Simple
+```{r}
+N.draw = 500000 # number of replicates
+x = 500 # number of bills marked in the initial capture
+y = 300 # number of bills sampled in the second capture
+w = 127 # number of marked bills in the sample
+upper.limit = 1500 # maximum (theoretical) number of bills
+bin.width = 50 # for plotting the posterio
+
+# Defining and drawing from the prior distribution
+N.bills = sample (x:1500, N.draw, replace=TRUE) # number of marked bills in each experiment
+barplot(table(cut(N.bills, seq(x, upper.limit, bin.width)))/ length(N.bills), col = "gray")
+
+# Defining the generative model
+pick.bills <- function(N.bills) {
+  bills <- rep(0:1, c(N.bills - x, x)) # 0 for un-marked, 1 for marked in the inital capture
+  sum(sample(bills, y)) # sampling y bills in the second capture       
+}
+
+# Simulating the data
+N.marked <- rep(NA, N.draw) 
+  for(i in 1:N.draw) {
+    N.marked[i] <- pick.bills(N.bills[i])
+  }
+
+# Filtering out parameter values N.marked that were not equal to w
+post.bills <- N.bills[N.marked == w]
+
+# Plotting the posterior distribution
+length(post.bills)
+barplot(table(cut(post.bills, seq(x,upper.limit,bin.width))) / length(post.bills), col = "blue")
+
+# Statistics
+min(post.bills)
+mean(post.bills)
+median(post.bills)
+max(post.bills)
+```
+# Model 2 -- Marked Bills Are Brittle
+```{r}
+N.draw = 500000 # number of replicates
+x = 500 # number of bills marked in the initial capture
+y = 300 # number of bills sampled in the second capture
+w = 127 # number of marked bills in the sample
+u = 0.9 # probability that marked bills will be retired
+upper.limit = 1500 # maximum (theoretical) number of bills
+bin.width = 50 # for plotting the posterio
+
+# Defining and drawing from the prior distribution
+N.bills = sample (x:1500, N.draw, replace=TRUE) # number of marked bills in each experiment
+barplot(table(cut(N.bills, seq(x, upper.limit, bin.width)))/ length(N.bills), col = "gray")
+
+# Defining the generative model
+pick.bills <- function(N.bills) {
+  bills <- rep(0:1, c(N.bills - x, x)) # 0 for un-marked, 1 for marked in the inital capture
+  prob.pick <- ifelse(bills == 0, 1.0, u)
+  sum(sample(bills, y, prob = prob.pick)) # sampling y bills in the second capture       
+}
+
+# Simulating the data
+N.marked <- rep(NA, N.draw) 
+  for(i in 1:N.draw) {
+    N.marked[i] <- pick.bills(N.bills[i])
+  }
+
+# Filtering out parameter values N.marked that were not equal to w
+post.bills <- N.bills[N.marked == w]
+
+# Plotting the posterior distribution
+length(post.bills)
+barplot(table(cut(post.bills, seq(x,upper.limit,bin.width))) / length(post.bills), col = "blue")
+
+# Statistics
+min(post.bills)
+mean(post.bills)
+median(post.bills)
+max(post.bills)
+```
+
+# Model 3 -- Listen to the Banker
+```{r}
+N.draw = 500000 # number of replicates
+x = 500 # number of bills marked in the initial capture
+y = 300 # number of bills sampled in the second capture
+w = 127 # number of marked bills in the sample
+u = 0.9 # probability that marked bills will be retired
+banker.mean = 1000
+upper.limit = 1500 # maximum (theoretical) number of bills
+bin.width = 50 # for plotting the posterio
+
+# Defining and drawing from the prior distribution
+N.bills = rnbinom(N.draw, mu = banker.mean - x, size = w) + x # number of marked bills in each experiment, using the banker's experience
+barplot(table(cut(N.bills, seq(x, upper.limit, bin.width)))/ length(N.bills), col = "gray")
+
+# Defining the generative model
+pick.bills <- function(N.bills) {
+  bills <- rep(0:1, c(N.bills - x, x)) # 0 for un-marked, 1 for marked in the inital capture
+  prob.pick <- ifelse(bills == 0, 1.0, u)
+  sum(sample(bills, y, prob = prob.pick)) # sampling y bills in the second capture       
+}
+
+# Simulating the data
+N.marked <- rep(NA, N.draw) 
+  for(i in 1:N.draw) {
+    N.marked[i] <- pick.bills(N.bills[i])
+  }
+
+# Filtering out parameter values N.marked that were not equal to w
+post.bills <- N.bills[N.marked == w]
+
+# Plotting the posterior distribution
+length(post.bills)
+barplot(table(cut(post.bills, seq(x,upper.limit,bin.width))) / length(post.bills), col = "blue")
+
+# Statistics
+min(post.bills)
+mean(post.bills)
+median(post.bills)
+max(post.bills)
+```

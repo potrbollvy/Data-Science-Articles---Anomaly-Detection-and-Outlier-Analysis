@@ -1,0 +1,181 @@
+%Last version 1/1/2007
+
+%%%%%%%%%%%%%%%%%% Math fonts %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bbZ}{{\rm \rlap Z\kern 2.2pt Z}}
+\newcommand{\matZ}{{\bbZ}}
+\newcommand{\bbR}{{\rm I\hspace{-0.8mm}R}}
+\newcommand{\matR}{{\bbR}}
+
+\def\N{\mathcal{N}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Moments %%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+\newcommand{\Cov}{{\rm Cov}}
+\newcommand{\Var}{{\rm Var}}
+\newcommand{\Ex}{{\rm E}}
+\newcommand{\SD}{{\rm SD}}
+\newcommand{\se}{{\rm se}}
+\newcommand{\mse}{{\rm MSE}}
+\newcommand{\sse}{{\rm SSE}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\etal}{{\it et al. }}
+\newcommand{\eqdistr}{\stackrel{\rm d}{=}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\newton}[2]{\left(\begin{array}{c}#1\\#2\end{array}\right)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% bb fonts %%%%%%%%%%%%%%%%%%%%%%%%%%55
+\def\field{\mathbb}
+\def\R{\field{R}}
+\def\B{\field{B}}
+\def\Hil{\field{H}}
+\def\P{\field{P}}
+\def\C{\field{C}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Environments %%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtheorem{exe}{Question}
+\newtheorem{defn}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newtheorem{ex}{Example}
+\newtheorem{cor}{Corollary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\def\ds{\displaystyle}
+\newif\ifHiding\Hidingfalse
+\def\Hide#1{\ifHiding\phantom{#1}\else #1\fi}
+%\newcommand{\half}{\ensuremath{{\textstyle{\frac12}}}}
+\newcommand{\ind}[1]{\ensuremath{1\!\left\{#1\right\}}}
+\newcommand{\topline}[1]{\genfrac{}{}{0pt}{}{#1}{}}
+\newcommand{\Op}[1]{\ensuremath{O_p\left(#1\right)}}
+\newcommand{\op}[1]{\ensuremath{o_p\left(#1\right)}}
+\newcommand{\Opc}[1]{\ensuremath{O_p\left\{#1\right\}}}
+\newcommand{\opc}[1]{\ensuremath{o_p\left\{#1\right\}}}
+\newcommand{\mayequal}{\ensuremath{\stackrel?=}}
+\newcommand{\aobs}{\ensuremath{\alpha_{\text{obs}}}}
+\def\nn{\nonumber}
+\def\inN{\in\mathbb N}
+\def\ph{\phantom}
+\def\splusgraph#1#2{\begin{center}\scalebox{.7}[#2]{\includegraphics{#1}}\end{center}}
+\def\splus{{\texttt{S-PLUS}}\ }
+\def\nice{\bfseries\sffamily\boldmath}
+\def\nicer{\bfseries\sffamily\boldmath\slshape}
+\def\conv#1{\stackrel{#1}\longrightarrow}
+\def\cd{\stackrel{\mathcal D}\longrightarrow}
+\def\eqd{\stackrel{\mathcal D}=}
+\def\cp{\stackrel{P}\longrightarrow}
+\def\ad{\stackrel{\rm approx.}\sim}
+\def\cw{\rightsquigarrow}
+\def\iff{\Leftrightarrow}
+\def\suf{\Rightarrow}
+\def\nec{\Leftarrow}
+\def\mc{\mathcal}
+\def\exact{\stackrel{\rm exact}=}
+\def\bb{\mathbb}
+\def\mb{\mathbf}
+\def\bm#1{\mbox{\boldmath $#1$ }}
+\def\bs{\boldsymbol}
+\def\ms{\mathscr}
+\def\col#1{\boldsymbol{\mathcal{#1}}}
+\def\wh{\color{white}}
+
+\def\sig{\mathcal}
+\def\fd{\mathcal}
+\def\cf{\mathcal}
+\def\Dot{\,\cdot\,}
+\def\B{\sig{B}}
+\def\Sum#1#2{{\sum_{{#1}=1}^{#2}}}
+\def\SUM#1#2#3{{\sum_{{#1}=#2}^{#3}}}
+\def\mle{maximum likelihood estimat}
+\def\iid{independent and identically distributed}
+\def\rv{random variable}
+\def\cdf{cumulative distribution function}
+\def\pdf{probability density function}
+\def\column#1{\left(\begin{array}{c}#1\end{array}\right)}
+\def\gcv#1#2#3{\left(\begin{array}{c}#1\\#2\\\vdots\\#3\end{array}\right)}
+\def\colvecsum#1#2#3{\left(\begin{array}{c}#1_1+#2_1\\#1_2+#2_2\\\vdots\\#1_{#3}+#2_{#3}\end{array}\right)}
+\def\colvec#1#2{\left(\begin{array}{c}#1_1\\#1_2\\\vdots\\#1_{#2}\end{array}\right)}
+\def\cv#1#2{\left(\begin{array}{c}#1_1\\\vdots\\#1_{#2}\end{array}\right)}
+\def\colvecextrasub#1#2#3{\left(\begin{array}{c}#1_{1,#3}\\#1_{2,#3}\\\vdots\\#1_{#2,#3}\end{array}\right)}
+\def\vecb#1{\mathbf{#1}}
+\def\s{\vecb}
+\def\b#1#2{(\s{#1},\s{#2})}
+\def\samp#1#2{\s{#1}=\seq{#1}{#2}}
+\def\biv#1#2#3{({#1}_1,{#2}_1),({#1}_2,{#2}_2),\ldots,({#1}_{#3},{#2}_{#3})}
+\def\cor{{\rm Corr}}
+\def\cov{{\rm Cov}}
+\def\var{{\rm Var}}
+\def\med{{\rm med}}
+\def\mad{{\rm mad}}
+\def\mean{{\rm mean}}
+\def\rank{{\rm rank}}
+\def\sd{standard deviation}
+\def\Mid{{\rm mid}}
+\def\iqr{{\rm iqr}}
+\def\qq{{\rm qq}}
+\def\ls{{\rm ls}}
+\def\rob{{\rm rob}}
+\def\centre{{\rm centre}}
+\def\dim{{\rm dim}}
+\def\ceil#1{\left\lceil#1\rceil\right}
+\def\flr#1{\left\lfloor#1\right\rfloor}
+\def\wrt{{with respect to }}
+
+% One of the following two lines needs to be commented out...
+\newcommand{\set}[2]{\ensuremath\left\{\,#1\,\left|\,#2\,\right.\right\}}
+%\renewcommand{\set}[2]{\ensuremath\left\{\,#1\,\left|\,#2\,\right.\right\}}
+
+\def\Set#1#2{{\left\{\left.#1\,\right|\,#2\right\}}}
+\def\Exp#1{\exp\!\left\{#1\right\}}
+\def\law#1{\mc L\left\{#1\right\}}
+\def\eps{\varepsilon}
+\def\deriv#1#2#3#4{\left.\frac{\partial^{#1}}{\partial{#2}}\topline{#3}\right|_{#4}}
+\def\der#1#2#3{\frac{\partial^{#1}}{\partial{#2}}\topline{#3}}
+\def\seq#1#2{{#1}_1,{#1}_2,\ldots,{#1}_{#2}}
+\def\Ord#1#2{#1_{1,#2},#1_{2,#2},\ldots,#1_{#2,#2}}
+\def\ord#1#2{#1_{(1)},#1_{(2)},\ldots,#1_{(#2)}}
+\def\seqq#1#2#3{#1_{1,1},#1_{1,2},\ldots,#1_{1,#2_1},#1_{2,1},#1_{2,2},\ldots,#1_{2,#2_2},\ldots,#1_{#3,1},#1_{#3,2},\ldots,#1_{#3,#2_{#3}}}
+\def\arr#1#2#3{\begin{array}{cccc}
+#1_{1,1} & #1_{1,2} & \ldots & #1_{1,#2_1} \\
+#1_{2,1} & #1_{2,2} & \ldots & #1_{2,#2_2} \\
+\vdots   &  \vdots  & \vdots &  \vdots  \\
+#1_{#3,1} & #1_{#3,2} & \ldots & #1_{#3,#2_#3} \\
+\end{array}}
+\def\matrix#1#2#3{\begin{array}{cccc}
+#1_{1,1}& #1_{1,2}&\ldots&#1_{1,#3} \\
+#1_{2,1}& #1_{2,2}&\ldots&#1_{2,#3} \\
+\vdots&\vdots&\ddots&\vdots \\
+#1_{#2,1}& #1_{#2,2}&\ldots&#1_{#2,#3} \\
+\end{array}}
+\def\Matrix#1#2#3{\begin{array}{cccc}
+#1_{11}& #1_{12}&\ldots&#1_{1#3} \\
+#1_{21}& #1_{22}&\ldots&#1_{2#3} \\
+\vdots&\vdots&\ddots&\vdots \\
+#1_{#21}& #1_{#22}&\ldots&#1_{#2#3} \\
+\end{array}}
+\def\oneway#1#2#3#4{\set{{#1}_{{#2}{#3}}}{1\leq{#3}\leq n_{#2};\, 1\leq{#2}\leq{#4}}}
+\def\twoway#1#2#3#4#5{\set{{#1}_{{#2},{#3}}}{{#2}=1,2,\ldots,{#4}\,;\, {#3}=1,2,\ldots,{#5}}}
+\def\ip#1#2{\langle#1,#2\rangle}
+\def\norm#1{\left\Vert#1\right\Vert}
+\def\perm#1#2{^{#1}\!P_{#2}}
+\def\sq{\mathbf}
+\def\proj#1#2{\hat{#1}_{#2}}
+\def\D{\partial}
+\def\wt{\widetilde}
+\def\ol{\overline}
+\def\Ol#1{\,\overline{\!#1}}
+\def\ul{\underline}
+
+%\usepackage{fdsymbol}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

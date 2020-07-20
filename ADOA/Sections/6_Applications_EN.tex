@@ -1,13 +1,11 @@
 % {Youssouph Cissokho}
-\section{Applications to Real Problems}\label{Section:6}
-In this section, we will provide an experimental comparison of some classical methods mentioned above to test and compare the proposed outlier detection techniques on real data.
-
-\noindent\textbf{Data pre-preprocessing:} All datasets have been normalized  so that those with large scales do not dominate the others and qualitative variables are excluded before passing them to the algorithms.
-
-\noindent Some algorithms defined in Section \ref{Section:2} are considered in this study such as \textbf{Local Outlier Factor (LOF), Isolation Forest, $k$ Nearest Neighbours and Principal component analysis (PCA)}. The default parameters are used for all of them. The python code can be found in the Appendix of this report. \newl
-
+\section{Applications}\label{Section:6}
+We end this report with  an experimental comparison of some of the outlier detection methods discussed in the preceding sections. 
+\newl \textbf{Data pre-preprocessing:} all datasets have been normalized, and qualitative variables have been removed.
+\newl \textbf{Algorithms:} we test $4$ algorithms, namely  \textbf{Local Outlier Factor}  (LOF), \textbf{Isolation Forest} (iF), \textbf{$k$ Nearest Neighbours} ($k$NN) and \textbf{Principal Component Analysis} (PCA). The default parameters are used in all cases.  \newl
+\textbf{Datasets:}
 \noindent \textbf{a) Dataset 1: Airlines:} includes information on all domestic flights in the USA in 2019, such as departure time, arrival time, origin airport, destination airport, etc. available  \href{https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=}{\textcolor{blue}{\underline{here}}}. The purpose is to analyse delays in departures and/or arrivals of flights. Indeed, a flight is considered to be "on time" \textbf{if it arrives less than 15 minutes later than the indicated time} in the carrier's computer reservation systems (CRS). Therefore, \textbf{anomalies are flights with chronic delays}. To do this, a sample of $500$ flights departing from Chicago O'Hare Airport (ORD) is extracted and average delay times are calculated in relation to airport arrival times. The average arrival time is calculated for all flights landing at a given airport.\textbf{ The anomalies are therefore the airports that show unusual average delays.}
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=.50\textwidth]{\MainFolder/Images/vols1.png}
     %\includegraphics[width=.40\textwidth]{\MainFolder/Images/Fatal1.png}
@@ -35,7 +33,7 @@ In Figures \ref{fig21}, you can see outliers as detected by the different techni
  is a data representing fatal accidents involving only occupants of passenger cars and light trucks in  United States. \textbf{These accidents involve any activity that may divert a person's attention from the main task of driving, such as texting, using a cell phone, eating and drinking, grooming, using a navigation system, tuning the radio, etc.} available  \href{https://www.bts.dot.gov/content/passenger-car-and-light-truck-occupants-killed-and-restraint-use}{\textcolor{blue}{\underline{here}}}. \newl
 \noindent \textbf{Analysis of the results:}
 A visual analysis of Figure \ref{fig2}, shows that there are countries that stand out from the rest with a high number of fatalities in those countries. On the other hand, the boxplot  also tells us that these countries are abnormal (outliers), these countries are \textbf{Texas, california, Florida}. Further analysis is conducted to corroborate the previous results. These methods are \textbf{ KNN, PCA, LOF and Isolation Forest}. The result is presented in Figure \ref{fig2b}. 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=.5\textwidth]{\MainFolder/Images/fat1png.png}
     %\includegraphics[width=.40\textwidth]{\MainFolder/Images/Fatal1.png}
@@ -44,7 +42,7 @@ A visual analysis of Figure \ref{fig2}, shows that there are countries that stan
 \end{figure}
 %
 %
-\begin{table}[ht!]
+\begin{table}
 \centering
  \begin{tabular}{||c c c c c||} 
  \hline
@@ -103,10 +101,10 @@ Figure \eqref{fig2t1} shows the results of four methods \textbf{PCA, IsolationFo
 To evaluate the model's performance, these quantities are considered: \textbf{
 Sensitivity, recall, or true positive rate; Specificity or true negative rate; Precision or positive predictive value; Negative predictive value; False positive rate; False negative rate; False discovery rate; Overall accuracy}, see Table \ref{fig_sale3}.
 
-\noindent\textbf{Analysis of the results:} From Table \eqref{fig_sale3}, one can easily see that \textit{Isolation Forest (accuracy 91 $\%$)} and \textit{Local Outlier Factor (accuracy 87 $\%$)} outperform \textit{KNN (accuracy 91 $\%$)} and \textit{PCA (accuracy 91 $\%$)}.
+\noindent\textbf{Analysis of the results:} From Table \eqref{fig_sale3}, one can easily see that \textit{Isolation Forest (accuracy 91 $\%$)} and \textit{Local Outlier Factor (accuracy 87 $\%$)} outperform \textit{KNN (accuracy 9 $\%$)} and \textit{PCA (accuracy 13 $\%$)}.
 
 Furthermore, the ROC (Receiver Operating Characteristic curve)\footnote{ROC curve, is a graphical plot of the sensitivity, or true positives, vs. (1 − specificity), or false positives, for a binary classifier system as its discrimination threshold is varied. The ROC can also be represented equivalently by plotting the fraction of true positives (TPR = true positive rate) vs. the fraction of false positives (FPR = false positive rate)}, and the \textbf{Area under the ROC curve or (AUC)}\footnote{ The AUC is a \textbf{visual} tool to measure the accuracy models and compare their performances. A \textbf{perfect} test correspond to an area of $1$ while a \textbf{bad} one correspond to an area of $.5$. A guide for classification is given by the academic point system: \textbf{
-.90-1 = \textcolor{blue}{excellent (A)} ; .80-.90 = \textcolor{blue}{good (B)}; .70-.80 = \textcolor{blue}{fair (C)}; .60-.70 = \textcolor{blue}{poor (D)} et .50-.60 = \textcolor{blue}{fail (F)}}} (Figure \ref{fig_sal14})  provide tools to select possibly optimal models and to discard suboptimal ones independently from (and prior to specifying) the cost context or the class distribution \cite{ROC}. Indeed, from the grah \textbf{Isolation Forest} is a \textbf{good} model for this dataset with  AUC of $0.870$, followed by LOF with and AUC of $0.632$.
+.90-1 = \textcolor{blue}{excellent (A)} ; .80-.90 = \textcolor{blue}{good (B)}; .70-.80 = \textcolor{blue}{fair (C)}; .60-.70 = \textcolor{blue}{poor (D)} et .50-.60 = \textcolor{blue}{fail (F)}}} (Figure \ref{fig_sal14})  provide tools to select possibly optimal models and to discard suboptimal ones independently from (and prior to specifying) the cost context or the class distribution \cite{ROC}. Indeed, from the graph \textbf{Isolation Forest} is a \textbf{good} model for this dataset with  AUC of $0.870$, followed by LOF with an AUC of $0.632$.
 \begin{table}[H]
 \centering
  \begin{tabular}{||l c c c c||} 
@@ -138,7 +136,7 @@ Accuracy & 9 \% & 13 \%  & \textcolor{blue}{91} \% & \textcolor{blue}{87} \% \\
      \caption{ROC Curve Plot for PCA, KNN, Isolation Forest, LOF.}%\hrul
      \label{fig_sal14}
 \end{figure}
- \noindent However, PCA (AUC =$.56$) and KNN (AUC=$.23$) perform poorly. Figure \ref{fig_sal13} gives the confusion matrix of Isolation Forest. Out of $1119$ fraudulent transactions, it correctly identifies $521$ as such i.e. TP (sensitivity) of $43 \%$ and $678$ as normal  transactions i.e. FN rate of $ 57 \%$. Similarly, out of $15546$ normal transactions, it finds $13671$ as such i.e. TN (specificity) of $95 \%$  and $676$ as fraudulent i.e. FP  rate of $ 5\%$. 
+ \noindent However, PCA (AUC =$.56$) and KNN (AUC=$.23$) perform poorly. Figure \ref{fig_sal13} gives the confusion mwatrix of Isolation Forest. Out of $1119$ fraudulent transactions, it correctly identifies $521$ as such i.e. TP (sensitivity) of $43 \%$ and $678$ as normal  transactions i.e. FN rate of $ 57 \%$. Similarly, out of $15546$ normal transactions, it finds $13671$ as such i.e. TN (specificity) of $95 \%$  and $676$ as fraudulent i.e. FP  rate of $ 5\%$. 
 \begin{figure}[H]
   
     \includegraphics[width=.58\textwidth]{\MainFolder/Images/sales_confusionmat.png}
