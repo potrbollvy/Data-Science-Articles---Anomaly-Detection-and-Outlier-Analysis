@@ -1,59 +1,252 @@
-\newpage\section{Introduction}
-\begin{tcolorbox}[title=Fisher's Maxim]
-To consult the statistician after an experiment is finished is often merely to ask him to conduct a post mortem examination. He can perhaps say what the experiment died of. \\[-0.6cm]
+\section{Data Visualisation/Representation}
+\label{sec:DV}
+\begin{tcolorbox}[title=Analysis in the Modern Age]
+Discovery is no longer limited by the collection and processing of data, but rather management, analysis, and visualisation. \\[-0.6cm]
 \begin{flushright}
--- R.A. Fisher, Presidential Address to the \textit{First Indian Statistical Congress}, 1938
+-- @DamienMingle
 \end{flushright}
 \end{tcolorbox}
-\noindent Data analysis tools and techniques work in conjunction with collected data. The type of data that needs to be collected to carry out such analyses, as well as the priority placed on the collection of quality data relative to other demands, will dictate the choice of data collection strategies. The manner in which the resulting outputs of these analyses are used for decision support will, in turn, influence appropriate data presentation strategies and system functionality, which is an important access of the analytical process.  
-\newl Although analysts should always endeavour to work with \textbf{representative} and \textbf{unbiased data}, there will be times when the available data is flawed and not easily repaired. Analysts have a professional responsibility to explore the data, looking for potential fatal flaws \textbf{prior} to  the start of the analysis and to inform their client and stakeholders of any findings that could halt, skew, or simply hinder the analytical process or its applicability to the situation at hand. 
-\par Unless a clause has specifically been put in the contract to allow a graceful exit at this point, you will have to proceed with the analysis, flaws and all. It is  \textbf{EXTREMELY IMPORTANT} that you do not simply sweep these flaws under the carpet. Address them repeatedly in your meetings with the clients, and make sure that  the analysis results you present or report on include an appropriate \textit{caveat}. \subsection{Data Collection System} Analysts might also be called upon to provide suggestions to evaluate or fix the data collection system. The following items could help with that task. 
-\begin{itemize}[noitemsep]
-\item \textbf{Data Validity}: the system must collect the data in such a way that data validity is ensured during initial collection. In particular, data must be collected in a way that ensures sufficient accuracy and precision of the data, relative to its intended use.
-\item \textbf{Data Granularity, Scale of Data}: the system must collect the data at a level of granularity appropriate for future analysis.
-\item \textbf{Data Coverage}: the system must collect data that comprehensively, rather than only partially or unevenly, represents the objects of interest. As well, the system must collect and store the required data over a sufficient amount of time, and at the required intervals, to support data analyses that require data spanning a certain duration.
-\item \textbf{Data Storage}: the system must have the functionality to store the types and amount of data required for a particular analysis.
-\item \textbf{Data Accessibility}: the system must provide access to the data relevant for a particular analysis, in a format that is appropriate for this analysis.
-\item \textbf{Computational/Analytic Functionality}: the system must have the ability to carry out the computations required by relevant data analysis techniques.
-\item \textbf{Reporting, Dashboard, Visualization}: the system must be able to present the results of the data analysis in a meaningful, usable and responsive fashion.
-\end{itemize} 
-A number of different overarching strategies for data collection can be employed. Each of these different strategies will be more or less appropriate under certain data collection circumstances, and will result in different system functional requirements. In this report, we will focus on survey sampling, questionnaire design, and automated data collection. 
-\subsection{Formulating the Problem} The \textbf{objectives} drive all other aspects of quantitative analysis. With a \textbf{question} (or questions) in mind, an investigator can start the process that leads to \textbf{model selection}. With potential models in tow, the next step is to consider what \textbf{variates} (fields, variables) are needed, the \textbf{number} of observations required to achieve a  pre-determined \textbf{precision}, and how to best go about \textbf{collecting}, \textbf{storing} and \textbf{accessing} the data.\newl Another important aspect of the problem is to determine whether the questions are being asked of the data in and of \textbf{itself}, or whether the data is used as a \textbf{stand-in for a larger population}. In the later case, there are other technical issues to incorporate into the analysis in order to be able to obtain generalizable results.  
-\newl Questions do more than just drive the other aspects of data analysis -- they also drive the development of quantitative methods. They come in all flavours and their variability and breadth make attempts to answer them challenging: no single approach can work for all of them, or even for a majority of them, which leads to the discovery of better methods, which are in turn applicable to new situations, and so on, and so on.  
-\newl 
-Not every question is answerable, of course, but a large proportion of them may be answerable partially or completely; quantitative methods can provide insights, estimates and ranges for possible answers, and they can point the way towards possible implementations of the solutions.
-\newl As an illustration, consider the following questions:
-\begin{itemize}[noitemsep]
-\item Is cancer incidence higher for second-hand smokers than it is for smoke-free individuals? 
-\item Using past fatal collision data and economic indicators, can we predict future fatal collision rates given a specific national unemployment rate?   
-\item What effect would moving a central office to a new location have on average employee commuting time?  
-\item Is a clinical agent effective in the treatment against acne?
-\item Can we predict when border-crossing traffic is likely to be higher than usual, in order to appropriately schedule staff rotations? 
-\item Can personalized offers be provided to past clients to increase the likelihood of them becoming repeat customers? 
-\item Has employee productivity increased since the company introduced mandatory language training?   
-\item Is there a link between early marijuana use and heavy drug use later in life? 
-\item How do selfies from over the world differ in everything from mood to mouth gape to head tilt?
+\noindent What can be done with the data, once it has been collected? Two suggestions come to mind: 
+\begin{itemize}[noitemsep,topsep=2pt]
+\item \textbf{analysis} is the process by which we extract actionable insights from the data (this process is discussed in later subsections), while
+\item \textbf{visualisation} is the process of presenting data, calculations, and analysis outputs in a visual format. Visualisation of data \textit{prior} to analysis can help simplify the analytical process. Visualisation \textit{following} analysis allows for the analysis results to be presented to various stakeholders.  
 \end{itemize}
-\noindent How can such questions be answered? In many instances, the next step requires obtaining relevant data.   
-\subsection{Data Types} 
-Data has \textbf{attributes} and \textbf{properties}. Fields are classified as \textbf{response}, \textbf{auxiliary}, \textbf{demographic} or \textbf{classification} variables; they can be \textbf{quantitative} or \textbf{qualitative}; \textbf{categorical}, \textbf{ordinal} or \textbf{continuous}; \textbf{text-based} or \textbf{numerical}. Furthermore, data is \textbf{collected} through experiments, interviews, censuses, surveys, sensors, scraped from the Internet, etc. 
-\newl  Collection methods are not always sophisticated, but new technologies usually improves the process in many ways (while introducing new issues and challenges): modern data collection can occur over one pass, in batches, or continuously.
-\par How does one decide which data collection method to use? The type of question to answer obviously has an effect, as do the required precision, cost and timeliness. Statistics Canada's \textit{Survey Methods and Practices} \cite{DS_SC} provides a wealth of information on probabilistic sampling and questionnaire design, which remain relevant in this day of big (and real-time) data. \par The importance of this step cannot be overstated: without a well-designed plan to collect meaningful data, and without safeguards to identify flaws (and possible fixes) as the data comes in, subsequent steps are likely to prove a waste of time and resources. \newl
-As an illustration of the potential effect that data collection can have on the final analysis results, contrast the two following ways to collect similar data.
-\begin{tcolorbox}[title=Yes. I Mean No. ... I Think.]
-The Government of Qu\'ebec has made public its proposal to negotiate a new agreement with the rest of Canada, based on the equality of nations; this agreement would enable Qu\'ebec to acquire the exclusive power to make its laws, levy its taxes and establish relations abroad $-$ in other words, sovereignty $-$ and at the same time to maintain with Canada an economic association including a common currency; any change in political status resulting from these negotiations will only be implemented with popular approval through another referendum; on these terms, do you give the Government of Qu\'ebec the mandate to negotiate the proposed agreement between Qu\'ebec and Canada? \\[-0.6cm]
+\vspace{3pt}
+In this section, we focus on important visualisation concepts and methods; we shall provide examples of data displays to illustrate the various possibilities that might be produced by the data presentation component of a data analysis system.   
+\section{Pre-Analysis Use}
+\begin{tcolorbox}[title=The Ying.. ]
+A picture is worth a thousand words.\\[-0.6cm]
 \begin{flushright}
--- 1980 Qu\'ebec sovereignty referendum question
+-- ancient saying
 \end{flushright}
-\end{tcolorbox}
-\begin{tcolorbox}[title=Ont-ils tirés des lesons de 1980?]
-Should Scotland be an independent country? \\[-0.6cm]
+\end{tcolorbox}\noindent Even before the analytical stage is reached, data visualisation can be used to set the stage for analysis by:
+\begin{itemize}[noitemsep,topsep=2pt]
+\item detecting invalid entries and outliers,
+\item shaping the data transformations (binning, standardisation, Box-Cox transformations, dimension reduction, etc.),
+\item getting a sense for the data (data analysis as an art form, exploratory analysis), and 
+\item identifying hidden data structures (clustering, associations, patterns which may inform the next stage of analysis, etc.)
+\end{itemize}
+\section{Presenting Results}
+\begin{tcolorbox}[title=... and the Yang]
+A thousand and one words are worth more than a picture.\\[-0.6cm]
 \begin{flushright}
--- 2014 Scotland independence referendum question
+-- John McCarthy (attributed)
 \end{flushright}
-\end{tcolorbox}
-\noindent The end result was the same in both instances, but an argument can be made that the 2014 Scottish `No` was a much clearer `No` than the Qu\'ebec `No` of 34 years earlier -- in spite of the smaller 2014 victory margin (55.3\%-44.7\%, as opposed to 59.6\%-40.4\%). 
-\subsection{Data Storage and Access}
-Data \textbf{storage} is also strongly linked with the data collection process, in which decisions need to be made to reflect how the data is being collected (one pass, batch, continuously), the volume of data that is being collected, and the type of access and processing that will be required (how fast, how much, by whom).\par Stored data may go \textbf{stale} (e.g. people move, addresses no longer accurate), so it may be necessary to implement regular updating collection procedures. 
-\newl 
-Until very recently, the story of data analysis has been written for small datasets: useful collection techniques yielded data that could, for the most part, be stored on personal computers or on small servers. The advent of Big Data has introduced new challenges \textit{vis-\`a-vis} the collection, capture, access, storage, analysis and visualisation of datasets; some effective solutions have been proposed and implemented, and intriguing new approaches are on the way (such as DNA storing \cite{DC_DNA}, to name but one). We shall not discuss those challenges in detail, but be aware of their existence.  
+\end{tcolorbox}\noindent
+The crucial element of data presentations is that they need to help convey the insight or the message. To that effect, they should be clear, engaging, and (more importantly) readable. Our ability to think of questions (and to answer them) is in some sense limited by what we can visualise. There is always a danger that if certain types of visualisation techniques dominate the evidence presentations, the kinds of questions that are particularly well-suited to providing data for these techniques will come to dominate the landscape, which will then affect data collection techniques, data availability, future interest, and so forth.
+\subsection{Generating Ideas and Insights} In \textit{Beautiful Evidence} \cite{DV_T2}, Edward Tufte explains that evidence is presented to assist our thinking processes. He further suggests that there is a symmetry to visual displays of evidence -- the consumers should be seeking exactly what the producers should be providing, namely:
+\begin{itemize}[noitemsep, topsep=2pt]
+\item meaningful comparisons
+\item causal networks and underlying structure
+\item multivariate links
+\item integrated and relevant data
+\item a primary focus on content
+\end{itemize}
+\vspace{3pt}
+The choice of visualisation methods is strongly dependent on the analysis objective, that is, on the questions that need to be answered. The presentation method should not be selected randomly (or simply from a list of easily-produced templates). \newl In Figure~\ref{fig:5W},
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{Images/5W_Ruys.png}
+\caption[\small Data visualisation suggestions, by type of question ]{\small Data visualisation suggestions, by type of question (F.Ruys, Vizualism).} \hrule\label{fig:5W}
+\end{figure*}
+ Fr\'ed\'erik Ruys suggests various types of visual displays that can be used, depending on the questions that are being asked:   
+
+
+\begin{itemize}[noitemsep]
+\item who is involved?
+\item where is it taking place? 
+\item when did it happen? 
+\item what is it about? 
+\item how/why does it work? 
+\item how much? 
+\end{itemize}
+A general dashboard should at least be able to produce the following types of display: 
+\begin{itemize}[noitemsep,topsep=0pt]
+\item \textbf{charts} -- comparison and relation (scatterplots, bubble charts, parallel coordinate charts, decision trees, cluster plots, trend plots) 
+\item \textbf{choropleth maps} (heat maps, classification maps)  
+\item \textbf{network diagrams} and connection maps (association rule networks, phrase nets)
+\item \textbf{univariate diagrams} (word clouds, box plots, histograms) 
+\end{itemize}  
+\section{Multivariate Elements in Charts}
+\label{appendix:datapresentation}
+\begin{tcolorbox}[title=Cubism's Missing Link]
+Picasso was particularly struck by Poincar\'e's advice on how to view the fourth dimension, which artists considered another spatial dimension. If you could transport yourself into it, you would see every perspective of a scene at once. But how to project these perspectives on to canvas?\\[-0.6cm]
+\begin{flushright}
+-- John McCarthy (attributed)
+\end{flushright}
+\end{tcolorbox}\noindent
+At most two fields can be represented by position in the plane. How can we then represent other crucial elements on a flat computer screen? \newl Potential solutions include:   
+
+
+\begin{itemize}[noitemsep]
+\item third dimension
+\item marker size
+\item marker colour
+\item colour intensity and value 
+\item marker texture
+\item line orientation
+\item marker shape
+\item motion/movie
+\end{itemize} These elements do not always mix well -- efficient design is as much art as it is science. 
+% In \textit{Semiology of Graphics}, Jacques Bertin suggests that not all of those retinal variables are equally effective in their ability to convey information. Some of their strengths are shown in Figure~\ref{fig:retinal}. \begin{figure*}[t]
+%\centering
+%\includegraphics[width=0.8\textwidth]{Images/viz_retinal.png}
+%\caption[\small  visualisation elements and comparisons ]{\small visualisation elements and comparisons (J.Krygier, D.Wood).} \hrule\label{fig:retinal}
+%\end{figure*}
+%\afterpage{\FloatBarrier}
+\subsection{Examples} In what follows, we provide examples for each of these chart types, along with a concise description of key components and a list of questions that they could help answer for four of them. Some additional diagrams showcasing the four presentation types discussed previously are highlighted in Figures~\ref{fig:ex_dt_kyp} to \ref{fig:ex_ts_cv}.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{Images/GapminderMap-2.png}
+\caption[\small Bubble Chart: Gapminder's Health and Wealth of Nations ]{\small Gapminder's Health and Wealth of Nations (H.Rosling).} \hrule\label{fig:ex_bc_gap}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\subparagraph{Bubble Chart:} Health and Wealth of Nations  (Figure~\ref{fig:ex_bc_gap})
+\begin{itemize}[noitemsep]
+\item \textbf{Data:} 2011 life expectancy in years, inflation adjusted GDP/capita in USD, population for 193 UN members and 5 other countries. 
+\item \textbf{Some Questions and Comparisons:} Can we predict the life expectancy of a nation given its GDP/capita? (\textit{The trend is roughly linear: $\mbox{Expectancy}\approx 6.8 \times \ln \mbox{GDP/capita} + 10.6$}) \par Are there outlier countries? (\textit{South Africa, Botswana, and Vietnam, at a glance})\par Are countries with a smaller population healthier? (\textit{Bubble size seems uncorrelated with the axes' variates}) \par Is continental membership an indicator of health and wealth levels? (\textit{There is a clear divide between Western Nations (and Japan), most of Asia, and Africa}) \par How do countries  compare against world values for life expectancy and GDP per capita? (\textit{The vast majority of countries fall in three of the quadrants -- there are very few wealthy countries with low life expectancy. China sits near the world values, which is expected for life expectancy, but more surprising when it comes to GDP/capita -- compare with India})   
+\item \textbf{Multivariate Elements:} Scatterplot positions for health and wealth, bubble size for population, colour for continental membership, labels to identify the nations. 
+\item \textbf{Comments:} Are life expectancy and GDP/capita appropriate proxies for health and wealth? \par A fifth element could also be added to a screen display: the passage of time. 
+\item \textbf{Reference:} Image and documentation available at the Gapminder Foundation \\ https://www.gapminder.org/downloads/world-pdf/
+\end{itemize}
+\newpage
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{Images/choropleth.png}
+\caption[\small Choropleth Map: mean elevation by U.S. state ]{\small Mean elevation by U.S. state, in feet (source unknown).} \hrule\label{fig:ex_ch_mef}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\subparagraph{Choropleth Map:} Mean Elevation by U.S. State, in feet  (Figure~\ref{fig:ex_ch_mef})
+\begin{itemize}[noitemsep]
+\item \textbf{Data:} 50 observations, ranging from sea level (0-250) to (6000+)
+\item \textbf{Some Questions and Comparisons:} Can the mean elevation of the U.S. states tell us something about the global topography of the U.S.? (\textit{West has higher mean elevation related to the presence of the Rockies; Eastern coastal states are more likely to suffer from rising water levels, for instance})\par Are there any states that do not ``belong'' in their local neighbourhood, elevation-wise? (\textit{West Virginia and Oklahoma seem to have the ``wrong'' shade -- is that an artifact of the colour gradient and scale in use?})  \item \textbf{Multivariate Elements:} Geographical distribution and purple-blue colour gradient (as the marker for mean elevation)
+\item \textbf{Comments:} Is the `mean' the right measurement to use for this map? (\textit{it depends on the author's purpose.})\par Would there be ways to include other variables in this chart? (\textit{population density with texture, for instance})
+\item \textbf{Reference:} Author unknown.
+\end{itemize}
+\newpage \begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{Images/lexical.png}
+\caption[\small Network Clustering: lexical distance of European languages ]{\small Lexical distance of European languages (T.Elms).} \hrule\label{fig:ex_nd_lex}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\subparagraph{Network Diagram:} Lexical Distance of European Languages (Figure~\ref{fig:ex_nd_lex})
+\begin{itemize}[noitemsep]
+\item \textbf{Data:} Speakers and language groups for 43 European languages, lexical distances 
+\item \textbf{Some Questions and Comparisons:} Are there languages that are lexically closer to languages in other lexical groups than to languages in their own groups? (\textit{French is lexically closer to English than it is to Romanian})\par Which language has the most links to other languages? \textit{(English has 10 links)} \par Are there languages that are lexically close to multiple languages in other groups? (\textit{Greek is lexically close to French (Romance), Albanian, Dutch (Germanic), and Lithuanian (Baltic)}) \par Is there a correlation between the number of speakers and the number of languages in a language group? \textit{(Language groups with more speakers tend to have more languages)}      
+\item \textbf{Multivariate Elements:} Colour and cluster for language group, line style for lexical distance, bubble size for number of speakers
+\item \textbf{Comments:} How is lexical distance computed?  \par Some language pairs are not joined by links -- does this mean that their lexical distance is large enough not to be rendered? \par Are the actual geometrical distances meaningful? For instance, Estonian is closer to French in the chart than it is to Portuguese -- is it also lexically closer? 
+\item \textbf{Reference:} Teresa Elms, Etymologikon \\  https://elms.wordpress.com/2008/03/04/lexical-distance-among-languages-of-europe/ 
+\end{itemize}
+
+\newpage
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.9\textwidth]{Images/wordclouds.png}
+\caption[\small Word Cloud: U.S. Constitution and Canadian Charter of Rights and Liberties ]{\small U.S. Constitution and Canadian Charter of Rights and Liberties.} \hrule\label{fig:ex_wc_UC}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\subparagraph{Word Cloud:} U.S. Constitution and Canadian Charter of Rights and Liberties (Figure~\ref{fig:ex_wc_UC}).
+\begin{itemize}[noitemsep]
+\item \textbf{Data:} Text version of the U.S. Constitution and the Canadian Charter of Rights and Liberties 
+\item \textbf{Some Questions and Comparisons:} Are these two documents of the same type? \par Do the documents have the same authors? \par Could they conceivably have been written in the same era? \par Can important differences between Canada and the U.S. be gleamed from the wordclouds? 
+\item \textbf{Univariate Element:} Font size correlated with frequency count.    
+\item \textbf{Comments:} Note the absence of common, content-free words (the, and, etc.). \par Colour, orientation, and word placement are not mapped to multivariate data elements in these charts, but these options are available. \par Semantic parsing and phrase nets could give us a better idea of the general ``sentiment'' underlying the documents -- what groups of words tend to occur together? \par Once the main differences have been absorbed, removing the most frequent terms from the data and producing new wordclouds on the updated texts can allow for insights regarding the setting.
+\item \textbf{Reference:} Personal file.
+\end{itemize}
+\section{A Word About Accessibility}
+\begin{tcolorbox}[title=Cubism's Missing Link]
+Hear now this, O foolish people, and without understanding; which have eyes, and see not; which have ears, and hear not.\\[-0.6cm]
+\begin{flushright}
+-- Jeremiah 5:21 (King James Bible)
+\end{flushright}
+\end{tcolorbox}\noindent
+While visual displays can help provide analysts with insight, some work remains to be done in regard to visual impairment. A table can be translated to Braille fairly easily, but short of describing the features and emerging structures in a visualisation, even the cleverest of graphs will only succeed in conveying relevant information to a small subset of the population. The onus remains on the analyst to not only produce clear and meaningful visualisations, but also to describe them and their features in a fashion that allows all to ``see'' the insights. One drawback is that in order for this description to be done properly, the analyst needs to have seen all the insights, which is not necessarily the case (if at all possible).
+\newl\vfill
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{Images/class_kyphosis_tree2.png}
+\caption[\small Decision Tree: classification scheme for the kyphosis dataset ]{\small Decision Tree: classification scheme for the kyphosis dataset (personal file).} \label{fig:ex_dt_kyp}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\vfill
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{Images/Histogram_of_GAS.png}
+\caption[\small Histogram: artificial dataset ]{\small Histogram: artificial dataset (personal file).} \label{fig:ex_hist_GAS}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\vfill 
+\newpage
+\vfill
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.7\textwidth]{Images/clustering.png}
+\caption[\small Clustering Scatterplot: clustering of Sandra Bullock movies ]{\small Clustering Scatterplot: clustering of Sandra Bullock movies, by Rotten Tomatoes rating and inflation-adusted domestic gross (fivethirtyeight.com).} \label{fig:ex_cl_bul}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\vfill
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.7\textwidth]{Images/combined.png}
+\caption[\small Decision Tree Bubble Chart: NASA's COCOMO dataset ]{\small Decision Tree Bubble Chart: estimated average project effort (in red) over-layed over product complexity, programmer capability, and product count in NASA's COCOMO dataset (personal file).} \label{fig:ex_sdt_comps}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\vfill
+\newpage
+\vfill
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{Images/COPD.png}
+\caption[\small Association Rule Network: Danish Medical Dataset ]{\small Association Rule Network: diagnosis network around COPD in the Danish Medical Dataset (A.B. Jensen \textit{et al}).} \label{fig:ex_arn_copd}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\vfill
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.6\textwidth]{Images/fig9.png}
+\caption[\small Classification Scatterplot: artificial dataset ]{\small Classification Scatterplot: artificial dataset (personal file).} \label{fig:ex_cs_SVM}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\vfill
+\newpage
+\vfill
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.65\textwidth]{Images/HR.png}
+\caption[\small Classification Bubble Chart: Hertzsprung-Russell Diagram ]{\small Classification Bubble Chart: Hertzsprung-Russell Diagram (European Southern Observatory).} \label{fig:ex_bc_HR}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\vfill
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.65\textwidth]{Images/TS.png}
+\caption[\small Time Series: trend, seasonality, and shifts ]{\small Time Series: trend, seasonality, and shifts (personal file).} \label{fig:ex_ts_cv}
+\end{figure*}
+\afterpage{\FloatBarrier}
+\vfill
+\newpage
+
+
+%\section{Case Study: Reliability of Canadian Consular Network Data}
+%The \textit{Canadian Consular Network} provides services to Canadians travelling or living abroad (loss of a passport, need for urgent medical care, complications due to an arrest, or other emergencies). Consular officials can be reached 24 hours a day, seven days a week, at more than 260 points of service in 150 countries and through the \textit{Emergency Watch and Response Centre} in Ottawa. The type and amount of help that consular officials can provide depends on the situation and may be affected by natural disasters, political unrest, and the laws in effect in other countries.
+%\newl Within \textit{Global Affairs Canada} (GAC), the Consular Corporate Management and Innovation group (CCMI) uses COSMOS, a software application that tracks consular activity statistics. COSMOS is used to enable consulates to provide assistance to their consular clients and to help identify where the workload stresses are located. It can also be used to provide basic statistics for requests from journalists and others.
+%\newl COMIP (a COSMOS module) tracks the time required by employees to perform consular tasks. This data, in one form or another, stretches back over approximately twenty years (from 2016). It is currently used to determine the effectiveness of mission consular programs, to identify weaknesses to be resolved through HR, training and other solutions, and to evaluate resources need in missions -- COMIP is the pivotal element when determining whether to staff, delete, or create positions. The software is scheduled to be updated/replaced (late 2016), and GAC would like to use this opportunity to determine if the current system meets their needs, and if not, how it could be improved. \newl 
+%The data of primary interest for consular management is contained in 4 COMIP tables: the logs of mission activities (\textbf{cases}, \textbf{services}, and \textbf{programs}), as well as the daily and monthly time spent on these mission activities, by employee. In these tables, data is available across a time span of 10 years, from 2005--2014; however, a 2010 system upgrade changed the categories relating to cases and services, resulting in a break in the dataset at this time. \newl 
+%In data analytical endeavours, the quality of the output is affected by the quality of the input, especially when it is self-reported (such as is the case with COMIP). CCMI understands that monthly log data has, in some sense, more inherent validity than daily log data as it must be reviewed by management before being submitted into the system -- this oversight may be sufficient to ensure greater validity of that data. 
+%Daily log data by contrast may be entered less diligently as they are not required to produce a monthly log. \newl Abandoning daily log data altogether is not a solution as it is impossible to create monthly log data that accurately reflects the reality of monthly work in the mission without using (some) information from employees about their daily work during the month. Daily data, thus, is used \textit{de facto} to create the monthly logs. \newl As a result, while certain types of consular data analysis may be conducted using monthly aggregates, data validation has to occur at the daily data level. In this case study, we present various data visualisations that were produced to study the reliability and validity of COMIP data. \newl
+%\subsection{Contents}
+%\begin{quote}
+%Basic Check - Data Gaps \\
+%Entire Dataset Review \\
+%Mission-Level Dataset Review  \\
+%Plausibility of Work Hours \\
+%Employee-Level Dataset Review 
+%\end{quote}
+
+%
+%\setboolean{@twoside}{false}
+%\includepdf[pages={1-8},offset={50 -40}]{documents/GAC_captions.pdf}
+%\setboolean{@twoside}{true}
+
+
+

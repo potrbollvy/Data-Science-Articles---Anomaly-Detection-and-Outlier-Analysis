@@ -1,8 +1,8 @@
 \expandafter\gdef\csname ver@amssymb.sty\endcsname{9999/12/31}
 \expandafter\gdef\csname ver@amsfonts.sty\endcsname{9999/12/31}
 
-\newcommand{\ldoc}{FR}
-%\newcommand{\ldoc}{EN}
+%\newcommand{\ldoc}{FR}
+\newcommand{\ldoc}{EN}
 
 \documentclass[fleqn,10pt]{SelfArx_\ldoc} % Document font size and equations flushed left
 \setlength{\headheight}{13.6pt}
@@ -12,12 +12,12 @@
 %----------------------------------------------------
 %	PARAMETERS
 %----------------------------------------------------
-\newcommand{\MainFolder}{PDC}
+\newcommand{\MainFolder}{OPT}
 \input{\MainFolder/Preamble/title_\ldoc.tex}
-\newcommand{\autha}{Patrick Boily}
-\newcommand{\authaa}{P.Boily}
-\newcommand{\authb}{}
-\newcommand{\authbb}{}
+\newcommand{\authb}{Patrick Boily}
+\newcommand{\authbb}{P.Boily}
+\newcommand{\autha}{Kevin Cheung}
+\newcommand{\authaa}{K.Cheung}
 \newcommand{\authc}{}
 \newcommand{\authcc}{}
 \newcommand{\authd}{}
@@ -29,13 +29,16 @@
 \newcommand{\authg}{}
 \newcommand{\authgg}{}
 
-\definecolor{acolor}{RGB}{25,81,168} % Colour of the article title and sections
+\definecolor{acolor}{RGB}{127,21,21} % Colour of the article title and sections
 %\newcommand{\keyterms}{}
 
 %----------------------------------------------------
 %	ARTICLE PREAMBLE
 %----------------------------------------------------
 \usepackage{float}
+\usepackage{bm}
+\usepackage{longtable}
+\usepackage{wrapfig}
 \usepackage{afterpage}
 \usepackage{longtable}
 \usepackage{animate}
@@ -86,9 +89,6 @@
 %----------------------------------------------------
 
 \input{\MainFolder/Sections/1_Introduction_\ldoc.tex} %
-\input{\MainFolder/Sections/2_Questionnaire_Design_\ldoc.tex} %
-\input{\MainFolder/Sections/3_Automated_Data_Collection_\ldoc.tex} %
-\input{\MainFolder/Sections/4_Statistical_Survey_Sampling_\ldoc.tex}
 \input{\MainFolder/References/references.tex} % 
 
 %\appendix
