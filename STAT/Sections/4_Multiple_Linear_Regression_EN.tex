@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Section 4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 \section{Multiple Linear Regression}\label{sec:MLR}
-In the previous sections, we considered a simple scenario where a single, categorical, explanatory variable (Treatment $A$ vs.\@ Treatment $B$) was used to model a desired response variable (score $y$). \par Real-world data is, of course, much more intricate and complex, typically consisting of multiple response variables, with multiple quantitative and categorical/qualitative explanatory features. \newl In this section, we will review how to handle such cases.
+In the previous sections, we considered a simple scenario where a single, categorical, explanatory variable (Treatment $A$ vs.\@ Treatment $B$) was used to model a desired response variable (score $Y$). \par Real-world data is, of course, much more intricate and complex, typically consisting of multiple response variables, with multiple quantitative and categorical/qualitative explanatory features. \newl In this section, we will review how to handle such cases.
 \begin{figure*}[t]
 \centering
   \includegraphics[width=0.475\linewidth]{Images/testA3.png} \quad  \includegraphics[width=0.475\linewidth]{Images/testA4.png}
@@ -25,9 +25,9 @@ In the previous sections, we considered a simple scenario where a single, catego
 \subsection{Multiple Linear Regression in Matrix Form}
 Throughout, we suppose that the dataset consists of $N$ observations with a single response output $Y$ and $p$ explanatory variables $X_1,\ldots,X_p$. The \textbf{first-order linear model} describing this scenario can be represented in matrix from by 
 \begin{equation}\label{eq:MLR}
-    \bm{y}=\bm{X\beta}+\bm{\varepsilon},
+    \bm{Y}=\bm{X\beta}+\bm{\varepsilon},
 \end{equation}
-where the vectors $\bm{y}=[y_{1},\cdots,y_{N}]^{\!\top}$, $\bm{\beta}=[\beta_{0},\cdots,\beta_{p}]^{\!\top}$, and $\bm{\varepsilon}=[\varepsilon_{1},\cdots,\varepsilon_{N}]^{\!\top}$ are the \textbf{response vector},  the \textbf{coefficient vector}, and  the \textbf{error vector}, respectively, and 
+where the vectors $\bm{Y}=[y_{1},\cdots,y_{N}]^{\!\top}$, $\bm{\beta}=[\beta_{0},\cdots,\beta_{p}]^{\!\top}$, and $\bm{\varepsilon}=[\varepsilon_{1},\cdots,\varepsilon_{N}]^{\!\top}$ are the \textbf{response vector},  the \textbf{coefficient vector}, and  the \textbf{error vector}, respectively, and 
 \begin{gather*}
  \bm{X} =  
     \begin{bmatrix}
@@ -57,9 +57,9 @@ With \textbf{ordinal variables} (e.g., \textit{on scale of 1 to 5, how likely ar
 
         
 \subsection{Overall Significance of the Model}
-For the model presented in (\ref{eq:MLR}), \textbf{ordinary least square} (OLS) estimation yields \textbf{fitted values} $$\bm{\hat{y}}=\bm{X\hat{\beta}}=\bm{X}(\bm{XX}^{\!\top})^{-1}\bm{X}^{\!\top}\bm{y}$$ and residuals $$\bm{e}=\bm{y}-\bm{\hat{y}}=(\bm{I}-\bm{X}(\bm{XX}^{\!\top})^{-1}\bm{X}^{\!\top})\bm{y}.$$ The ANOVA table has the same form as Table~\ref{tab:SA2}, although the sums of squares will be different: \begin{align*}
-   \text{SS}_{\textrm{tot}}&=\|\bm{y}-\bar{y}\bm{1}\|^2=\sum_{i}(y_{i}-\bar{y})^{2}=\sum_{i}(y_{i}-\hat{y}_i+\hat{y}_i-\bar{y})^{2}\\
-    &=\sum_{i}(y_i-\hat{y}_{i})^{2}+\sum_{i}(\hat{y}_{i}-\bar{y})^2=\|\bm{y}-\bm{\hat{y}}\|^2+\|\bm{\hat{y}}-\bar{y}\bm{1}\|^2\\&=\text{SS}_{\textrm{reg}}+\text{SS}_{\textrm{e}}
+For the model presented in (\ref{eq:MLR}), \textbf{ordinary least square} (OLS) estimation yields \textbf{fitted values} $$\bm{\hat{Y}}=\bm{X\hat{\beta}}=\bm{X}(\bm{XX}^{\!\top})^{-1}\bm{X}^{\!\top}\bm{Y}$$ and residuals $$\bm{e}=\bm{Y}-\bm{\hat{Y}}=(\bm{I}-\bm{X}(\bm{XX}^{\!\top})^{-1}\bm{X}^{\!\top})\bm{Y}.$$ The ANOVA table has the same form as Table~\ref{tab:SA2}, although the sums of squares will be different: \begin{align*}
+   \text{SS}_{\textrm{tot}}&=\|\bm{Y}-\bar{y}\bm{1}\|^2=\sum_{i}(y_{i}-\bar{y})^{2}=\sum_{i}(y_{i}-\hat{y}_i+\hat{y}_i-\bar{y})^{2}\\
+    &=\sum_{i}(y_i-\hat{y}_{i})^{2}+\sum_{i}(\hat{y}_{i}-\bar{y})^2=\|\bm{Y}-\bm{\hat{Y}}\|^2+\|\bm{\hat{Y}}-\bar{y}\bm{1}\|^2\\&=\text{SS}_{\textrm{reg}}+\text{SS}_{\textrm{e}}
 \end{align*}
 (see Table~\ref{tab:SA4}).\newpage\noindent It is used in testing $$H_{0}: \beta_{1} = \cdots = \beta_{p}=0\quad\mbox{against}\quad H_{1}: \beta_{i} \neq 0 \text{ for some  } i.$$ If the test statistic $F_{0}$ is \textbf{significant}, it does not necessarily imply that all the independent variables $X_1, \ldots, X_p$ are useful in predicting $y$, only that at least one of them is. \par We can examine significance of the $\beta$ coefficients individually (using a $t$-test), or multiple coefficients simultaneously (e.g., by building \textbf{Bonferroni simultaneous confidence interval}). Choosing the best subset of the model will be discussed in the next section.
 
@@ -76,7 +76,7 @@ For the model presented in (\ref{eq:MLR}), \textbf{ordinary least square} (OLS) 
   \label{fig:testA5}\hrule
 \end{figure}
 
-\item \textbf{Multicollinearity} and \textbf{Variance Inflation Factor} (VIF) -- last but not least, it is important to take a look at the scatterplot matrix and the correlation matrix of the explanatory variables to detect \textbf{multicollinearity}. While it is hoped that the explanatory variables have some relationship with the response variable (otherwise any model is bound to be fruitless), high correlations and/or dependencies among the explanatory variables is contra-indicated as it introduces instability in the estimates of the regression coefficients are unstable. We can formally test for presence of multicollinearity using \textbf{variance inflation factors} (VIF); in its presence, data reduction and data transformation strategies might need to be implemented. 
+\item \textbf{Multicollinearity} and \textbf{Variance Inflation Factor} -- last but not least, it is important to take a look at the scatterplot matrix and the correlation matrix of the explanatory variables to detect \textbf{multicollinearity}. While it is hoped that the explanatory variables have some relationship with the response variable (otherwise any model is bound to be fruitless), high correlations and/or dependencies among the explanatory variables is contra-indicated as it introduces instability in the estimates of the regression coefficients are unstable. We can formally test for presence of multicollinearity using \textbf{variance inflation factors} (VIF); in its presence, data reduction and data transformation strategies might need to be implemented. 
 \end{itemize}
 
 

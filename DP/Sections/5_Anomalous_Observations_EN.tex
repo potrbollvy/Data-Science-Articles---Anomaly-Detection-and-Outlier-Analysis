@@ -1,0 +1,73 @@
+\section{Anomalous Observations}
+\noindent (The contents of this section are taken from \cite{DP_ADOA}).\begin{tcolorbox}[title=The Good Doctor's Take]
+The most exciting phrase to hear [...], the one that heralds the most discoveries, is not ``Eureka!'' but ``That's funny...''.
+ \\[-0.6cm]
+\begin{flushright}
+-- Isaac Asimov (attributed) 
+\end{flushright}
+\end{tcolorbox}
+\noindent \textbf{Outlying observations} are data points which are \textbf{atypical} in comparison to the unit's remaining features (\textit{within-unit}), or in comparison to the measurements for other units (\textit{between-units}), or as part of a collective subset of observations.\newpage\noindent  Outliers are thus observations which are \textbf{dissimilar to other cases} or which contradict \textbf{known dependencies} or rules.\footnote{Outlying observations may be anomalous along any of the individual variables, or in combination.}% (information in this section is taken partly from \cite{DP_OW,DP_A,DP_T,DP_CBK}).
+\par Observations could be anomalous in one context, but not in another. Consider, for instance, an adult male who is 6-foot tall. Such a man would fall in the 86th percentile among Canadian males \cite{DP_HPC}, which, while on the tall side, is not unusual; in Bolivia, however, the same man would land in the 99.9th percentile \cite{DP_HPC}, which would mark him as extremely tall and quite dissimilar to the rest of the population.\footnote{Anomaly detection points towards interesting questions for analysts and subject matter experts: in this case, why is there such a large discrepancy in the two populations?}  
+\newl
+A common mistake that analysts make when dealing with outlying observations is to remove them from the dataset without carefully studying whether they are \textbf{influential data points}, that is, observations whose absence leads to \textbf{markedly different} analysis results.\par When influential observations are identified, remedial measures (such as data transformation strategies) may need to be applied to minimize any undue effect. Outliers may be influential, and influential data points may be outliers, but the conditions are neither necessary nor sufficient. 
+\subsection{Anomaly Detection}
+By definition, anomalies are \textbf{infrequent} and typically surrounded by \textbf{uncertainty} due to their relatively low numbers, which makes it difficult to differentiate them from banal \textbf{noise} or \textbf{data collection errors}. \par Furthermore, the boundary between normal and deviant observations is usually \textbf{fuzzy}; with the advent of e-shops, for instance, a purchase which is recorded at 3AM local time does not necessarily raise a red flag anymore. \par When anomalies are actually associated to \textbf{malicious activities}, they are more than often \textbf{disguised} in order to blend in with normal observations, which obviously complicates the detection process.
+\newl
+Numerous methods exist to identify anomalous observations; \textbf{none of them are foolproof} and judgement must be used. Methods that employ graphical aids (such as box-plots, scatterplots, scatterplot matrices, and 2D tours) to identify outliers are particularly easy to implement, but a low-dimensional setting is usually required for ease of interpretability. \par Analytical methods also exist (using Cooke's or Mahalanobis' distances, say), but in general some additional level of analysis must be performed, especially when trying to identify influential points (\textit{cf.} \textbf{leverage}). 
+\newl With small datasets, anomaly detection can be conducted on a case-by-case basis, but with large datasets, the temptation to use \textbf{automated detection/removal} is strong -- care must be exercised before the analyst decides to go down that route.\footnote{This stems partly from the fact that once the ``anomalous'' observations have been removed from the dataset, previously ``regular'' observations can become anomalous in turn in the smaller dataset; it is not clear when that runaway train will stop.}\par
+In the early stages of anomaly detection, \textbf{simple data analyses} (such as descriptive statistics, 1- and 2-way tables, and  traditional visualisations) may be performed to help identify anomalous observations, or to obtain insights about the data, which could eventually lead to modifications of the analysis plan.
+\subsection{Outlier Tests} How are outliers \textit{actually} detected? Most methods come in one of two flavours: \textbf{supervised} and \textbf{unsupervised} (we will discuss those in detail in later sections).\par
+Supervised methods use a historical record of \textbf{labeled} (that is to say, previously identified) anomalous observations to build a \textbf{predictive classification or regression model} which estimates the probability that a unit is anomalous; domain expertise is required to tag the data. Since anomalies are typically \textbf{infrequent}, these models often also have to accommodate the \textbf{rare occurrence problem}.\footnote{Supervised models are built to minimize a cost function; in default settings, it is often the case that the mis-classification cost is assumed to be symmetrical, which can lead to technically correct but useless solutions. For instance, the vast majority (99.999+\%) of air passengers emphatically do not bring weapons with them on flights; a model that predicts that no passenger is attempting to smuggle a weapon on board a flight would be 99.999+\% accurate, but it would miss the point completely.}\par Unsupervised methods, on the other hand, use no previously labeled information or data, and try to determine if an observation is an outlying one solely by comparing its behaviour to that of the other observations. \newl The following traditional methods and tests of outlier detection fall into this category:\footnote{Note that \textbf{normality} of the underlying data is an assumption for most tests; how robust these tests are against departures from this assumption depends on the situation.}
+\begin{itemize}[noitemsep]
+\item Perhaps the most commonly-used test is \textbf{Tukey's boxplot test}; for normally distributed data, regular observations typically lie between the \textbf{inner fences} $$Q_1-1.5(Q_3-Q_1) \quad\mbox{and}\quad Q_3+1.5(Q_3-Q_1).$$ \textbf{Suspected outliers} lie between the inner fences and their respective \textbf{outer fences} 
+$$Q_1-3(Q_3-Q_1) \quad\mbox{and}\quad Q_3+3(Q_3-Q_1).$$
+Points beyond the outer fences are identified as \textbf{outliers} ($Q_1$ and $Q_3$ represent the data's   $1^{\textrm{st}}$ and $3^{\textrm{rd}}$ quartile, respectively; see Figure~\ref{fig:boxplot}).
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.30\textwidth]{Images/boxplot.png}
+\caption[\small Tukey's boxplot test for outliers]{\small Tukey's boxplot test; suspected outliers are marked by white disks, outliers by black disks.}
+\hrule\label{fig:boxplot}
+\end{figure}
+\item The \textbf{Grubbs test} is another univariate test, which takes into consideration the number of observations in the dataset. Let $x_i$ be the value of feature $X$ for the $i^{\textrm{th}}$ unit, $1\leq i\leq N$, let $(\overline{x},s_x)$ be the mean and standard deviation of feature $X$, let $\alpha$ be the desired significance level, and let  $T(\alpha,N)$ be the critical value of the Student $t$-distribution at significance $\alpha/2N$. Then, the $i^{\textrm{th}}$ unit is an \textbf{outlier along feature}  $X$ if $$|x_i-\overline{x}| \geq \frac{s_x(N-1)}{\sqrt{N}}\sqrt{\frac{T^2(\alpha,N)}{N-2+T^2(\alpha,N)}}.$$
+\item Other common tests include:
+\begin{itemize}[noitemsep]
+%\item the \textbf{Dixon $Q$ test}, which is used in the experimental sciences to find outliers in (extremely) small datasets -- it is of dubious validity;
+\item the \textbf{Mahalanobis distance}, which is linked to the leverage of an observation (a measure of influence), can also be used to find multi-dimen\-sio\-nal outliers, when all relationships are linear (or nearly linear);
+\item the \textbf{Tietjen-Moore} test, which is used to find a specific number of outliers;
+\item the \textbf{generalized extreme studentized deviate} test, if the number of outliers is unknown; 
+\item the \textbf{chi-square} test, when outliers affect the goodness-of-fit, as well as 
+\item DBSCAN and other clustering-based outlier detection methods.
+\end{itemize}
+\end{itemize}
+\subsection{Visual Outlier Detection} The following three (simple) examples illustrate the principles underlying visual outlier and anomaly detection. 
+\begin{Example}On a specific day, the height of several plants are measured. The records also show each plant's age (the number of weeks since the seed has been planted). 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.32\textwidth]{Images/plant_age}\quad
+\includegraphics[width=0.32\textwidth]{Images/plant_height}\quad
+\includegraphics[width=0.32\textwidth]{Images/plant_height_vs_age}
+\caption[\small Summary visualisations for a plant dataset]{\small Summary visualisations for an (artificial) plant dataset: age distribution (left), height distribution (middle), height vs. age, with linear trend (right).} \label{fig:plant_data}
+\end{figure*}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.32\textwidth]{Images/scatter_plot_linear_1}\quad
+\includegraphics[width=0.32\textwidth]{Images/scatter_plot_linear_2}\quad
+\includegraphics[width=0.32\textwidth]{Images/scatter_plot_2}
+\caption[\small Visualisations for a service point dataset]{\small Visualisations for an (artificial) service point dataset: trend for 11 service points (left), trend for 10 service points (middle), influential observations (right).}
+        \label{fig:service_data}
+\end{figure*}
+\begin{figure*}[!t]
+\centering\includegraphics[width=0.32\textwidth]{Images/appendage_length_descriptive}\quad \includegraphics[width=0.62\textwidth]{Images/appendage_length}
+\caption[\small Summary and visualisation for an appendage length dataset]{\small Summary and visualisation for an (artificial) appendage length dataset: descriptive statistics (left), appendage length distribution (right).}\hrule
+\label{tab:appendage_data}
+\end{figure*}
+
+Histograms of the data are shown in Figure~\ref{fig:plant_data} (age on the left, height on the middle). \par Very little can be said about the data at that stage: the age of the plants (controlled by the nursery staff) seems to be somewhat haphazard, as does the response variable (height). A scatter plot of the data (rightmost chart in Figure~\ref{fig:plant_data}), however, reveals that growth is strongly correlated with age during the early period of a plant's life for the observations in the dataset; points clutter around a linear trend. One point (in yellow) is easily identified as an \textbf{outlier}. There are (at least) two possibilities: either that measurement was botched or mis-entered in the database (representing an invalid entry), or that one specimen has experienced unusual growth (outlier). Either way, the analyst has to investigate further.  
+  \end{Example}
+  \begin{Example}
+A government department has 11 service points in a jurisdiction. Service statistics are recorded: the monthly average arrival rates per teller and monthly average service rates per teller for each service point are available. \par A scatter plot of the service rate per teller ($y$ axis) against the arrival rate per teller ($x$ axis), with linear regression trend, is shown in the leftmost chart in Figure~\ref{fig:service_data}. The trend is seen to inch upwards with increasing $x$ values. \par A similar chart, but with the left-most point removed from consideration, is shown in the middle chart of  Figure~\ref{fig:service_data}. The trend still slopes upward, but the fit is significantly improved, suggesting that the removed observation is unduly \textbf{influential} (or anomalous) -- a better understanding of the relationship between arrivals and services is afforded if it is set aside. \par Any attempt to fit that data point into the model must take this information into consideration. Note, however, that influential observations depend on the analysis that is ultimately being conducted -- a point may be influential for one analysis, but not for another.     
+\end{Example}
+\begin{Example}
+Measurements of the length of the appendage of a certain species of insect have been made on 71 individuals. Descriptive statistics have been computed; the results are shown in Figure~\ref{tab:appendage_data}.
+\par Analysts who are well-versed in statistical methods might recognize the tell-tale signs that the distribution of appendage lengths is likely to be asymmetrical (since the skewness is non-negligible) and to have a ``fat'' tail (due to the kurtosis being commensurate with the mean and the standard deviation, the range being so much larger than the interquartile range, and the maximum value being so much larger than the third quartile). \par The mode, minimum, and first quartile values belong to individuals without appendages, so there appears to be at least two sub-groups in the population (perhaps split along the lines of juveniles/adults, or males/females). The maximum value has already been seen to be quite large compared to the rest of the observations, which at first suggests that it might belong to an \textbf{outlier}. \par The histogram of the measurements, however, shows that there are 3 individuals with very long appendages (see right-most chart in Figure~\ref{tab:appendage_data}): it now becomes plausible for these anomalous entries to belong to individuals from a different species altogether who were \textbf{erroneously added} to the dataset. This does not, of course, constitute a proof of such an error, but it raises the possibility, which is often the best that an analyst can do in the absence of subject matter expertise.
+\end{Example}

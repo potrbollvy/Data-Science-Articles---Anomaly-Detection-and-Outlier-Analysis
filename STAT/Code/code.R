@@ -127,4 +127,12 @@ library(lawstat)
 # Assumptions on residuals
 # outliers and influential points? 
 # multicolinearity and variance inflation factors
+# look in applied regression textbook for examples, too? 
 
+
+# Section 5 -- best subset  selection (see MAT3373 HW2)
+# 
+
+# Section 6 -- Hotelling stuff
+# Bonferroni
+# generating samples from a multivariate distribution using the Cholesky decomposition in R
