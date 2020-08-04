@@ -136,3 +136,14 @@ library(lawstat)
 # Section 6 -- Hotelling stuff
 # Bonferroni
 # generating samples from a multivariate distribution using the Cholesky decomposition in R
+
+# Section 7 -- MANOVA + Wilk's Lambda
+# https://sites.ualberta.ca/~lkgray/uploads/7/3/6/2/7362679/22_-_manova.pdf
+
+# Section 8 -- goodness of fit stuff, can probably use the actual example in the notes? 
+
+# Section 9 -- ANCOVA in R (some other example?)
+# Paired comparison (MAT 2377)
+# ANCOVA itself? 
+
+#Section 10 -- something about  Nonlinear Regression

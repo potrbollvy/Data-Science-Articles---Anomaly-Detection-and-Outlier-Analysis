@@ -4,59 +4,95 @@ We end this report with  an experimental comparison of some of the outlier detec
 \newl \textbf{Data pre-preprocessing:} all datasets have been normalized, and qualitative variables have been removed.
 \newl \textbf{Algorithms:} we test $4$ algorithms, namely  \textbf{Local Outlier Factor}  (LOF), \textbf{Isolation Forest} (iF), \textbf{$k$ Nearest Neighbours} ($k$NN) and \textbf{Principal Component Analysis} (PCA). The default parameters are used in all cases.  \newl
 \textbf{Datasets:}
-\noindent \textbf{a) Dataset 1: Airlines:} includes information on all domestic flights in the USA in 2019, such as departure time, arrival time, origin airport, destination airport, etc. available  \href{https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=}{\textcolor{blue}{\underline{here}}}. The purpose is to analyse delays in departures and/or arrivals of flights. Indeed, a flight is considered to be "on time" \textbf{if it arrives less than 15 minutes later than the indicated time} in the carrier's computer reservation systems (CRS). Therefore, \textbf{anomalies are flights with chronic delays}. To do this, a sample of $500$ flights departing from Chicago O'Hare Airport (ORD) is extracted and average delay times are calculated in relation to airport arrival times. The average arrival time is calculated for all flights landing at a given airport.\textbf{ The anomalies are therefore the airports that show unusual average delays.}
+%
+% Data set 1
+%
+\noindent \textbf{a) Dataset 1: Airlines:} includes information on all domestic flights in the USA in 2019, such as departure time, arrival time, origin airport, destination airport, etc. available  \href{https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=}{\textcolor{blue}{\underline{here}}}. The purpose is to analyse delays in departures and/or arrivals of flights. Indeed, a flight is considered to be "on time" \textbf{if it arrives less than 15 minutes later than the indicated time} in the carrier's computer reservation systems (CRS). Therefore, \textbf{anomalies are flights with chronic delays}. To do this, a sample of $10000$ flights departing from Chicago O'Hare Airport (ORD) is extracted and average delay times are calculated in relation to airport arrival times. The average arrival time is calculated for all flights landing at a given airport.\textbf{Anomalies are flights with chronic delays (more than 15 minutes), difference in minutes between scheduled and actual arrival time.} However, \textbf{negative numbers indicate that the flight arrived earlier than the scheduled time, hence they are not considered as late arrivals}.  The goal is to analyse delays in arrival times for each flights.
 \begin{figure}
     \centering
-    \includegraphics[width=.50\textwidth]{\MainFolder/Images/vols1.png}
-    %\includegraphics[width=.40\textwidth]{\MainFolder/Images/Fatal1.png}
-    \caption{Scatterplot of arrival delays on the map with the variable ARR\_DELAY as the size of the balls.}%\hrule
+    \includegraphics[width=.50\textwidth]{\MainFolder/Images/Vol_scatterplot.png}
+    \caption{Scatter plot of the airports with the size of the balls corresponding to average arrival times.}%\hrule
     \label{fig20}.
 \end{figure}
-\noindent Figure \ref{fig20}, shows airports \textbf{Bangor, Chattanooga, Columbus, etc.} which show unusual average delays (very high) and therefore are likely to be abnormal. Some methods have therefore been analysed in detail, the results are in figure \ref{fig21}.\newl
+\noindent In Figure \ref{fig20}, it can be easily be noticed  that the airports \textbf{Marquette , anchorage, Jackson and Eagle} show unusual average delays (very high) and therefore are likely to be abnormal. Application of the methods will help identify these airports, the results are in figure \ref{fig21}.\newl
 \begin{figure*}[ht]
     \centering
-     \includegraphics[width=1\textwidth]{\MainFolder/Images/Voll.png}\label{fig02}.
+     \includegraphics[width=1\textwidth]{\MainFolder/Images/Vol_results.png}\label{fig02}.
     \caption{Airports detected as outliers by PCA, KNN, Isolation Forest and LOF.}%\hrule
-    \includegraphics[width=.45\textwidth]{\MainFolder/Images/vol1PCA.png}
-    \includegraphics[width=.450\textwidth]{\MainFolder/Images/vols1KNN.png}\\
-    \includegraphics[width=.45\textwidth]{\MainFolder/Images/volsIsoFor.png}
-    \includegraphics[width=.450\textwidth]{\MainFolder/Images/volsLOFpng.png}
+    \includegraphics[width=.45\textwidth]{\MainFolder/Images/Vol_PCA.png}
+    \includegraphics[width=.450\textwidth]{\MainFolder/Images/Vol_KNN.png}\\
+    \includegraphics[width=.45\textwidth]{\MainFolder/Images/Vol_IsoForest.png}
+    \includegraphics[width=.450\textwidth]{\MainFolder/Images/Vol_LOF.png}
     \caption{Airports detected as outliers by PCA (top left), KNN (top right), Isolation Forest (bottom left) and LOF (bottom right)}%\hrule
     \label{fig21}
 \end{figure*}
 \noindent\textbf{Analysis of the results:} 
-In Figures \ref{fig21}, are outliers as detected by the different techniques. The blue circles represent airports without abnormal behavior, while the orange circles represent airports with abnormal behavior for (\textbf{PCA and KNN}) and inversely for (\textbf{IsolationForest and LOF}). \textbf{Average arrival time defines the size of the circles}. Some airports are identified as outliers by all methods: the airport of \textbf{Bangor, Columbus and Las vegas} while \textbf{Chattanooga} is only detected by KNN, see Table \ref{fig2w}. However, \textbf{Bangor} is the airport with the longest arrival delay (141 minutes). This delay can be explained by a long process and poor infrastructure conditions at the airport or delays caused by bad weather or other reasons. What is certain is that it deserves further investigation.
+ Remember, anomalies are flights with average arrival times more than 15 minutes. The orange circles represent airports without abnormal behaviour, while the blue circles represent airports with abnormal behaviour and the size of the balls indicates the average arrival delays. Furthermore, in Figure \ref{fig21}, some airports are identified as outliers by all methods: \textbf{Eagle, San Francisco, Marquette, Anchorage}, amongst others. However, chronic delays occurred in  Marquette (with 58 minutes delay on average) almost an hour, anchorage (with 51 minutes), Jackson and Eagle ( ~ 47 minutes). Flight that arrived earlier than the scheduled time are indicated by negative numbers, but they are identified as outliers by almost all the methods:\textbf{1: Kalispell (-4 minutes),  2: Oakland (-15 minutes),  3: Burbank (-12 minutes) and  4: Ontario (-15 minutes)}, in other words, they arrived on average  4, 15 , 12, 15 minutes earlier than the scheduled time but they are falsely classified as outliers.
+Only Kalispell is not classified as such by LOF. 
 
-\afterpage{\FloatBarrier}
-
-\noindent \textbf{b) Data set 2: Fatal Accidents:}
- is a data representing fatal accidents involving only occupants of passenger cars and light trucks in  United States. \textbf{These accidents involve any activity that may divert a person's attention from the main task of driving, such as texting, using a cell phone, eating and drinking, grooming, using a navigation system, tuning the radio, etc.} available  \href{https://www.bts.dot.gov/content/passenger-car-and-light-truck-occupants-killed-and-restraint-use}{\textcolor{blue}{\underline{here}}}. \newl
-\noindent \textbf{Analysis of the results:}
-A visual analysis of Figure \ref{fig2}, shows that there are countries that stand out from the rest with a high number of fatalities in those countries. On the other hand, the boxplot  also tells us that these countries are abnormal (outliers), these countries are \textbf{Texas, california, Florida}. Further analysis is conducted to corroborate the previous results. These methods are \textbf{ KNN, PCA, LOF and Isolation Forest}. The result is presented in Figure \ref{fig2b}. 
-\begin{figure}
-    \centering
-    \includegraphics[width=.5\textwidth]{\MainFolder/Images/fat1png.png}
-    %\includegraphics[width=.40\textwidth]{\MainFolder/Images/Fatal1.png}
-    \caption{Point cloud of fatal accidents on the map with the variable Restraint\_used\_Fatalities as the size of the balls.}%\hrule
-    \label{fig2}
-\end{figure}
-%
-%
 \begin{table}
 \centering
  \begin{tabular}{||c c c c c||} 
  \hline
  &  KNN & PCA & IsolForest & LOF\\ [0.5ex] 
  \hline\hline
-Bangor & $\checkmark$ & $\checkmark$  & $\checkmark$ & $\checkmark$ \\ 
- Las vegas & $\checkmark$ & $\checkmark$  & $\checkmark$ & $\checkmark$ \\
-Columbus & $\checkmark$ & $\checkmark$  & $\checkmark$ & $\checkmark$ \\
- Chattanooga & $\checkmark$ & $\times$  & $\times$ & $\times$ \\ [1ex] 
+San Francisco & $\checkmark$ & $\checkmark$  & $\checkmark$ & $\checkmark$ \\ 
+ Eagle & $\checkmark$ & $\checkmark$  & $\checkmark$ & $\checkmark$ \\
+Marquette & $\checkmark$ & $\checkmark$  & $\checkmark$ & $\checkmark$ \\
+ Kalispell & $\checkmark$ & $\checkmark$  & $\checkmark$ & $\times$ \\ [1ex] 
  \hline
  \end{tabular}
- \caption{Summary of results.}
+ \caption{Summary of the results.}
  \label{fig2w}
 \end{table}
+
+\afterpage{\FloatBarrier}
+
+%
+% Data set 2
+%
+
+\noindent \textbf{b) Data set 2: Fatal Accidents:}
+ is a data representing fatal accidents involving only occupants of passenger cars and light trucks in  United States. \textbf{These accidents involve any activity that may divert a person's attention from the main task of driving, such as texting, using a cell phone, eating and drinking, grooming, using a navigation system, tuning the radio, etc.} available  \href{https://www.bts.dot.gov/content/passenger-car-and-light-truck-occupants-killed-and-restraint-use}{\textcolor{blue}{\underline{here}}}. \newl
+ 
+\noindent \textbf{Analysis of the results:}
+A visual analysis of Figure \ref{fig2}, shows that there are countries that stand out from the rest with a high number of fatalities in those countries. On the other hand, the boxplot  also tells us that these countries are abnormal (outliers), these countries are \textbf{Texas, california, Florida}. Further analysis is conducted to corroborate the previous results. These methods are \textbf{ KNN, PCA, LOF and Isolation Forest}. The result is presented in Figure \ref{fig2b}. 
+\begin{figure}
+    \centering
+    \includegraphics[width=.5\textwidth]{\MainFolder/Images/fat1png.png}
+    %\includegraphics[width=.40\textwidth]{\MainFolder/Images/Fatal1.png}
+    \caption{Point cloud of fatal accidents on the map with the variable number of fatalities as the size of the balls.}%\hrule
+    \label{fig2}
+\end{figure}
+%
+%
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.50\textwidth]{\MainFolder/Images/Fatal1.png}
+    \caption{Scatterplot of fatal accident.}%\hrule
+    \label{fig2a}
+\end{figure}
+
+\begin{figure*}[ht!]
+ \centering
+     \includegraphics[width=1\textwidth]{\MainFolder/Images/Fatal11.png}
+    \caption{Illustration des performences des méthodes: KNN, PCA, Isolation forest and LOF}%\hrule
+    \label{fig3}
+\end{figure*}
+
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=.45\textwidth]{\MainFolder/Images/FatPCA.png}
+    \includegraphics[width=.450\textwidth]{\MainFolder/Images/FatKNN.png}\\
+    \includegraphics[width=.45\textwidth]{\MainFolder/Images/FatIsofore.png}
+    \includegraphics[width=.450\textwidth]{\MainFolder/Images/FatLOF.png}
+    \caption{Villes qui ont plus d'accidents mortels détectées comme aberrantes par PCA (en haut à gauche), KNN (en haut à droite), Isolation Forest (en bas à gauche) et LOF (en bas à droite)}%\hrule
+    \label{fig2b}
+\end{figure*}
+
+In fact, the countries \textbf{Texas, california, Florida} are commonly  considered as outliers (high number of fatalities) by most of the methods. 
+
 \begin{table}
 \centering
  \begin{tabular}{||c c c c c||} 
@@ -72,18 +108,16 @@ Florida & $\checkmark$ & $\checkmark$  & $\checkmark$ & $\checkmark$ \\
  \caption{Summary of results.}
 \end{table}
 
+%
+%. Data set 3
+%
+
+
 \noindent\textbf{c) Dataset 3: Temperatures in Australia:}.
 This dataset describes the daily minimum temperatures over 10 years (1981-1990) in the city of Melbourne, Australia, see Figure \ref{fig2t}. Units are in degrees Celsius and there are $3650$ observations. The source of the data is attributed to the Australian Bureau of Meteorology and can be downloaded at \href{https://machinelearningmastery.com/time-series-data-visualization-with-python/}{\textcolor{blue}{\underline{here}}}. A large number of applications generate temporal data sets. For example, in our daily lives, various types of records such as credit, personnel, finance, justice, medicine, etc., are all temporal. This underscores the need for an organized and detailed study of outliers in relation to this temporal data \cite{A5}. Anomalies in the data series cause unexpected spikes, declines, changes in trend, or changes in level. For a univariate series, the problem can be considered supervised or unsupervised. In the first, two limits are calculated (upper and lower bounds), all observations beyond these limits are considered abnormal. In the following example, the unsupervised method is considered.\newl
 \noindent\textbf{Analysis of the results} 
-Figure \eqref{fig2t1} shows the results of four methods \textbf{PCA, IsolationForest, LOF and KNN} on this data (note that for KNN and PCA, the orange color means \textbf{normal} and \textbf{abnormal} in the others). The data are normalized beforehand. Overall, \textbf{KNN} gives a better result than the others. It's able to detect \textbf{high and low} temperatures. However, the other methods detect some peaks but generate a lot of errors. \textbf{LOF}, despite its popularity, gives a completely wrong result on this dataset. 
+Figure \eqref{fig2t1} shows the results of four methods \textbf{PCA, IsolationForest, LOF and KNN} on this data. The orange color means \textbf{normal} and \textbf{abnormal} in the others). The data are normalized beforehand. Overall, \textbf{KNN} gives a better result than the others. It's able to detect \textbf{high and low} temperatures. However, the other methods detect some peaks but generate a lot of errors. \textbf{LOF}, despite its popularity, gives a completely wrong result on this dataset. 
 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.50\textwidth]{\MainFolder/Images/Fatal1.png}
-    \caption{Scatterplot of fatal accident.}%\hrule
-    \label{fig2a}
-\end{figure}
 
 \begin{figure}[H]
     \centering
@@ -92,8 +126,16 @@ Figure \eqref{fig2t1} shows the results of four methods \textbf{PCA, IsolationFo
     \caption{Daily minimum temperatures for the city of Melbourne, Australia (1981-1990).}%\hrule
     \label{fig2t}
 \end{figure}
+\begin{figure*}[ht!]
+    \centering
+    \includegraphics[width=1.06\textwidth]{\MainFolder/Images/Temp2.png}
+    \caption{Temperatures detected as outliers by PCA, KNN, Isolation Forest and LOF.}%\hrule
+    \label{fig2t1}
+\end{figure*}
 
-
+%
+% Data set 4
+%
 
 
 \noindent \textbf{e) Dataset 4: sale transactions:} this dataset contains information concerning the sales and products from \textbf{salespersonnel} from a certain company. The salespeople set their own selling prices and report the sales back to the company at the end of each month. A minor percentage of these records were audited and labeled as \textbf{"ok" or "fraud"}. It consists of $387010$ transactions, with 5 variable columns. After pre-treatment and removal of missing values, $15546$ observations are retained for further analysis with $1199$ fraudulent transactions i.e. $7 \%$. This is a supervised learning problem, the goal is the to train the model to correctly identify fraudulent and non-fraudulent transactions and predict the result for the remaining transactions. The data is available from the "DMwR" package in R.  
@@ -136,7 +178,7 @@ Accuracy & 9 \% & 13 \%  & \textcolor{blue}{91} \% & \textcolor{blue}{87} \% \\
      \caption{ROC Curve Plot for PCA, KNN, Isolation Forest, LOF.}%\hrul
      \label{fig_sal14}
 \end{figure}
- \noindent However, PCA (AUC =$.56$) and KNN (AUC=$.23$) perform poorly. Figure \ref{fig_sal13} gives the confusion mwatrix of Isolation Forest. Out of $1119$ fraudulent transactions, it correctly identifies $521$ as such i.e. TP (sensitivity) of $43 \%$ and $678$ as normal  transactions i.e. FN rate of $ 57 \%$. Similarly, out of $15546$ normal transactions, it finds $13671$ as such i.e. TN (specificity) of $95 \%$  and $676$ as fraudulent i.e. FP  rate of $ 5\%$. 
+ \noindent However, PCA (AUC =$.56$) and KNN (AUC=$.23$) perform poorly. Figure \ref{fig_sal13} gives the confusion matrix of Isolation Forest. Out of $1119$ fraudulent transactions, it correctly identifies $521$ as such i.e. TP (sensitivity) of $43 \%$ and $678$ as normal  transactions i.e. FN rate of $ 57 \%$. Similarly, out of $15546$ normal transactions, it finds $13671$ as such i.e. TN (specificity) of $95 \%$  and $676$ as fraudulent i.e. FP  rate of $ 5\%$. 
 \begin{figure}[H]
   
     \includegraphics[width=.58\textwidth]{\MainFolder/Images/sales_confusionmat.png}
@@ -162,26 +204,9 @@ Accuracy & 9 \% & 13 \%  & \textcolor{blue}{91} \% & \textcolor{blue}{87} \% \\
     \includegraphics[width=1.06\textwidth]{\MainFolder/Images/sale_algo.png}
     \caption{Fraudulent transactions detected as outliers by PCA, KNN, Isolation Forest and LOF.}%\hrule
     \label{fig_sal2}
-    \includegraphics[width=1.06\textwidth]{\MainFolder/Images/Temp2.png}
-    \caption{Temperatures detected as outliers by PCA, KNN, Isolation Forest and LOF.}%\hrule
-    \label{fig2t1}
+   % \includegraphics[width=1.06\textwidth]{\MainFolder/Images/Temp2.png}
+    %\caption{Temperatures detected as outliers by PCA, KNN, Isolation Forest and LOF.}%\hrule
+    %\label{fig2t1}
 \end{figure*}
-\begin{figure*}[ht!]
- \centering
-     \includegraphics[width=1\textwidth]{\MainFolder/Images/Fatal11.png}
-    \caption{Illustration des performences des méthodes: KNN, PCA, Isolation forest and LOF}%\hrule
-    \label{fig3}
-\end{figure*}
-
-\begin{figure*}[ht]
-    \centering
-    \includegraphics[width=.45\textwidth]{\MainFolder/Images/FatPCA.png}
-    \includegraphics[width=.450\textwidth]{\MainFolder/Images/FatKNN.png}\\
-    \includegraphics[width=.45\textwidth]{\MainFolder/Images/FatIsofore.png}
-    \includegraphics[width=.450\textwidth]{\MainFolder/Images/FatLOF.png}
-    \caption{Villes qui ont plus d'accidents mortels détectées comme aberrantes par PCA (en haut à gauche), KNN (en haut à droite), Isolation Forest (en bas à gauche) et LOF (en bas à droite)}%\hrule
-    \label{fig2b}
-\end{figure*}
-
 
 \afterpage{\FloatBarrier}

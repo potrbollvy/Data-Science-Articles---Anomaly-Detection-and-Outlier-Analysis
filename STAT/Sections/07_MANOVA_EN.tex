@@ -1,0 +1,33 @@
+\begin{table*}[ht!]
+         \centering
+         \begin{tabular}{c c c c c}
+         \hline
+        \textbf{Source} & \textbf{SSP} & \textbf{df} & \textbf{MSP} & ``$\mathbf{F_0}$''\\
+         \hline
+         Treatment & $\bm{B}=\sum_{i=1}^{I}N_{i}(\bm{\bar{X}}_{i}-\bm{\bar{X}})(\bm{\bar{X}}_{i}-\bm{\bar{X}})^{\!\top}$ & $I-1$ & $\bm{B}/(I-1)$ & $\bm{W}^{-1}\bm{B}$\\
+         Error & $\bm{W}=\sum_{i=1}^{I}\sum_{j=1}^{n_{i}}(\bm{X}_{ij}-\bm{\bar{X}}_{i})(\bm{X}_{ij}-\bm{\bar{X}}_{i})^{\!\top}$ & $\sum_{i=1}^{I}N_{i}-I$ & $\bm{W}/\sum_{i=1}^I(N_i-1)$\\
+         Total & $\bm{B+W}=\sum_{i=1}^{I}\sum_{j=1}^{n_{i}}(\bm{X}_{ij}-\bm{\bar{X}})(\bm{X}_{ij}-\bm{\bar{X}})^{\!\top}$ & $\sum_{i=1}^{I}N_{i}-1$ & $\bm{B+W}/(\sum_{i=1}^{I}N_{i}-1)$\\
+        \hline
+         \end{tabular}
+         \caption[\small One-way MANOVA table]{One-way MANOVA table; with $I$ sub-populations.}
+         \label{tab:SA5}\hrule
+     \end{table*}
+     \afterpage{\FloatBarrier}
+\section{Multivariate Analysis of Variance (MANOVA)}
+ANOVA is often used as a first attempt to determine whether the means from every sub-population are identical.
+\par
+ANOVA can test means from more than two populations; the \textbf{multivariate ANOVA} (MANOVA) is quite simply a multivariate extension of ANOVA which tests whether the mean vectors from all sub-populations are identical.
+\newl Assume there are $I$ sub-populations in the population, from each of which $N_i$ $p-$dimensional responses are drawn, for $i=1,\ldots,I$. Each observation can be expressed as:
+     $$
+    \bm{X}_{i,j}=\bm{\mu}+\bm{\tau}_{i}+\bm{\varepsilon}_{ij},
+$$
+where $\bm{\mu}$ is the \textbf{overall mean vector}, $\bm{\tau}_{i}$ is the $i^{\text{th}}$ \textbf{population-specific treatment effect}, and $\bm{\varepsilon}_{ij}$ is the \textbf{random error}, which follows a $N_{p}(\bm{0},\bm{\Sigma})$ distribution. \par It is important to note that the covariance matrix $\bm{\Sigma}$ is assumed to be the same for each sub-population, and that  $$\sum_{i=1}^{I}N_{i}\bm{\tau}_{i}=\bm{0}$$ to ensure that the estimates are uniquely identifiable.\newl To test the hypothesis $$H_{0}: \bm{\tau}_{1}=\cdots=\bm{\tau}_{I}=\bm{0}\quad\mbox{against}\quad H_{1}: \text{some } \bm{\tau}_{i}\neq \bm{0},$$ we decompose the \textbf{total sum of squares and cross-products} $\textrm{SSP}_{\textrm{tot}}$ into $$\textrm{SSP}_{\textrm{tot}}=\textrm{SSP}_{\textrm{treat}}+\textrm{SSP}_{\textrm{e}}.$$
+Based on this decomposition, we compute the test statistic known as \textbf{Wilks' lambda} 
+$$
+    \Lambda^{*}=\frac{|\bm{W}|}{|\bm{B}+\bm{W}|},
+$$
+where $\bm{B},\bm{W}$ are as in Table~\ref{tab:SA5}, and reject $H_{0}$ if $\Lambda^{*}$ is below some threshold, which depends on $p$, $I$, and $N_i$, $i=1,\ldots, I$.   
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Section 8%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+

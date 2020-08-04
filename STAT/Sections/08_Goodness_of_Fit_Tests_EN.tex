@@ -1,0 +1,44 @@
+\section{Goodness-of-Fit Tests}
+% Note: this is a completely arbitrary made up example.
+A (fictitious) 2017 survey asked a sample of $N=200$ adults between the age of 25 to 35 about their highest educational achievement. The result is summarised in Table \ref{tab:SA6}. In 1997, it was found that $p_1=13\%$ of adults had not complete high school, $p_2=32\%$ had obtained a high school degree but not a post-secondary degree, $p_3=37\%$ had either an undergraduate college or university diploma but no post-graduate degree, and $p_4=18\%$ had at least one post-graduate degree. \par Based on the result of this survey, is there sufficient evidence to believe that educational backgrounds of the population have changed since 1997?
+     \begin{table}[!t]
+         \centering
+         \begin{tabular}{c c c c c}
+         \hline
+\textbf{Year} &       $\mathbf{<}$\textbf{HS} & \textbf{HS} & \textbf{CU} & \textbf{CU}$\mathbf{+}$ \\
+         \hline
+$2017$ &       $16\%$ & $55\%$ & $83\%$ & $46\%$ \\
+$1997$ &       $13\%$ & $32\%$ & $37\%$ & $18\%$ \\
+        \hline
+         \end{tabular}
+         \caption[\small Respondents' educational achievements]{\small Respondents' educational achievements, from a (fictitious) survey, for 1997 and 2017.}
+         \label{tab:SA6}\hrule 
+     \end{table}
+\newl Since each respondent's educational achievement can only be classified into one of these categories, they are  \textbf{mutually exclusive}. Furthermore, these categories cover all possibilities on the educational front, so they are also \textbf{exhaustive}. \par We can thus view the distribution of educational achievements as being \textbf{multinomial}. For such a distribution, with parameters $p_{1},\cdots,p_{k}$, the expected frequency in each category is $m_{j}=Np_{j}$. \newl  Let $O_{j}$ denote the observed frequency for the $j^{\text{th}}$ category. If there has been no real change since 1997, we would expect the sum of squared differences between the observed 2017 frequencies and the expected frequencies based on 1997 data to be small. \par We can use this information to test the \textbf{goodness-of-fit} between the observations and the expected frequencies \textit{via} Pearson's $\chi^{2}$ test statistic 
+$$
+    X^{2}=\sum_{j=1}^{k}\frac{(O_{j}-m_{j})^{2}}{m_{j}}    
+$$
+which follows a $\chi^{2}$ distribution with $k-1$ df.
+\newl In the above example, the hypotheses of interest are $$H_{0}: \bm{p}=\bm{p}^*=(0.13,0.32,0.37,0.18)\quad\mbox{vs}\quad H_{1}: \bm{p}\neq \bm{p}^*.$$ Table  \ref{tab:SA7} summarises the information under $H_{0}$.
+     \begin{table}[!t]
+         \centering
+         \begin{tabular}{c c c c c}
+         \hline
+        \textbf{Category} & $\bm{O}_{j}$ & $\bm{p}_{j,0}$ & $\bm{m}_{j,0}$ & $(\bm{O}_{j}-\bm{m}_{j,0})^2/\bm{m}_{j,0}$  \\
+         \hline
+        $1$ & $16$ & $0.13$ & $26$ & $3.846$ \\
+        $2$ & $55$ & $0.32$ & $64$ & $1.266$ \\
+        $3$ & $83$ & $0.37$ & $74$ & $1.095$ \\
+        $4$ & $46$ & $0.18$ & $36$ & $2.778$ \\
+        \hline
+        Total & $200$ & $1$ & $200$ & $7.815$\\
+        \hline
+         \end{tabular}
+         \caption[\small Summary table for goodness-of-fit data for educational achievements]{\small Summary table for goodness-of-fit data for educational achievements under $H_0$.}
+         \label{tab:SA7}\hrule
+     \end{table}
+\newl Pearson's test statistic is $X^{2}=7.815$, with an associated $p-$value of $0.0295$, which implies that there is enough statistical  evidence (at the $\alpha=0.05$ level) to accept that the population's educational achievements have changed over the last 20 years.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Section 9%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
