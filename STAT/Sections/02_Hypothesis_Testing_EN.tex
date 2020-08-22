@@ -29,13 +29,13 @@ pits $$H_{0}: \mu_{A} \geq \mu_{B}\quad\mbox{against}\quad H_{\textrm{a}}: \mu_{
 \item we can mistakenly reject $H_0$ when it is, in fact, correct (\textbf{type I error}), or 
 \item we can mistakenly accept $H_{0}$ when it is actually false (\textbf{type II error}). 
 \end{itemize}In order to control the probability of making a type I error (called \textbf{significance level}, and denoted by $\alpha$), we usually let the hypothesis of interest be the alternative hypothesis.
-\newl Since the researcher wants to claim that the new method is more effective than the traditional ones, then it is most appropriate for her to use one-sided hypothesis testing with $$H_{0}: \mu_{A} \geq \mu_{B} \quad\mbox{against}\quad H_{1}: \mu_{A} < \mu_{B};$$ The testing procedure is simple:
+\newl Since the researcher wants to claim that the new method is more effective than the traditional ones, then it is most appropriate for her to use one-sided hypothesis testing with $$H_{0}: \mu_{A} \geq \mu_{B} \quad\mbox{against}\quad H_{\textrm{a}}: \mu_{A} < \mu_{B}.$$ The testing procedure is simple:
 \begin{enumerate}[noitemsep]
 \item calculate a \textbf{test statistic} under $H_0$;
-\item reject $H_0$ in favour of $H_1$ if the test statistic falls in the \textbf{critical region} (also called \textbf{rejection region}) of an associated distribution (see Figure~\ref{fig:crit_reg}), and 
+\item reject $H_0$ in favour of $H_{\textrm{a}}$ if the test statistic falls in the \textbf{critical region} (also called \textbf{rejection region}) of an associated distribution (see Figure~\ref{fig:crit_reg}), and 
 \item fail to reject $H_0$ otherwise, which is not quite the same thing as accepting it.
 \end{enumerate}
-Using the summary table above, we can test the researcher's claim by using the \textbf{two-sample $t$ test}. Assuming that variability in two groups are roughly the same, the test statistic is given by:
+Using the summary table above, we can test the researcher's claim by using the \textbf{two-sample $t-$test}. Assuming that variability in two groups are roughly the same, the test statistic is given by:
 $$
     t_{0}=\frac{\bar{y}_{B}-\bar{y}_{A}}{S_{p}\sqrt{\frac{1}{N_{A}}+\frac{1}{N_{B}}}},
 $$
@@ -48,7 +48,7 @@ $$
 \includegraphics[width=0.8\textwidth]{Images/crit_reg.png}
 \caption[\small Critical regions for hypothesis testing]{\small Critical regions for hypothesis testing at $\alpha$ (in grey); two-sided on the left, one-sided on the right; $\gamma_k$ represent the critical value for the given test and underlying distribution. }\label{fig:crit_reg}\hrule
 \end{figure*}
-\newpage\noindent In our example, the test statistic value is $t_{0} = 7.02$. To reject or accept the null hypothesis, we need to compare it against the \textbf{critical value} of the Student $T$ distribution with $N-2=78$ degrees of freedom at $\alpha=0.05$, which is $$t^*= t_{1-\alpha, N-2}=t_{0.95, 78}=1.665.$$ Since $t_{0} > t^*$ at $\alpha=0.05$, we have enough evidence to believe that the new teaching method is indeed more effective than the traditional methods, at $\alpha=0.05$.
+\newpage\noindent In our example, the test statistic value is $t_{0} = 7.02$. To reject (or not) the null hypothesis, we need to compare it against the \textbf{critical value} of the Student $T$ distribution with $N-2=78$ degrees of freedom at $\alpha=0.05$, which is $$t^*= t_{1-\alpha, N-2}=t_{0.95, 78}=1.665.$$ Since $t_{0} > t^*$ at $\alpha=0.05$, we have enough evidence to believe that the new teaching method is indeed more effective than the traditional methods, at $\alpha=0.05$.
 \begin{center}
     \rule{0.25\textwidth}{.4pt}
 \end{center} In general, the challenge is to recognise which test statistic to use and how it is distributed under $H_0$. Various scenarios have been explored in the literature (see \cite{SA_KNNL}, for instance); it could be useful  for analysts to be able to derive their own tests when the client's data does not meet the various assumptions. \par Ad-hoc solutions come at a price, however -- a fair number of clients (and reviewers), if they are familiar with statistical tests at all, do not understand how they are derived and thus only trust `tried, tested, and true' methods (this also applies to other fields of quantitative analysis). Custom approaches are likely to be treated with \textbf{suspicion}.   
