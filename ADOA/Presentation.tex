@@ -151,7 +151,10 @@
 References and other details can be found in Cissokho, Y., Fadel, S., Millson, R., Pourhasan, R., Boily, P. [2020], \textit{Anomaly Detection and Outlier Analysis}, Data Science Report Series, Data Action Lab.
 
 
-
+\newpage
+\begin{center}
+\includegraphics[width=0.95\textwidth]{Images/fish.png}
+\end{center}
 
 
 
@@ -168,36 +171,78 @@ References and other details can be found in Cissokho, Y., Fadel, S., Millson, R
 \begin{center}
     \rule{0.5\textwidth}{.4pt}
 \end{center}
-\noindent Observations could be anomalous in one context, but not in another. For instance: 
+\noindent Observations could be anomalous in one context, but not in another: 
 \begin{itemize}
-\item an adult male who is 6-foot tall falls in the $86$th percentile among Canadian males $\Rightarrow$ tall, but not unusually so; 
-\item in Bolivia, the same man would land in the $99.9$th percentile $\Rightarrow$ extremely tall; a rarity.
+\item an adult male who is 6-foot tall falls in the $86$th percentile among Canadian males $\Longrightarrow$ tall, but not unusually so; 
+\item in Bolivia, the same man would land in the $99.9$th percentile $\Longrightarrow$ extremely tall; a rarity.
 \end{itemize}
 Anomaly detection points towards interesting questions for analysts and subject matter experts: in this case, why is there such a large discrepancy in the two populations?  
+\newpage \ \\ \noindent
+What's an \textbf{outlier/anomalous observation?} (reprise)
+\begin{itemize}
+\item \textbf{``bad'' object/measurement:} data artifacts, spelling mistakes, poorly imputed values, etc.
+\item  \textbf{misclassified observation:} according to the existing data patterns: the observation should have been labeled differently in the 
+\item  an observation whose measurements are found in the \textbf{distribution tails}, in a large enough number of features;
+\item \textbf{unknown unknowns:} completely new type of observations whose existence was hertofore unsuspected.
+\end{itemize}
 
-
-\newpage\ \\ \noindent A common mistake that analysts make when dealing with outlying observations is to remove them from the dataset without carefully studying whether they are \textbf{influential data points}, that is, observations whose absence leads to \textbf{markedly different} analysis results.
-
-When influential observations are identified, remedial measures (such as data transformation strategies) may need to be applied to minimize any undue effect. 
-
-Note that outliers may be influential, and influential data points may be outliers, but the conditions are neither necessary nor sufficient. 
+\newpage\ \\ \noindent A common mistake that analysts make when dealing with outlying observations is to remove them from the dataset without carefully studying whether they are \textbf{influential data points}.\newl Influential observations are points whose absence leads to \textbf{markedly different} analysis results.
+\newl Points can be influential for one analytical methods, but not for another. 
+\newl \textbf{Remedial measures} (data transformation strategies, etc.) may need to be applied to minimize any undue effect. 
+\newl Outliers may be influential, and influential data points may be outliers, but the conditions are \textbf{neither necessary nor sufficient}. 
 
 
 \fh{Anomalies} 
 
-By definition, anomalies are \textbf{infrequent} and typically surrounded by \textbf{uncertainty} due to their relatively low numbers, which makes it difficult to differentiate them from banal \textbf{noise} or \textbf{data collection errors}. 
+\noindent Anomalies are \textbf{infrequent} and typically shrouded in \textbf{uncertainty} due to their relatively low numbers.  
+\newl This makes it difficult to differentiate anomalies from banal \textbf{noise} or \textbf{data collection errors}. 
+\newl The boundary between normal and deviant observations is usually \textbf{fuzzy}.
+\newl \textbf{Example:} before the advent of e-shops, a purchase which was recorded at 3AM (local time) would probably raise a red flag for a credit card company; but with online shops, that is not necessarily the case. 
+\newpage\ \\ \noindent If anomalies are actually associated with \textbf{malicious activities}, they are often \textbf{disguised} to blend in with normal observations $\Longrightarrow$ this obviously complicates the detection process.
+\newl Numerous methods exist to identify anomalous observations; \textbf{none of them are foolproof} and judgement must be used. 
+\newl \textbf{Graphical methods} to identify outliers are particularly easy to implement:
+\begin{itemize}
+\item boxplots, scatterplots, scatterplot matrices, and 2D tours
+\end{itemize} usually require a  low-dimensional setting for  \textbf{interpretability}. 
+\newl They also usually find those anomalies that ``\textbf{shout the loudest}'' [Baron]. 
+\newpage
+\begin{center}
+\includegraphics[width=0.95\textwidth]{Images/fish.png}
+\end{center}
 
-Furthermore, the boundary between normal and deviant observations is usually \textbf{fuzzy}; with the advent of e-shops, for instance, a purchase which is recorded at 3AM local time does not necessarily raise a red flag anymore. 
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/COar.png}
+\end{center}
 
-When anomalies are actually associated to \textbf{malicious activities}, they are more than often \textbf{disguised} in order to blend in with normal observations, which obviously complicates the detection process.
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/1SVM.png}
+\end{center}
 
 
-Numerous methods exist to identify anomalous observations; \textbf{none of them are foolproof} and judgement must be used. 
-Methods that employ \textbf{graphical aids} (such as box-plots, scatterplots, scatterplot matrices, and 2D tours) to identify outliers are particularly easy to implement, but a low-dimensional setting is usually required for ease of interpretability. 
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/IsoForest.png}
+\end{center}
 
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/IsoForest2.png}
+\end{center}
+
+
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/autoencoder2.png}
+\end{center}
+
+\newpage \ \\ \noindent
 Analytical methods also exist (using Cooke's or Mahalanobis' distances, say), but in general some additional level of analysis must be performed, especially when trying to identify influential points (\textit{cf.} \textbf{leverage}). 
 
 With small datasets, anomaly detection can be conducted on a case-by-case basis, but with large datasets, the temptation to use \textbf{automated detection/removal} is strong -- care must be exercised before the analyst decides to go down that route.
+
+
 
 This stems partly from the fact that once the ``anomalous'' observations have been removed from the dataset, previously ``regular'' observations can become anomalous in turn in the smaller dataset; it is not clear when that runaway train will stop.
 
@@ -302,11 +347,9 @@ Anomaly detection models usually assume \textbf{stationarity for normal observat
 \textbf{Example:} Supply chains play a crucial role in the transportation of goods from one part of the world to another. As the saying goes, ``a given chain is only as strong as its weakest link'' -- in a multi-modal context, comparing the various transportation segments is far from an obvious endeavour: if shipments departing Shanghai in February 2013 took two more days, on average, to arrive in Vancouver than those departing in July 2017, can it be said with any certainty that the shipping process has improved in the intervening years? Are February departures always slower to cross the Pacific Ocean? \par The seasonal variability of performance is relevant to supply chain monitoring; the ability to quantify and account for the severity of its impact on the data is thus of great interest. \par 
 One way to tackle this problem is to produce an \textbf{index} to track container transit times. This index should depict the \textbf{reliability} and the \textbf{variability} of transit times but in such a way as to be able to allow for performance comparison between differing time periods. \ \\ \ \\ 
 To simplify the discussion, assume that the ultimate goal is to compare quarterly and/or monthly performance data, irrespective of the transit season, in order to determine how well the network is performing on the \textit{Shanghai} $\to$ \textit{Port Metro Vancouver/Prince Rupert} $\to$ \textit{Toronto} corridor, say. 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{Images/mmsc_EN.png}
-\caption{\small Multi-modal supply chain.} \label{fig:mmsc}
-\end{figure}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/mmsc_EN.png} \\ Multi-modal supply chain.
+\end{centre}
 \noindent The supply chain under investigation has Shanghai as the point of origin of shipments, with Toronto as the final destination; the containers enter the country either through Vancouver or Prince Rupert. Containers leave their point of origin by boat, arrive and dwell in either of the two ports before reaching their final destination by rail. \par 
 For each of the three segments (Marine Transit, Port Dwell, Rail Transit), the data consists of the monthly empirical distribution of transit times, built from sub-samples  (assumed to be randomly selected and fully representative) of all containers entering the appropriate segment.
  \ \\ \ \\  
@@ -323,11 +366,11 @@ The time series of monthly indicators (which are derived from the monthly transi
 \item irregular component.
 \end{itemize}
 \noindent The trend and the seasonal components provide the \textbf{expected behaviour} of the indicator time series;\footnote{Before carrying out seasonal adjustment, it is important to identify and pre-adjust for structural breaks (using the Chow test, for instance), as their presence can give rise to severe distortions in the estimation of the Trend and Seasonal effects. Seasonal breaks occur when the usual seasonal activity level of a particular time reporting unit changes in subsequent years. Trend breaks occurs when the trend in a data series is lowered or raised for a prolonged period, either temporarily or permanently. Sources of these breaks may come from changes in government policies, strike actions, exceptional events, inclement weather, etc.} the irregular component arise as a consequence of supply chain \textbf{volatility}. A high irregular component at a given time point indicates a poor performance against expectations for that month, which is to say, an \textbf{anomalous observation}.  
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.5\textwidth]{Images/decomposition_EN.png}
-\caption{\small Conceptual time series decomposition; potential anomalous behaviour should be searched for in the irregular component.}\hrule \label{fig:description}
-\end{figure}
+\newpage
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/decomposition_EN.png} \\ 
+Conceptual time series decomposition; potential anomalous behaviour should be searched for in the irregular component.
+\end{center}
  \ \\ \ \\ In general, the decomposition follows a model which is 
 \begin{itemize} 
 \item multiplicative;
@@ -347,31 +390,20 @@ Mathematically, the model is expressed as:
     \end{equation*}
 The multiplicative and pseudo-additive models are defined in similar ways (consult \cite{TS_FH,TS_FMBOC,TS_ICTSA,TS_SAETS,TS_JL} for details).\footnote{The simplest way to determine whether to use multiplicative or additive decomposition is by graphing the time series. If the size of the seasonal variation increases/decreases over time, multiplicative decomposition should be used. On the other hand, if the seasonal variation seems to be constant over time, additive model should be used. A pseudo-additive model should be used when the data exhibits the characteristics of the multiplicative series, but parameter values are close to zero.} \ \\ \ \\ 
 The data decomposition/preparation process is illustrated with the 40-month time series of marine transit CVs from 2010-2013, whose values are shown in Figure~\ref{fig:cv_cont}.  The size of the peaks and troughs seems fairly constant with respect to the changing trend; the SAS implementation of X12 agrees with that assessment and suggests the additive decomposition model, with  no need for further data transformations.
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.75\textwidth]{Images/CV_continuously.png}
-\caption{Monthly marine transit CVs and estimation summary.}
-\label{fig:cv_cont}
-\end{figure*}
-\par The diagnostic plots are shown in Figure~\ref{fig:diff}: the CV series is prior-adjusted from the beginning until OCT2010 after the detection of a level shift. The SI (Seasonal Irregular) chart shows that there are more than one irregular component which exhibits volatility.
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.98\textwidth]{Images/DiffComponents.png}
-\caption[Diagnostic plots.]{Diagnostic plots. Note that the analysis of a time series starts with estimation of the effects of festivals and trading days. These pre-calculated
-estimates are then used for prior adjustment of the series. The prior adjusted original series is subsequently analyzed using the seasonal adjustment.}\hrule
-\label{fig:diff}
-\end{figure*}
-The adjusted series is shown below in Figure~\ref{fig:adjusted}; the trend and irregular components are also shown separately for readability. It is on the irregular component that detection anomaly would be conducted. 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.98\textwidth]{Images/adjustedplot.png}
-\caption{Adjusted time series components plots.}\hrule
-\label{fig:adjusted}
-\end{figure*}
- 
 \begin{center}
-    \rule{0.25\textwidth}{.4pt}
+\includegraphics[width=0.75\textwidth]{Images/CV_continuously.png} \\ 
+Monthly marine transit CVs and estimation summary.
+\end{center}\par The diagnostic plots are shown in Figure~\ref{fig:diff}: the CV series is prior-adjusted from the beginning until OCT2010 after the detection of a level shift. The SI (Seasonal Irregular) chart shows that there are more than one irregular component which exhibits volatility.
+\begin{center}
+\includegraphics[width=0.98\textwidth]{Images/DiffComponents.png}
+\\ Diagnostic plots. Note that the analysis of a time series starts with estimation of the effects of festivals and trading days. These pre-calculated
+estimates are then used for prior adjustment of the series. The prior adjusted original series is subsequently analyzed using the seasonal adjustment.
 \end{center}
+The adjusted series is shown below in Figure~\ref{fig:adjusted}; the trend and irregular components are also shown separately for readability. It is on the irregular component that detection anomaly would be conducted. 
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Images/adjustedplot.png} \\ 
+Adjusted time series components plots.
+\end{center} 
 The last example shows the importance of domain understanding and data preparation to the anomaly detection process. Given that the vast majority of observations in a general problem are typically "normal", another conceptually important approach is to view anomaly detection as a \textbf{rare occurrence learning} classification problem or as a \textbf{novelty detection} data stream problem (these problems will be tackled in other data science reports of this series). \par Either way, while there a number of strategies use regular classification/clustering algorithms for anomaly detection, they are rarely successful unless they are adapted or modified for the anomaly detection context.  
 \fh{Basic Concepts}
 A generic system (such as the monthly transit times from the previous subsection, say) may be realized in \textbf{normal} states or in \textbf{abnormal} states. Normality, perhaps counter-intuitively, is not confined to finding the most likely state, however, as infrequently occurring states could still be normal or plausible under some interpretation of the system. \par As the authors of \cite{A10} see it, a system's states are the results of processes or behaviours that follow certain natural rules and broad principles; the observations are a manifestation of these states. Data, in general, allows for inferences to be made about the underlying processes, which can then be tested or invalidated by the collection of additional data. When the inputs are perturbed, the corresponding outputs are likely to be perturbed as well; if anomalies arise from perturbed processes, being able to identify when the process is abnormal, that is to say, being able to capture the various normal and abnormal processes, may lead to useful anomaly detection. 
@@ -389,11 +421,10 @@ $$F_1=\frac{2pr}{p+r}=\frac{2\text{TP}}{2\text{TP}+\text{FP}+\text{FN}};$$ one d
 \textbf{Example:}Consider a test dataset with 5000 observations, 100 of which are anomalous. An algorithm which predicts all observations to be anomalous would score $a=p=0.02$, $r=1$, and $F_1\approx 0.04$, whereas an algorithm that detects 10 of the true outliers would score $r=0.1$ (the other values would change according to the $\text{TN}$ and $\text{FN}$ counts). 
 \newpage \noindent Another supervised approach is to estimate the relative abnormality of various observations: it is usually quite difficult to estimate the probability that an observation $\mathbf{x}_1$ is anomalous with any certainty, but it might be possible to determine that it is more likely to be anomalous than another observation $\mathbf{x}_2$, say (denoted by $\mathbf{x}_1\succeq \mathbf{x}_2$).\label{succeq} %\par Either way, it is usually preferable to attempt to estimate $P(\mathbf{x}\text{ is an anomaly}|I)$ rather than to attempt to predict $\text{class}(\mathbf{x})\in\{\text{anomaly},\text{normal}\}$ directly. 
 \par This paradigm allows the suspicious observations to be ranked; let $k_i\in\{1,\ldots,m\}$ be the rank of the $i^{\text{th}}$ true outlier, $i\in \{1,\ldots,n\}$ in the sorted list of suspicious observations $$\mathbf{x}_1\succeq \mathbf{x}_{k_1}\succeq \cdots\succeq\mathbf{x}_{k_i}\succeq \cdots \mathbf{x}_{k_n}\succeq \mathbf{x}_m;$$ the \textbf{rank power} of the algorithm is $$RP=\frac{n(n+1)}{2\sum_{i=1}^nk_i}.$$ When the $d$ actual anomalies are ranked in (or near) the top $d$ suspicious observations, $RP\approx 1$. \par Rank power is well-defined only when $m\geq d$; as with most performance evaluation metrics, a single raw number is meaningless -- it is in comparison with the performance of other algorithms that it is most useful.   \ \\ \ \\ On the \textbf{unsupervised} front, where anomalous/normal labels are not known or used, if anomalies are those observations that are dissimilar to other observations, and if clusters represent groupings of similar observations, then observations that do not naturally fit into a cluster could be potential anomalies (see Figure~\ref{fig:clust2}). \par There are a number of challenges, not the least of which being that most clustering algorithms do not recognize potential outliers (DBSCAN is a happy exception) and that some appropriate measure of similarity/dissimilarity of observations has to be agreed upon (different measures could lead to different cluster assignments).  \ \\ \ \\ Finally, it is worth mentioning that the definitions of terms like \textbf{normal} and \textbf{anomalous} are kept purposely vague, to allow for flexibility. 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{Images/clustering2_EN.png}
-\caption{\small Clusters of customers (red, green, blue) and potential anomalies/outliers (grey) in an artificial dataset.}\hrule\label{fig:clust2}
-\end{figure*}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Images/clustering2_EN.png} \\ 
+Clusters of customers (red, green, blue) and potential anomalies/outliers (grey) in an artificial dataset.
+\end{center}
 
 
 
