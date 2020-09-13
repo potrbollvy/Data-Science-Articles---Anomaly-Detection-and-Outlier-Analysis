@@ -774,21 +774,109 @@ This also holds $\mathbf{p},\mathbf{q}$ are non-binary. The value ranges between
 \normalsize \noindent Finding the right distance function to use for anomaly detection is \textbf{NOT AN EASY TASK} -- contextual understanding and domain expertise are required.\newl  
 Any such distance function can be used as the basis for anomaly detection algorithms (the ideas can also be extended to more complex algorithms).
 \newline\newline Given some distance function $d$, dataset $D$, and integers $k,\nu\leq |D|$, 
-the \textbf{distance to all points} anomaly detection algorithm considers each point $\mathbf{p}$ in $D$ and adds the distance from $\mathbf{p}$ to every other point in $D$, i.e.
+the \textbf{distance to all points} (DTAP) anomaly detection algorithm considers each point $\mathbf{p}$ in $D$ and adds the distance from $\mathbf{p}$ to every other point in $D$:
 $$
 a(\mathbf{p}) 
 = \sum_{\mathbf{q}\neq \mathbf{p} \in D} d(\mathbf{q}, \mathbf{p}).
 $$
 \newpage\ \\ \noindent The $\nu$ points with largest values for $a$ are then said to be \textbf{anomalous according to} $a$. \newl This approach often selects the most extreme observations as anomalous, which may be of limited use in practice. 
-\newl The \textbf{distance to nearest neighbour} algorithm uses 
+\newl The \textbf{distance to nearest neighbour} (DTNN) algorithm uses 
 $$
 a(\mathbf{p}) 
 = \min_{\mathbf{q}\neq \mathbf{p} \in D} \{d(\mathbf{q}, \mathbf{p})\},
 $$
 with a similar definition for the $\nu$ anomalous points. 
 \newl The \textbf{average distance to $k$ nearest neighbours} and \textbf{median distance to $k$ nearest neighbours} are defined similarly. 
-
-
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_M}
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L2_sum}
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L0_sum}
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L1_sum}
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L1_2_sum}
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L4_sum}
+\end{center}
+\newpage\ 
+\begin{center}
+\begin{tabular}{ccc}
+\textbf{Mahalanobis} & 
+\textbf{Euclidean}   & 
+\textbf{Supremum}    \\ \hline
+$102$ & $102$ & $102$ \\
+$101$ & $62$  & $62$  \\
+$67$  & $67$  & $101$ \\
+$14$  & $101$ & $14$  \\
+$12$  & $14$  & $67$  \\
+& & \\
+\textbf{Manhattan}   &
+\textbf{Minkowski $(p=0.5)$} & \textbf{Minkowski $(p=4)$} \\ \hline
+$102$ & $102$ & $102$ \\
+$62$ & $62$  & $62$  \\
+$67$  & $67$  & $101$ \\
+$14$  & $14$ & $67$  \\
+$49$  & $49$  & $14$  \\
+& & \\
+\end{tabular} \\ 
+DTAP anomalies ($\nu=5$), for various distances; unscaled data.
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L2_min}
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L0_min}
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L1_min}
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L1_2_min}
+\end{center}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_L4_min}
+\end{center}
+\newpage\ 
+\begin{center}
+\begin{tabular}{ccc}
+\textbf{Mahalanobis} & 
+\textbf{Euclidean}   & 
+\textbf{Supremum}    \\ \hline
+$102$ & $102$ & $102$ \\
+$101$ & $62$  & $62$  \\
+$67$  & $101$  & $101$ \\
+$14$  & $11$ & $12$  \\
+$12$  & $12$  & $23$  \\
+& & \\
+\textbf{Manhattan}   &
+\textbf{Minkowski $(p=0.5)$} & \textbf{Minkowski $(p=4)$} \\ \hline
+$102$ & $102$ & $102$ \\
+$62$ & $62$  & $62$  \\
+$101$  & $101$  & $101$ \\
+$12$  & $11$ & $12$  \\
+$11$  & $23$  & $11$  \\
+& & \\
+\end{tabular} \\ 
+DTNN anomalies ($\nu=5$), for various distances; unscaled data.
+\end{center}
 
 
 \fh{6.2.2 -- Density-Based Methods} \label{6.2.2} 

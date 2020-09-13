@@ -203,6 +203,8 @@ M_pq %>% group_by(Var1) %>% summarise(meanDist=mean(Freq)) %>%
 #m.p1.2 <- dist(dist(rdata.scaled,method="minkowski",p=0.5))
 #m.p4 <- dist(dist(rdata.scaled,method="minkowski",p=4))
 
+# DTAP
+
 m.L2 <- as.matrix(dist(rdata[,1:4], method="euclidean"))
 aoda.L2 <- data.frame(1:(nobs+2),rowSums(m.L2))
 colnames(aoda.L2) <- c("obs","dist")
@@ -273,6 +275,84 @@ aoda.p4 %>%
   ggplot(aes(x=obs,y=dist)) + 
   scale_x_continuous(name="Observations") + 
   scale_y_continuous(name="Sum of Minkowski Distance (p=4) to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+
+
+#### minimum
+m.L2 <- m.L2 + 10000*diag(nobs+2)
+aoda.L2 <- data.frame(1:(nobs+2),apply(m.L2,1,min))
+colnames(aoda.L2) <- c("obs","dist")
+aoda.L2 <- aoda.L2[order(-aoda.L2$dist),]
+head(aoda.L2)
+
+aoda.L2 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Minimum Euclidean Distance to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+m.sup <- m.sup + 10000*diag(nobs+2)
+aoda.sup <- data.frame(1:(nobs+2),apply(m.sup,1,min))
+colnames(aoda.sup) <- c("obs","dist")
+aoda.sup <- aoda.sup[order(-aoda.sup$dist),]
+head(aoda.sup)
+
+aoda.sup %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Minimum Supremum Distance to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+m.L1 <- m.L1 + 10000*diag(nobs+2)
+aoda.L1 <- data.frame(1:(nobs+2),apply(m.L1,1,min))
+colnames(aoda.L1) <- c("obs","dist")
+aoda.L1 <- aoda.L1[order(-aoda.L1$dist),]
+head(aoda.L1)
+
+aoda.L1 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Minimum Manhattan Distance to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+m.p12 <- m.p12 + 10000*diag(nobs+2)
+aoda.p12 <- data.frame(1:(nobs+2),apply(m.p12,1,min))
+colnames(aoda.p12) <- c("obs","dist")
+aoda.p12 <- aoda.p12[order(-aoda.p12$dist),]
+head(aoda.p12)
+
+aoda.p12 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Minimum Minkowski Distance (p=0.5) to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+m.p4 <- m.p4 + 10000*diag(nobs+2)
+aoda.p4 <- data.frame(1:(nobs+2),apply(m.p4,1,min))
+colnames(aoda.p4) <- c("obs","dist")
+aoda.p4 <- aoda.p4[order(-aoda.p4$dist),]
+head(aoda.p4)
+
+aoda.p4 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Minimum Minkowski Distance (p=4) to Other Observations") +
   geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
   scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
   scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
