@@ -1,0 +1,279 @@
+library(lattice) # for splom
+library(matlib)
+library(ggplot2)
+library(tidyverse)
+library(gridExtra)
+library(grid)
+library(DMwR)
+
+# number of observations to simulate
+nobs = 100
+
+# mean vector
+mu = matrix(rep(c(1,-2,0,1),100),nrow=4)
+
+# Using a correlation matrix (let' assume that all variables
+# have unit variance
+Sigma = matrix(c(1, 0.5, 0.7, 0.5,
+      0.5, 1, 0.95, 0.3,
+      0.7, 0.95, 1, 0.3,
+      0.5, 0.3, 0.3, 1), nrow=4, ncol=4)
+  
+# Cholesky decomposition
+L = chol(Sigma)
+nvars = dim(L)[1]
+
+# Random variables that follow an M correlation matrix
+set.seed(0)
+r = t(mu + t(L) %*% matrix(rnorm(nvars*nobs), nrow=nvars, ncol=nobs))
+
+rdata = as.data.frame(r)
+names(rdata) = c('x1', 'x2', 'x3', 'x4')
+
+# Plotting and basic stats
+summary(rdata)
+
+# outliers
+pt.1 = c(1,1,1,1)
+pt.2 = c(4,4,4,4)
+
+rdata = rbind(rdata,pt.1,pt.2)
+group = c(rep(1,nobs),2,3)
+rdata = cbind(rdata,group)
+
+splom(rdata[,1:4], pch=22)
+splom(rdata[,1:4], groups=group, pch=22)
+
+mu.1 <- colMeans(rdata[,1:4]) 
+cov(rdata[,1:4])
+Sigma.inv = inv(cov(rdata[,1:4]))
+
+M_d<-vector()
+
+for(j in 1:nrow(rdata)){
+  M_d[j]<-sqrt(as.matrix(rdata[j,1:4]-mu.1)%*%Sigma.inv%*%t(as.matrix(rdata[j,1:4]-mu.1)))
+  }
+
+rdata <- data.frame(rdata,M_d)
+summary(M_d)
+
+rdata %>% ggplot(aes(x=M_d)) + 
+  geom_histogram(colour="black",binwidth = 0.5) + 
+  geom_rug() + 
+  theme_bw()
+
+p31 <- rdata %>% ggplot(aes(x=x1,y=x2,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p21 <- rdata %>% ggplot(aes(x=x1,y=x3,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p11 <- rdata %>% ggplot(aes(x=x1,y=x4,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p42 <- rdata %>% ggplot(aes(x=x2,y=x1,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p22 <- rdata %>% ggplot(aes(x=x2,y=x3,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p12 <- rdata %>% ggplot(aes(x=x2,y=x4,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p43 <- rdata %>% ggplot(aes(x=x3,y=x1,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p33 <- rdata %>% ggplot(aes(x=x3,y=x2,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p13 <- rdata %>% ggplot(aes(x=x3,y=x4,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p24 <- rdata %>% ggplot(aes(x=x4,y=x3,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p34 <- rdata %>% ggplot(aes(x=x4,y=x2,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p44 <- rdata %>% ggplot(aes(x=x4,y=x1,fill=M_d,colour=M_d)) + 
+  geom_point(pch=22) + xlim(-5,5) + ylim(-5,5) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none") 
+
+p41 <- textGrob("x1")
+p32 <- textGrob("x2")
+p23 <- textGrob("x3")
+p14 <- textGrob("x4")
+
+
+grid.arrange(p11, p12, p13, p14, 
+  p21, p22, p23, p24,
+  p31, p32, p33, p34,
+  p41, p42, p43, p44, ncol=4)
+
+M_pq<-matrix(nrow=nrow(rdata), ncol=nrow(rdata))
+
+for(j in 1:nrow(rdata)){
+  for(i in 1:nrow(rdata)){
+    M_pq[j,i]<-sqrt(as.matrix(rdata[j,1:4]-rdata[i,1:4])%*%Sigma.inv%*%t(as.matrix(rdata[j,1:4]-rdata[i,1:4])))
+  }
+}
+
+M_pq<-as.data.frame.table(M_pq)
+M_pq[,1:2]<-lapply(M_pq[,1:2],as.numeric)
+
+M_pq %>% ggplot(aes(x=Var1,y=Freq)) + 
+  geom_point(aes(fill=Freq,colour=Freq),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#FFFFFF") + 
+  scale_colour_continuous(high = "#0033FF", low = "#FFFFFF") + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Distance to Other Observations") + 
+  theme_bw() + theme(legend.position = "none")
+
+median.value <- M_pq %>% 
+  group_by(Var1) %>% 
+  summarise(meanDist=mean(Freq)) %>% 
+  summarise(median_value=median(meanDist))
+
+test <- M_pq %>% 
+  group_by(Var1) %>% 
+  summarise(meanDist=mean(Freq)) %>% 
+  summarise(std=sd(meanDist))
+
+med.sd = test+median.value
+
+M_pq %>% ggplot(aes(x=as.factor(Var1),y=Freq)) + 
+  geom_boxplot() +
+  scale_x_discrete(name="Observations") + 
+  scale_y_continuous(name="Distance to Other Observations") + 
+  theme_bw() + theme(legend.position = "none") + 
+  geom_hline(yintercept=as.numeric(median.value), linetype = "dashed", color = "red")  + 
+  geom_hline(yintercept=as.numeric(med.sd), linetype = "dotted", color = "red")  + 
+  theme(axis.text.x = element_text(angle=90))
+
+
+M_pq %>% group_by(Var1) %>% summarise(meanDist=mean(Freq)) %>% 
+  ggplot(aes(x=Var1,y=meanDist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Mean Distance to Other Observations") +
+  geom_point(aes(fill=meanDist,colour=meanDist,size=meanDist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") + 
+  geom_hline(yintercept=as.numeric(median.value), linetype = "dashed", color = "red")  + 
+  geom_hline(yintercept=as.numeric(med.sd), linetype = "dotted", color = "red")  
+
+
+
+
+
+#https://cran.r-project.org/web/packages/philentropy/vignettes/Distances.html
+
+#rdata.scaled=data.frame()
+
+#for(i in 1:4){
+#  rdata.scaled[,i]<-2/(max(rdata[,i])-min(rdata[,i]))*rdata[,i]-1
+#}
+
+#m.euclidean <- as.matrix(dist(rdata.scaled, method="euclidean"))
+#m.supremum <- as.matrix(dist(rdata.scaled, method="maximum"))
+#m.L1 <- as.matrix(dist(rdata.scaled, method="manhattan"))
+#m.p1.2 <- dist(dist(rdata.scaled,method="minkowski",p=0.5))
+#m.p4 <- dist(dist(rdata.scaled,method="minkowski",p=4))
+
+m.L2 <- as.matrix(dist(rdata[,1:4], method="euclidean"))
+aoda.L2 <- data.frame(1:(nobs+2),rowSums(m.L2))
+colnames(aoda.L2) <- c("obs","dist")
+aoda.L2 <- aoda.L2[order(-aoda.L2$dist),]
+head(aoda.L2)
+
+aoda.L2 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Sum of Euclidean Distance to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+m.sup <- as.matrix(dist(rdata[,1:4], method="maximum"))
+aoda.sup <- data.frame(1:(nobs+2),rowSums(m.sup))
+colnames(aoda.sup) <- c("obs","dist")
+aoda.sup <- aoda.sup[order(-aoda.sup$dist),]
+head(aoda.sup)
+
+aoda.sup %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Sum of Maximum Distance to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+m.L1 <- as.matrix(dist(rdata[,1:4], method="manhattan"))
+aoda.L1 <- data.frame(1:(nobs+2),rowSums(m.L1))
+colnames(aoda.L1) <- c("obs","dist")
+aoda.L1 <- aoda.L1[order(-aoda.L1$dist),]
+head(aoda.L1)
+
+aoda.L1 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Sum of Manhattan Distance to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+m.p12 <- as.matrix(dist(rdata[,1:4],method="minkowski",p=0.5))
+aoda.p12 <- data.frame(1:(nobs+2),rowSums(m.p12))
+colnames(aoda.p12) <- c("obs","dist")
+aoda.p12 <- aoda.p12[order(-aoda.p12$dist),]
+head(aoda.p12)
+
+aoda.p12 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Sum of Minkowski Distance (p=0.5) to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+m.p4 <- as.matrix(dist(rdata[,1:4],method="minkowski",p=4))
+aoda.p4 <- data.frame(1:(nobs+2),rowSums(m.p4))
+colnames(aoda.p4) <- c("obs","dist")
+aoda.p4 <- aoda.p4[order(-aoda.p4$dist),]
+head(aoda.p4)
+
+aoda.p4 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Sum of Minkowski Distance (p=4) to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 

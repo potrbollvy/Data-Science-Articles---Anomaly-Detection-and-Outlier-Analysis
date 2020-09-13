@@ -38,7 +38,7 @@ If $f_X=f_Y$ (or $f_X=f_Y$ almost everywhere in the continuous case, that is, ex
 \newline\newline Recall that the covariance matrices $\Sigma_X$ and $\Sigma_Y$ are $n \times n$-matrices whose $(i,j)$-th entries are the covariance between the $i$-th and $j$-th positions of $X$ and $Y$, respectively. 
 Given a collection of identically distributed samples, these covariance matrices can be estimated.
 
-We can also consider a single point $\mathbf{p}$ to be represent probability distribution. In that case, the Hellinger distance between that point and any other distribution with mean $\mathbf{\mu}$ and covariance matrix $\Sigma$ can be studied using the framework above, using the \textbf{Mahalanobis distance}:
+We can also consider a single point $\mathbf{p}$ to  represent probability distribution. In that case, the Hellinger distance between that point and any other distribution with mean $\mathbf{\mu}$ and covariance matrix $\Sigma$ can be studied using the framework above, using the \textbf{Mahalanobis distance}:
 
 $$
 M(\mathbf{p})=\sqrt{(\mathbf{p} - \mathbf{\mu})^{\!\top} \Sigma^{-1} (\mathbf{p} - \mathbf{\mu}).}
@@ -76,18 +76,18 @@ d_{-\infty}(\mathbf{p},\mathbf{q})=\min_{i=1}^n |p_i - q_i|
 $$
 to fall within the same framework. \newline\newline The \textbf{Jaccard similarity} of two datasets $P$ and $Q$, is defined as the size of their intersection divided by the size of their union
 $$
-J(\mathbf{p}, \mathbf{q})
+J(P,Q)
 = \frac{|P \cap Q|}{|P \cup Q|}
 = \frac{|P \cap Q|}{|P| + |Q| - |P \cap Q|}
 $$
-Their \textbf{Jaccard distance} is then taken to be $1 - J(\mathbf{p}, \mathbf{q})$.
+Their \textbf{Jaccard distance} is then taken to be $1 - J(P,Q)$.
 
 This definition can be extended to compare binary vectors  (i.e. vectors with entries in $\{0,1\}$) of the same length.
 Given two binary vectors $\mathbf{p}$ and $\mathbf{q}$ of length $n$, consider an arbitrary set $D$ of size $n$. Then $\mathbf{p}$ and $\mathbf{q}$ can be viewed as subsets of $D$: if $p_i=1$ then $\mathbf{p}$ is said to contain the $i$-th element of $D$, while if $p_i=0$ then it does not. Viewing $\mathbf{p}$ and $\mathbf{q}$ in this way allows us to compute their Jaccard similarity, and thus their Jaccard distance.\newline\newline
 Finally, let $\mathbf{p},\mathbf{q}\neq \mathbf{0}$. Recall that 
 $\mathbf{p} \cdot \mathbf{q} 
 = \lVert p \rVert \lVert q \rVert \cos\theta,$
-where $\theta$ is the angle between $\mathbf{p}$ and $q$.
+where $\theta$ is the angle between $\mathbf{p}$ and $\mathbf{q}$.
 The \textbf{cosine similarity} between $\mathbf{p}$ and $\mathbf{q}$ is the cosine of $\theta$, which can be computed as
 $$
 \cos\theta
