@@ -157,7 +157,7 @@ The \textbf{Local Outlier Factor} (LOF) algorithm was proposed in 2000 by \cite{
 (a summary can be found in Section 6.4.2 of \cite{A10}). 
 LOF works by measuring the local deviation of each point in a dataset from its $k$ nearest neighbours, with a point said to be anomalous if this \textbf{deviation is large}.
 
-A \textbf{local $k-$region} around a point $\mathbf{p}$ is defined as the $k$ nearest neighbours of $\mathbf{p}$. The density of points in each of their respective local $k-$neighbourhoods is estimated, and compared to the density of the local $k-$neighbourhoods of the point within their own $k-$neighbourhood.
+A \textbf{local $k-$region} around a point $\mathbf{p}$ is defined as the $k$ nearest neighbours of $\mathbf{p}$. The density of points in each of their respective local $k-$neighbourhoods is estimated, and compared to the density of the local $k-$neighbourhoods of the points within their own $k-$neighbourhood.
 
 This can then be used to identify outliers that inhabit regions of lower density than their neighbours,
 as $\mathbf{p}$ would be in Figure \ref{lofoutlier}. The formal procedure is shown in Algorithm~\ref{alg:LOF}. 

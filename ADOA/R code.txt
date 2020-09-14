@@ -4,8 +4,7 @@ library(ggplot2)
 library(tidyverse)
 library(gridExtra)
 library(grid)
-library(DMwR)
-
+\
 # number of observations to simulate
 nobs = 100
 
@@ -357,3 +356,64 @@ aoda.p4 %>%
   scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
   scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
   theme_bw() + theme(legend.position = "none") 
+
+
+
+### scaled DTAP
+
+rdata.scaled=data.frame(matrix(ncol = 4, nrow = nobs+2))
+
+for(i in 1:4){
+  rdata.scaled[,i]<-2/(max(rdata[,i])-min(rdata[,i]))*rdata[,i]-1
+}
+
+splom(rdata.scaled[,1:4], pch=22)
+
+m.L2 <- as.matrix(dist(rdata.scaled, method="euclidean"))
+m.sup <- as.matrix(dist(rdata.scaled, method="maximum"))
+m.L1 <- as.matrix(dist(rdata.scaled, method="manhattan"))
+
+# DTAP
+
+aoda.L2 <- data.frame(1:(nobs+2),rowSums(m.L2))
+colnames(aoda.L2) <- c("obs","dist")
+aoda.L2 <- aoda.L2[order(-aoda.L2$dist),]
+head(aoda.L2)
+
+aoda.L2 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Sum of Euclidean Distance to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+aoda.sup <- data.frame(1:(nobs+2),rowSums(m.sup))
+colnames(aoda.sup) <- c("obs","dist")
+aoda.sup <- aoda.sup[order(-aoda.sup$dist),]
+head(aoda.sup)
+
+aoda.sup %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Sum of Maximum Distance to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+aoda.L1 <- data.frame(1:(nobs+2),rowSums(m.L1))
+colnames(aoda.L1) <- c("obs","dist")
+aoda.L1 <- aoda.L1[order(-aoda.L1$dist),]
+head(aoda.L1)
+
+aoda.L1 %>%  
+  ggplot(aes(x=obs,y=dist)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Sum of Manhattan Distance to Other Observations") +
+  geom_point(aes(fill=dist,colour=dist,size=dist),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+

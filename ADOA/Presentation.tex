@@ -231,23 +231,6 @@ What's an \textbf{outlier/anomalous observation?} (reprise)
 Derived-score anomaly detection may help (... or it may not) [Baron]
 \end{center}
 
-\newpage
-\begin{center}
-\includegraphics[width=0.68\textwidth]{Images/1SVM.png} \\ 
-Learning an \textbf{anomaly frontier} [Baron].
-\end{center}
-
-
-\newpage
-\begin{center}
-\includegraphics[width=\textwidth]{Images/IsoForest.png} \\ 
-\textbf{Isolation Forest:} ensemble method (sections 6.2, 6.6). ``Outliers are objects that are separated from the rest of the dataset higher in the trees'' [Baron, here and next page].
-\end{center}
-
-\newpage
-\begin{center}
-\includegraphics[width=0.9\textwidth]{Images/IsoForest2.png}
-\end{center}
 
 
 \newpage
@@ -301,6 +284,11 @@ This leads to more sophisticated anomaly detection methods and could also could 
 \item SL methods need to minimize a \textbf{loss function} (cost of making a mistake) which is usually symmetrical (in the anomaly detection context, this  is not usually a valid assumption). 
 \end{itemize}
 Even more than in traditional analysis settings, anomaly detection can lead to \textbf{technically correct but ultimately useless} (non-actionable) \textbf{results}. 
+\newpage
+\begin{center}
+\includegraphics[width=0.68\textwidth]{Images/1SVM.png} \\ 
+Learning an \textbf{anomaly frontier} [Baron].
+\end{center}
 \newpage\ \\ \noindent  \textbf{Example:} The vast majority ($99.999+$\%) of air passengers \textbf{do not} bring weapons with them on flights. \newl A model that predicts that no passenger is ever attempting to smuggle a weapon on board a flight would be $99.999+$\% accurate.\newl But it would miss the point \textbf{completely}. For the \textbf{security agency}, the cost of wrongly thinking that a passenger is:
 \begin{itemize}
 \item  smuggling a weapon $\Longrightarrow$ cost of a single search;
@@ -834,6 +822,22 @@ $49$  & $49$  & $14$  \\
 \end{tabular} \\ 
 DTAP anomalies ($\nu=5$), for various distances; unscaled data.
 \end{center}
+\newpage\ \\  
+\begin{center}
+\begin{tabular}{ccc}
+\textbf{Euclidean} & 
+\textbf{Supremum}   & 
+\textbf{Manhattan}    \\ \hline
+$102$ & $102$ & $102$ \\
+$61$ & $62$  & $62$  \\
+$67$  & $14$  & $14$ \\
+$101$  & $55$  & $67$  \\
+$14$  & $49$  & $49$  \\
+& & \\
+\end{tabular} \\ 
+DTAP anomalies ($\nu=5$), for various distances; scaled data.
+\end{center}
+The rankings change according to the selected distance function, the data scaling, and the choice of algorithm (see following slides). \newl How do we make these decisions, then?   
 \newpage
 \begin{center}
 \includegraphics[width=\textwidth]{Images/AD_L2_min}
@@ -880,27 +884,36 @@ DTNN anomalies ($\nu=5$), for various distances; unscaled data.
 
 
 \fh{6.2.2 -- Density-Based Methods} \label{6.2.2} 
+\noindent The flexibility in the choice of distance functions, scaling, and distance-based anomaly detection algorithm gives rise to different \textbf{anomaly rankings}. This is par for the course in the anomaly detection context. \newl Density-based approaches view points as anomalous if they occur in \textbf{low density regions}. Methods include: \begin{itemize}
+\item \textbf{local outlier factors};
+\item \textbf{DBSCAN}, and  
+\item \textbf{isolation forests}.
+\end{itemize}
 
+\newpage
+\begin{center}
+\includegraphics[width=0.8\textwidth]{Images/IsoForest2.png} \newline Low-density areas as outlier nurseries [Baron].
+\end{center}
 
-Density-based approaches, on the other hand, view points as anomalous if they occur in \textbf{low density regions}.
-% Three density-based methods are presented in this section, however there are many 
 
 \fh{Local Outlier Factor} % p110
-\begin{center}
-\includegraphics[height=\textheight]{Images/Algorithm1}
-\end{center}
-The \textbf{Local Outlier Factor} (LOF) algorithm was proposed in 2000 by \cite{LOF} 
-(a summary can be found in Section 6.4.2 of \cite{A10}). 
-LOF works by measuring the local deviation of each point in a dataset from its $k$ nearest neighbours, with a point said to be anomalous if this \textbf{deviation is large}.
+\noindent The \textbf{Local Outlier Factor} (LOF) algorithm works by measuring the \textbf{local deviation} of each observation \textbf{from its $k$ nearest neighbours}.\newl An observation is said to be anomalous if the \textbf{deviation is large}.
+\newl A \textbf{local $k-$region} around a point $\mathbf{p}$ is simply the set of the $k$ nearest neighbours of $\mathbf{p}$ $\Longrightarrow$ need to select a distance measure. \newl 
+Local $k-$regions have different extent from one observation to the next $\Longrightarrow$ each $\mathbf{p}$ has a \textbf{local density}. 
+\newl Observations with anomalously small local density compared to its $k-$neighbours are identified as  \textbf{outliers}.
 
-A \textbf{local $k-$region} around a point $\mathbf{p}$ is defined as the $k$ nearest neighbours of $\mathbf{p}$. The density of points in each of their respective local $k-$neighbourhoods is estimated, and compared to the density of the local $k-$neighbourhoods of the point within their own $k-$neighbourhood.
-
-This can then be used to identify outliers that inhabit regions of lower density than their neighbours,
-as $\mathbf{p}$ would be in Figure \ref{lofoutlier}. The formal procedure is shown in Algorithm~\ref{alg:LOF}. 
-
-\begin{center}\includegraphics[width=0.5\textwidth]{Images/Figure11}
+\newpage\ \begin{center}\includegraphics[width=0.5\textwidth]{Images/Figure11}
 \end{center}
 {For $k=2$, $\mathbf{p}$ is an outlier as it has lower density than its neighbours.}
+ 
+This can then be used to identify outliers that inhabit regions of lower density than their neighbours,
+as $\mathbf{p}$ would be in Figure \ref{lofoutlier}. The formal procedure is shown in Algorithm~\ref{alg:LOF}. 
+\newpage\begin{center}
+\includegraphics[height=\textheight]{Images/Algorithm1}
+\end{center}
+
+
+
 
 \noindent LOF is able to identify \textbf{local outliers}, but selecting a threshold beyond which a point is considered an outlier is difficult. \newl LOF introduces the idea of a \textbf{reachability distance}, which improves the stability of results within clusters/regions: within a local $k-$region around $\mathbf{p}$, it is simply the maximal distance to its $k-$neighbours; outside of that region, it is the actual distance from $\mathbf{p}$. 
 \par In Figure \ref{reachability} (with $k=3$), for instance, the points $\mathbf{q}_1, \mathbf{q}_2, \mathbf{q}_3$ all have the same reachability distance from $\mathbf{p}$ as they are all $3$-neighbours of $\mathbf{p}$, that is, 
@@ -971,6 +984,11 @@ The Isolation Forest algorithm tries to isolate anomalous points. It does this b
 Additionally, instead of building a tree from the entire dataset, a tree can be constructed from a subset. The location of any point within this smaller tree can then be estimated, again saving computational and memory resources. These two improvements are detailed in the original paper \cite{A15}. 
 \newl Once a number of Isolation Trees have been randomly generated (\textbf{Isolation Forest}), a score can be computed for each point. This is done by searching each tree for the location of a given point and noting the path length required to reach it. Once a point's path length in each tree has been computed, the average path length is taken to be its score.
 \newpage\noindent  It can be desirable to construct a normalized anomaly score that is independent of the size of the dataset.
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/IsoForest.png} \\ 
+\textbf{Isolation Forest:} ensemble method. ``Outliers are objects that are separated from the rest of the dataset higher in the trees'' [Baron].
+\end{center}
 
 \begin{center}\includegraphics[height=\textheight]{Images/Algorithm3}
 \end{center}
