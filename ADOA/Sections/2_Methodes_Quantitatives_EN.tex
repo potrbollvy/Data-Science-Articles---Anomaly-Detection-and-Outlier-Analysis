@@ -168,12 +168,12 @@ as $\mathbf{p}$ would be in Figure \ref{lofoutlier}. The formal procedure is sho
 \begin{tikzpicture}
 \filldraw[black] (0,0) circle (2pt) node[anchor=west] {$\mathbf{p}$};
 \draw[dashed] (0,0) circle (2);
-\filldraw[black] (1.6,0.2) circle (2pt);
-\filldraw[black] (2,0.834429) circle (2pt);
-\draw[dashed] (1.6,0.2) circle (0.75);
-\filldraw[black] (2,0) circle (2pt);
-\filldraw[black] (2.5,0) circle (2pt);
 \draw[dashed] (2,0) circle (0.5);
+\draw[dashed] (1.6,0.2) circle (0.75);
+\filldraw[gray] (2,0.834429) circle (2pt);
+\filldraw[gray] (2.5,0) circle (2pt);
+\filldraw[orange] (1.6,0.2) circle (2pt) node[anchor=east] {$\mathbf{q}_1$};
+\filldraw[orange] (2,0) circle (2pt) node[anchor=east] {$\mathbf{q}_2$};
 \end{tikzpicture}
 \caption{For $k=2$, $\mathbf{p}$ is an outlier as it has lower density than its neighbours.}
 \label{lofoutlier}

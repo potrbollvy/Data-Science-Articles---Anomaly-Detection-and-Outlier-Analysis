@@ -898,40 +898,36 @@ DTNN anomalies ($\nu=5$), for various distances; unscaled data.
 
 \fh{Local Outlier Factor} % p110
 \noindent The \textbf{Local Outlier Factor} (LOF) algorithm works by measuring the \textbf{local deviation} of each observation \textbf{from its $k$ nearest neighbours}.\newl An observation is said to be anomalous if the \textbf{deviation is large}.
-\newl A \textbf{local $k-$region} around a point $\mathbf{p}$ is simply the set of the $k$ nearest neighbours of $\mathbf{p}$ $\Longrightarrow$ need to select a distance measure. \newl 
+\newl A \textbf{local $k-$region} around a point $\mathbf{p}$ is simply the set $N_k(\mathbf{p})$ of the $k$ nearest neighbours of $\mathbf{p}$ $\Longrightarrow$ need to select a distance measure. \newl 
 Local $k-$regions have different extent from one observation to the next $\Longrightarrow$ each $\mathbf{p}$ has a \textbf{local density}. 
-\newl Observations with anomalously small local density compared to its $k-$neighbours are identified as  \textbf{outliers}.
+\newl Observations with anomalously small local density compared to its $k-$neighbours are identified as \textbf{outliers}.
 
 \newpage\ \begin{center}\includegraphics[width=0.5\textwidth]{Images/Figure11}
 \end{center}
-{For $k=2$, $\mathbf{p}$ is an outlier as it has lower density than its neighbours.}
- 
-This can then be used to identify outliers that inhabit regions of lower density than their neighbours,
-as $\mathbf{p}$ would be in Figure \ref{lofoutlier}. The formal procedure is shown in Algorithm~\ref{alg:LOF}. 
-\newpage\begin{center}
-\includegraphics[height=\textheight]{Images/Algorithm1}
+{For $k=2$, $\mathbf{p}$ has lower density than its $k-$neighbours $\mathbf{q}_1,\mathbf{q}_2$. The formal procedure is provided in Algorithm 1.  
+\newpage\ \begin{center}
+\adjincludegraphics[trim={0 {0.5\height} 0 0}, clip, height=0.9\textheight]{Images/Algorithm1}
 \end{center}
-
-
-
-
-\noindent LOF is able to identify \textbf{local outliers}, but selecting a threshold beyond which a point is considered an outlier is difficult. \newl LOF introduces the idea of a \textbf{reachability distance}, which improves the stability of results within clusters/regions: within a local $k-$region around $\mathbf{p}$, it is simply the maximal distance to its $k-$neighbours; outside of that region, it is the actual distance from $\mathbf{p}$. 
-\par In Figure \ref{reachability} (with $k=3$), for instance, the points $\mathbf{q}_1, \mathbf{q}_2, \mathbf{q}_3$ all have the same reachability distance from $\mathbf{p}$ as they are all $3$-neighbours of $\mathbf{p}$, that is, 
-$$
-d_{\text{reach}}(\mathbf{p}, \mathbf{q}_1) 
+\newpage\ \begin{center}
+\adjincludegraphics[trim={0 0 0 {0.5\height}}, clip, height=0.9\textheight]{Images/Algorithm1}
+\end{center}
+\newpage\ \\ \noindent Any point with a local outlier factor $a_k(\mathbf{p})$ above some threshold $\tau$ is a \textbf{local outliers}. \newl $\Warning$ \textbf{Selecting appropriate $k$ and threshold $\tau$ is not simple.} \newl Using a derived  \textbf{reachability distance} improves the stability of the algorithm results: within $N_k(\mathbf{p})$, $$d_{\text{reach}}(\mathbf{p},\mathbf{q})=\max_{\ell}\{d(\mathbf{p},\mathbf{q}_{\ell}); \mathbf{q}_{\ell}\in N_k(\mathbf{p})\};$$  outside of $N_k(\mathbf{p})$, $$d_{\text{reach}}(\mathbf{p},\mathbf{q})=d(\mathbf{p},\mathbf{q}).$$ 
+\newpage\ \begin{center}\includegraphics[width=0.4\textwidth]{Images/Figure12}
+\end{center}
+{The region of uniform reachability distance around $\mathbf{p}$ for $k=3$: 
+$$d_{\text{reach}}(\mathbf{p}, \mathbf{q}_1) 
 = d_{\text{reach}}(\mathbf{p}, \mathbf{q}_2)
 = d_{\text{reach}}(\mathbf{p}, \mathbf{q}_3)
-= d(\mathbf{p}, \mathbf{q}_3)
-.$$
-The point $\mathbf{q}_4$, on the other hand, has 
-$d_{\text{reach}}(\mathbf{p}, \mathbf{q}_4)
-= d(\mathbf{p}, \mathbf{q}_4)
-$
-as it is not a $k$-neighbour of $\mathbf{p}$.
-
-\begin{center}\includegraphics[width=0.5\textwidth]{Images/Figure12}
+= d(\mathbf{p}, \mathbf{q}_3);\   d_{\text{reach}}(\mathbf{p}, \mathbf{q}_4)
+= d(\mathbf{p}, \mathbf{q}_4).$$
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_LOF_k=4_d=L2}
 \end{center}
-{The region of uniform reachability distance around $\mathbf{p}$ for $k=3$.}
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/AD_LOF_k=4_d=sup}
+\end{center}
 
 \fh{DBSCAN}
 Density-Based Spatial Clustering of Applications with Noise (DBSCAN) was proposed in 1996 by \cite{DBSCAN} 

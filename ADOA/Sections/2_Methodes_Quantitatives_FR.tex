@@ -150,15 +150,15 @@ On peut se servir de cette notion afin d'identifier les valeurs aberrantes qui h
 \begin{figure}[H]
 \hrule \vspace{0.4cm}
 \centering
-\begin{tikzpicture}[x=0.85cm,y=0.85cm]
+\begin{tikzpicture}
 \filldraw[black] (0,0) circle (2pt) node[anchor=west] {$\mathbf{p}$};
 \draw[dashed] (0,0) circle (2);
-\filldraw[black] (1.6,0.2) circle (2pt);
-\filldraw[black] (2,0.834429) circle (2pt);
-\draw[dashed] (1.6,0.2) circle (0.75);
-\filldraw[black] (2,0) circle (2pt);
-\filldraw[black] (2.5,0) circle (2pt);
 \draw[dashed] (2,0) circle (0.5);
+\draw[dashed] (1.6,0.2) circle (0.75);
+\filldraw[gray] (2,0.834429) circle (2pt);
+\filldraw[gray] (2.5,0) circle (2pt);
+\filldraw[orange] (1.6,0.2) circle (2pt) node[anchor=east] {$\mathbf{q}_1$};
+\filldraw[orange] (2,0) circle (2pt) node[anchor=east] {$\mathbf{q}_2$};
 \end{tikzpicture}
 \caption{Lorsque $k=2$, $\mathbf{p}$ est une valeur aberrante puisque sa densit\'e est plus faible que celle de ces voisins.}
 \label{lofoutlier}
