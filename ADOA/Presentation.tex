@@ -254,10 +254,28 @@ In small datasets, detection can be conducted on a case-by-case basis.\newl \tex
 \newl If once ``anomalous'' observations have been removed from the dataset, previously ``regular'' observations can become anomalous in turn in the smaller dataset -- when does the runaway train?
 \newpage\ \\ 
 \begin{center}
-\includegraphics[width=0.45\textwidth]{Images/ADOA1.png}\quad\includegraphics[width=0.45\textwidth]{Images/ADOA2.png} \bigskip
-\includegraphics[width=0.45\textwidth]{Images/ADOA3.png}\quad\includegraphics[width=0.45\textwidth]{Images/ADOA4.png} \bigskip
-\includegraphics[width=0.45\textwidth]{Images/ADOAn.png}\quad\includegraphics[width=0.45\textwidth]{Images/ADOA10.png}\end{center}
-
+\includegraphics[width=\textwidth]{Images/ADOA1.png} \\ Automatic renewal of anomaly (step $1$)
+\end{center}
+\newpage\ \\ 
+\begin{center}
+\includegraphics[width=\textwidth]{Images/ADOA2.png}\\ Automatic renewal of anomaly (step $2$)
+\end{center}
+\newpage\ \\ 
+\begin{center}
+\includegraphics[width=\textwidth]{Images/ADOA3.png}\\ Automatic renewal of anomaly (step $3$)
+\end{center}
+\newpage\ \\ 
+\begin{center}
+\includegraphics[width=\textwidth]{Images/ADOA4.png} \\ Automatic renewal of anomaly (step $4$)
+\end{center}
+\newpage\ \\ 
+\begin{center}
+\includegraphics[width=\textwidth]{Images/ADOAn.png}\\ Automatic renewal of anomaly (step $n$)
+\end{center}
+\newpage\ \\ 
+\begin{center}
+\includegraphics[width=\textwidth]{Images/ADOA10.png}\\ Automatic renewal of anomaly (step $9$)
+\end{center}
 \newpage\ \\ \noindent In the early stages of anomaly detection, we use \textbf{simple data analyses:}
 \begin{itemize}
 \item descriptive statistics, 
@@ -930,42 +948,117 @@ $$d_{\text{reach}}(\mathbf{p}, \mathbf{q}_1)
 \end{center}
 
 \fh{DBSCAN}
-Density-Based Spatial Clustering of Applications with Noise (DBSCAN) was proposed in 1996 by \cite{DBSCAN} 
-(a summary can be found in Section 4.1.5 of \cite{A10}). 
-As its name suggests, it is a density-based clustering algorithm that groups nearby points together and labels points that do not fall in the clusters as \textbf{anomalies}.
+\noindent Density-Based Spatial Clustering of Applications with Noise (DBSCAN) is a density-based clustering algorithm that groups nearby points together. \newl Points that do not fall in the clusters are labeled as (potential) \textbf{anomalies}.
+\newl Hierarchical DBSCAN (HDBSCAN), which  removes the problem of choosing one of DBSCAN's parameters (the radius of  neighbourhoods). \newl $\Warning$ We won't be talking about \textbf{clustering} in a general sense -- it could form the basis of $2+$ courses -- but it would be a good idea to take some time to read up on the topic if you are not familiar with it.
 
-Hierarchical DBSCAN (HDBSCAN) \cite{HDBSCAN} was introduced in 2013.
-It notably removes the problem of choosing the parameter for the radius of a neighbourhood by considering all possible radii. 
-Further documentation can be found at \cite{HDBSCAN_code}. \newl 
-In DBSCAN, 
-\begin{itemize} 
-\item a point $\mathbf{p}$ is a \textbf{core point} if there are a minimum number $m$ of points within distance $r$ of $\mathbf{p}$;
-\item a point $\mathbf{q}$ is a \textbf{border point} if it is not itself a core point but is within distance $r$ of one, and 
-\item a point $\mathbf{o}$ is an \textbf{outlier} if it is neither a core nor a border point.
-\end{itemize}
-
-\begin{center}\includegraphics[height=\textheight]{Images/Algorithm2}
+\newpage\ \\ 
+\begin{center}
+\includegraphics[width=\textwidth]{Images/Clustering1}
 \end{center}
 
-
-
-
-
-
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.75\textwidth]{Images/clustering2_EN.png} \\ 
+Clusters of regular customers (red, green, blue) and potential anomalies/outliers (grey) in an artificial dataset.
+\end{center}
+\newpage\ \\ \noindent In DBSCAN, 
+\begin{itemize} 
+\item $\mathbf{p}$ is a \textbf{core point} if there are $m+$ points within distance $r$ of $\mathbf{p}$;
+\item $\mathbf{q}$ (non-core) is a \textbf{border point} if it is within distance $r$ of a core point; 
+\item $\mathbf{o}$ is an \textbf{outlier} if it is neither a core nor a border point.
+\end{itemize}
 
 \begin{center}\includegraphics[width=0.5\textwidth]{Images/Figure13}
 \end{center}
-{For minimum neighbourhood size $m=2$ and this fixed radius $r$, $\mathbf{o}$ is an outlier, $\mathbf{p}$ a core point, and $\mathbf{q}_1$ and $\mathbf{q}_2$ are border points.}
+{For minimum neighbourhood size $m=2$ and the fixed radius $r$ above, $\mathbf{o}$ is an outlier, $\mathbf{p}$ is a core point, and $\mathbf{q}_1,\mathbf{q}_2$ are border points.}
 
-DBSCAN considers each point in the dataset individually. If that point is an outlier, then it is added to a list of outliers. Otherwise if it is a core point, then its $r$-neighbourhood forms the beginning of a new cluster. Each point in this $r$-neighbourhood is then considered in turn, with the $r$-neighbourhoods of other core points contained in the neighbourhood being added to the cluster. \par This expansion repeats until all points have been examined. During this step points that were previously labelled as outliers may be updated as they become border points in this new cluster. This process continues until every point has either been assigned to a cluster or labelled as an outlier (see Algorithm~\ref{dbscan} and Figure~\ref{DBSCANlabels}).
-
-While DBSCAN's dual use as a clustering algorithm may seem irrelevant in the outlier detection setting,
-its ability to succesfully identify clusters is crucial to being able to label the remaining points as outliers.
+\newpage\ \\ \noindent DBSCAN considers each point in the dataset individually:
+\begin{itemize}
+\item if a point is not a core point or a border point, it is considered an outlier;
+\item if it is a border point, it is not considered an outlier, but it does not form the basis of a new cluster of regular observations;
+\item if it is a core point, then its $r$-neighbourhood forms the beginning of a new cluster;
+\item each point in this $r$-neighbourhood is then considered in turn, with the $r$-neighbourhoods of other core points contained in the neighbourhood being added to the cluster (regular observations).
+\end{itemize}
+This expansion repeats until all points have been examined. \newpage\ \\ \noindent During the expansion, points that were previously labelled as outliers may be updated as they become border points in a new cluster. \newl This process continues until every point has either been assigned to a cluster or labelled as an outlier. \newl DBSCAN's dual use as a clustering algorithm may seem irrelevant in the outlier detection setting, but its ability to succesfully identify clusters is crucial (the remaining points are outliers).
 \newl 
-On the one hand, in DBSCAN the number of clusters does not need to be known beforehand (unlike in $k-$means and other clustering algorithms) and clusters of arbitrary shape can be detected. \par Furthermore, when using HDBSCAN, only the parameter for the minimum cluster size $m$ is required, which can be set fairly intuitively, which is not the case for the parameters in general clustering algorithms: if the elements of $D$ are $n-$dimensional, take $m\geq n+1$ (larger values of $m$ allow for better noise identification).
-\newl On the other hand, DBSCAN is not deterministic, as border points can be assigned to different clusters depending on the order in which core points are considered (this does not affect its use as an anomaly detection algorithm, however).
-\par In high dimensions, the ability of any distance function based on Euclidean distance to distinguish near and distant points diminishes due to the \textbf{Curse of Dimensionality}; thus in high dimension spaces, it  become ineffective (as do  other clustering algorithms). \par  Finally, DBSCAN cannot handle differences in local densities as the radius of a neighbourhood $r$ is fixed; this could lead to sparser clusters being labelled as outliers, or to outliers surrounding a denser cluster being included in the cluster.
-This issue is overcome in HDBSCAN.
+The formal procedure is provided in Algorithm 2. \newl (But why use DBSCAN instead of any other  of the $50+$ cluster algorithms?)\newpage\  \begin{center}
+\adjincludegraphics[trim={0 {0.5\height} 0 0}, clip, height=0.9\textheight]{Images/Algorithm2}
+\end{center}
+\newpage\ \begin{center}
+\adjincludegraphics[trim={0 0 0 {0.5\height}}, clip, height=0.9\textheight]{Images/Algorithm2}
+\end{center}
+
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/dbscan1} \\ 
+\end{center}
+
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/dbscan15} \\ Point picked at random
+\end{center}
+
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/dbscan2} \\ Point identified as non-core point
+\end{center}
+
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/dbscan3} \\ Point identified as non-core point
+\end{center}
+
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/dbscan4} \\ Another point picked at random
+\end{center}
+
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/dbscan5} \\ Point identified as a core point
+\end{center}
+
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/dbscan6} \\ Points in the $\varepsilon-$neighbourhood
+\end{center}
+
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/dbscan7} \\ Resulting cluster
+\end{center}
+
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Images/dbscan8} \\ Clusters and outliers
+\end{center}
+
+\newpage 
+\begin{center}
+\includegraphics[height=\textheight]{Images/clustering3}
+\end{center}
+
+\newpage
+\begin{center}
+\includegraphics[height=\textheight]{Images/clustering2}
+\end{center}
+
+\newpage\ \\ \noindent \textbf{Strengths:} 
+\begin{itemize}
+\item the number of clusters does not need to be known beforehand; \item clusters of arbitrary shape can be detected; 
+\item with HDBSCAN, only the parameter for the minimum cluster size $m\geq n+1$ is required  (larger values of $m$ allow for better noise identification).
+\end{itemize} \textbf{Limitations:}
+\begin{itemize}
+\item not entirely deterministic, as border points can be assigned to different clusters depending on the order in which core points are considered (does not affect its use as an anomaly detection algorithm).
+\newpage\ \item suffers from the \textbf{Curse of Dimensionality} -- in high-dimensional spaces,  Euclidean-based distances have a difficult time distinguish \textbf{near} observations from \textbf{distant} ones; \item  cannot handle differences in local densities when the radius $r$  of a neighbourhood  is fixed $\Longrightarrow$ sparser clusters could be  labelled as outliers, or outliers surrounding a denser cluster could be included in the cluster.
+\end{itemize}
+\begin{center}
+\includegraphics[width=0.25\textwidth]{Images/clustering4}
+\end{center}
+
+
+
+
 
 \fh{Isolation Forest}
 The previously discussed approaches first construct models of what normal points look like, and then identify points that do not fit this model.

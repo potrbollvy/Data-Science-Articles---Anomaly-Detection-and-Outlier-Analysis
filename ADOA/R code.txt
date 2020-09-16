@@ -4,7 +4,8 @@ library(ggplot2)
 library(tidyverse)
 library(gridExtra)
 library(grid)
-\
+library(dbscan)
+
 # number of observations to simulate
 nobs = 100
 
@@ -417,3 +418,46 @@ aoda.L1 %>%
   scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
   theme_bw() + theme(legend.position = "none") 
 
+
+## LOF
+
+dist.L2 = dist(rdata[,1:4], method="euclidean")
+lof <- lof(dist.L2, k=4)
+summary(lof)
+hist(lof, breaks=10)
+
+rdata.lof.L2 = data.frame(rdata[,1:4],lof)
+rdata.lof.obs.L2 = data.frame(1:(nobs+2),lof)
+names(rdata.lof.obs.L2) = c("obs",'lof')
+rdata.lof.obs.L2 <- rdata.lof.obs.L2[order(-rdata.lof.obs.L2$lof),]
+head(rdata.lof.obs.L2)
+
+rdata.lof.obs.L2 %>%  
+  ggplot(aes(x=obs,y=lof)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Local outlier factor (k=4, d=L2)") +
+  geom_point(aes(fill=lof,colour=lof,size=lof),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+
+dist.sup = dist(rdata[,1:4], method="maximum")
+lof <- lof(dist.sup, k=4)
+summary(lof)
+hist(lof, breaks=10)
+
+rdata.lof.sup = data.frame(rdata[,1:4],lof)
+rdata.lof.obs.sup = data.frame(1:(nobs+2),lof)
+names(rdata.lof.obs.sup) = c("obs",'lof')
+rdata.lof.obs.sup <- rdata.lof.obs.sup[order(-rdata.lof.obs.sup$lof),]
+head(rdata.lof.obs.sup)
+
+rdata.lof.obs.sup %>%  
+  ggplot(aes(x=obs,y=lof)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Local outlier factor (k=4, d=sup)") +
+  geom_point(aes(fill=lof,colour=lof,size=lof),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
