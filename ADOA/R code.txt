@@ -461,3 +461,34 @@ rdata.lof.obs.sup %>%
   scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
   scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
   theme_bw() + theme(legend.position = "none") 
+
+# dbscan 
+# What about OPTICS? HDBSCAN? 
+
+db.1 <- dbscan(rdata[,1:4], eps = .4, minPts = 4)
+db.1
+splom(rdata[,1:4], groups=db.1$cluster + 1L, pch=22)
+
+db.2 <- dbscan(rdata[,1:4], eps = 1, minPts = 4)
+db.2
+splom(rdata[,1:4], groups=db.2$cluster + 1L, pch=22)
+
+db.3 <- dbscan(rdata[,1:4], eps = 1, minPts = 8)
+db.3
+splom(rdata[,1:4], groups=db.3$cluster + 1L, pch=22)
+
+db.4 <- dbscan(rdata[,1:4], eps = 2, minPts = 8)
+db.4
+splom(rdata[,1:4], groups=db.4$cluster + 1L, pch=22)
+
+hdb.1 <- hdbscan(rdata[,1:4], minPts = 4)
+hdb.1
+splom(rdata[,1:4], groups=hdb.1$cluster + 1L, pch=22)
+
+opt.1 <- optics(rdata[,1:4], eps = 1, minPts = 4)
+opt.1 <- extractDBSCAN(opt.1, eps_cl = 1)
+opt.1
+splom(rdata[,1:4], groups=opt.1$cluster + 1L, pch=22)
+opt.1 <- extractXi(opt.1, xi = .05)
+table(opt.1$cluster)
+splom(rdata[,1:4], groups=opt.1$cluster + 1L, pch=22)
