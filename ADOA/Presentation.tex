@@ -1059,84 +1059,100 @@ The formal procedure is provided in Algorithm 2. \newl (But why use DBSCAN inste
 \newpage \ 
 \begin{center}
 \includegraphics[height=0.85\textheight]{Images/db_1} \\ 
-DBSCAN, unscaled data, $\varepsilon=0.4$, $\text{minPts}=4$
+DBSCAN, $d_2$, unscaled data, $\varepsilon=0.4$, $\text{minPts}=4$
 \end{center}
 \newpage \ 
 \begin{center}
 \includegraphics[height=0.85\textheight]{Images/db_2} \\ 
-DBSCAN, unscaled data, $\varepsilon=1$, $\text{minPts}=4$
+DBSCAN, $d_2$, unscaled data, $\varepsilon=1$, $\text{minPts}=4$
 \end{center}
 \newpage \ 
 \begin{center}
 \includegraphics[height=0.85\textheight]{Images/db_3} \\ 
-DBSCAN, unscaled data, $\varepsilon=1$, $\text{minPts}=8$
+DBSCAN, $d_2$, unscaled data, $\varepsilon=1$, $\text{minPts}=8$
 \end{center}
 \newpage \ 
 \begin{center}
 \includegraphics[height=0.85\textheight]{Images/db_4} \\ 
-DBSCAN, unscaled data, $\varepsilon=2$, $\text{minPts}=8$
+DBSCAN, $d_2$, unscaled data, $\varepsilon=2$, $\text{minPts}=8$
 \end{center}
 \newpage \ 
 \begin{center}
 \includegraphics[height=0.85\textheight]{Images/hdb_1} \\ 
-HDBSCAN, unscaled data, $\text{minPts}=4$
+HDBSCAN, $d_2$, unscaled data, $\text{minPts}=4$
 \end{center}
 
 \newpage \ 
 \begin{center}
 \includegraphics[height=0.85\textheight]{Images/opt_1} \\ 
-OPTICS, unscaled data, $\varepsilon=1$, $\text{minPts}=4$, $\varepsilon_{\text{cl}}=1$
+OPTICS, $d_2$,  unscaled data, $\varepsilon=1$, $\text{minPts}=4$, $\varepsilon_{\text{cl}}=1$
 \end{center}
 
 \newpage \ 
 \begin{center}
 \includegraphics[height=0.85\textheight]{Images/xi_1} \\ 
-OPTICS, unscaled data, $\varepsilon=1$, $\text{minPts}=4$, $\varepsilon_{\text{cl}}=1$, $\xi=0.05$
+OPTICS, $d_2$, unscaled data, $\varepsilon=1$, $\text{minPts}=4$, $\varepsilon_{\text{cl}}=1$, $\xi=0.05$
 \end{center}
 
 
 \fh{Isolation Forest}
-The previously discussed approaches first construct models of what normal points look like, and then identify points that do not fit this model.
-The Isolation Forest algorithm \cite{A15} introduced in 2008 instead tries to explicitly identify outliers under the assumptions that there are few outliers and that these outliers have very different attributes compared to normal points. Doing so allows the use of sampling techniques that increase algorithmic speed while decreasing memory requirements.
-\begin{center}\includegraphics[width=0.5\textwidth]{Images/Figure14}
-\end{center}
-{A partitioning constructed during Isolation Tree generation.}
+\noindent Both the LOF and the DBSCAN approach first construct models of what normal points look like, and then identify points that do not fit this model.\newl The \textbf{isolation forest} (IsoForest) algorithm tries instead to explicitly identify outliers under the assumptions that:
+\begin{itemize}
+\item there are \textbf{few} outliers, and 
+\item that these outliers have \textbf{very different attributes} compared to normal observations.
+\end{itemize}
+IsoForest uses sampling techniques that increase algorithmic speed while decreasing memory requirements.\newpage\ \\ \noindent IsoForest tries to \textbf{isolate} anomalous points by \textbf{randomly} selecting an attribute and a split value between that attribute's min/max values, continuing until every point is alone in its component.
 
-The Isolation Forest algorithm tries to isolate anomalous points. It does this by randomly selecting an attribute and then randomly selecting a split value between that attribute's min and max values. This recursively partitions the points until every point is isolated in its own partition.
-\newl Recursive partitioning yields a binary tree called an \textbf{Isolation Tree}. The root of this tree is the entire dataset; each node is a subset of the observations, and each branch corresponds to one of the generated partitions. The leaf nodes are singleton sets containing a single isolated point. Each point is then assigned a score derived from how deep in the tree its singleton partition appears (see Figure~\ref{isolationtree} and Algorithm~\ref{iTree}). 
-\par As points that are shallower in the tree were easier to separate from the rest, these are the likely \textbf{outliers}. Since only shallow points are of interest, once the height of the tree has reached a given threshold (the expected height of a random binary tree, say), further construction of the tree can be stopped to decrease computational cost. \par 
-Additionally, instead of building a tree from the entire dataset, a tree can be constructed from a subset. The location of any point within this smaller tree can then be estimated, again saving computational and memory resources. These two improvements are detailed in the original paper \cite{A15}. 
-\newl Once a number of Isolation Trees have been randomly generated (\textbf{Isolation Forest}), a score can be computed for each point. This is done by searching each tree for the location of a given point and noting the path length required to reach it. Once a point's path length in each tree has been computed, the average path length is taken to be its score.
-\newpage\noindent  It can be desirable to construct a normalized anomaly score that is independent of the size of the dataset.
-\newpage
+\begin{center}\includegraphics[width=0.55\textwidth]{Images/Figure14}
+\end{center}
+\newpage\ \\ \noindent 
+This recursive partitioning yields an \textbf{Isolation Tree} (IsoTree):
+\begin{itemize}
+\item the \textbf{root} of this tree is the entire dataset; 
+\item each \textbf{node} is a subset of the observations; \item each \textbf{branch} corresponds to one of the generated partitions, and 
+\item the \textbf{leaves} are sets containing a single isolated point. \end{itemize} Each point is then assigned a score derived from \textbf{how deep in the tree} its singleton partition appears. \newl Points that are \textbf{shallower} in the tree are easier to separate from the rest $\Longrightarrow$  likely \textbf{outliers}? 
+\newpage\ \\ \noindent The  points are of interest are shallow: once the height of the tree has reached a \textbf{given threshold} (expected height of a random binary tree?), stop growing the tree (reduces computational cost). \newl
+IsoTrees can be constructed from subsets: the location of any point within this smaller tree can be estimated (reduces computational cost). 
+\newl A collection of IsoTrees forms an \textbf{Isolation Forest}. \newl An IsoForest \textbf{score} can be computed for each point: search each tree for the point's location and record the path length required to reach it. The score is simply the average path length (it can be \textbf{normalized} to make it  independent of the dataset's size); low scores $\Longrightarrow$ outliers. \newl The formal procedure is provided in Algorithms 3 and 4.  \newpage\ \\
 \begin{center}
 \includegraphics[width=\textwidth]{Images/IsoForest.png} \\ 
-\textbf{Isolation Forest:} ensemble method. ``Outliers are objects that are separated from the rest of the dataset higher in the trees'' [Baron].
+IsoForest schematics [Baron].
 \end{center}
-
+\newpage
 \begin{center}\includegraphics[height=\textheight]{Images/Algorithm3}
 \end{center}
-\begin{center}\includegraphics[height=\textheight]{Images/Algorithm4}
+\newpage\ \begin{center}
+\adjincludegraphics[trim={0 {0.48\height} 0 0}, clip, height=0.8\textheight]{Images/Algorithm4}
 \end{center}
-
-In order to do this, the expected path length of a random point in an Isolation Tree (i.e. binary tree) must be estimated. With $n = |D|$, it can be shown that the expected length is 
+\newpage\ \begin{center}
+\adjincludegraphics[trim={0 0 0 {0.52\height}}, clip, height=0.8\textheight]{Images/Algorithm4}
+\end{center}
+\newpage\ \\ \noindent 
+With $|D|=n$, it can be shown (not obvious!) that the expected length to a random point in an IsoTree is 
 $$
 c(n) 
 = 2 H(n-1) - \frac{2(n-1)}{n},
 $$
-where $H(n-1)$ is the $(n-1)^{\text{th}}$ harmonic number, which can be approximated by $\ln(n-1) + 0.577$;
-$c(n)$ is then used to normalize the final anomaly score $a(\mathbf{p})$ for $\mathbf{p} \in D$, which is given by
+where $H(n)$ is the $(n)^{\text{th}}$ harmonic number: $ H(n)\approx \ln n + 0.577.$\newl 
+The normalized anomaly score of $\mathbf{p}$ in the IsoForest, $a(\mathbf{p})$,   is 
 $$
 \log_2 a(\mathbf{p})
 = -\frac{\text{average path length to $\mathbf{p}$ in the Isolation Trees}}{c(n)}.
 $$
-Thus defined, $a(\mathbf{p})\in [0,1]$, with $a(\mathbf{p}) \approx 1$ suggesting $\mathbf{p}$ is an \textbf{anomaly}, $a(\mathbf{p}) \leq 0.5$ suggesting $\mathbf{p}$ is a normal point;
-if all points receive a score around $0.5$, this suggests that there are no anomalies present.
-\newl Isolation Forests have small time and memory requirements; can handle high dimensional data, and do not need observations to have been labeled anomalies in the training set, but the anomaly score assigned to a given point can have high variance over multiple runs of the algorithm. The authors of \cite{EIF} propose some solutions.
-\begin{center}\rule{0.5\linewidth}{.4pt}\end{center}
-In general, \text{density-based} schemes are more powerful than distance-based schemes when a dataset contains patterns with diverse characteristics, but less effective when the patterns are of comparable densities with the outliers \cite{JZ}.
+If $a(\mathbf{p}) \approx 1$, we label $\mathbf{p}$ an \textbf{anomaly}; if  $a(\mathbf{p}) \leq 0.5$, a \textbf{regular observation}. If every point receives a score around $0.5$, there are no outright outlier. 
+\newpage\ \\ \noindent \textbf{Strengths:} 
+\begin{itemize}
+\item small time and memory requirements;\item  can handle high dimensional data; \item do not need labeled anomalies in the training set.
+\end{itemize} \textbf{Main Limitation:}
+\begin{itemize}
+\item anomaly score can have high variance over multiple runs.
+\end{itemize}
+In general, \text{density-based} schemes are more powerful than distance-based schemes when a dataset contains patterns with diverse characteristics, but less effective when the patterns are of comparable densities with the outliers.
 
-
+\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/IsoForest}
+\end{center}
 
 
 \fh{\textcolor{darkestgreen}{
