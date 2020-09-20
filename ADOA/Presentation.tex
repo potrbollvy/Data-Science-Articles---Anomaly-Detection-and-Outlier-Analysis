@@ -140,8 +140,8 @@
 \textcolor{white}{ab} \localtextbulletone\ Density-Based Methods (p.\@\pageref{6.2.2}) 
 \normalsize \ \\ \ \\  
 6.3 -- Qualitative Methods (p.\pageref{6.3}) \\ \small
-\textcolor{white}{ab} \localtextbulletone\ Definitions and Challenges (p.\@\pageref{6.3.1}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Review of Methods (p.\@\pageref{6.3.2}) 
+\textcolor{white}{ab} \localtextbulletone\ AVF Algorithm (p.\@\pageref{6.3.1}) \\ 
+\textcolor{white}{ab} \localtextbulletone\ Greedy Algorithm (p.\@\pageref{6.3.2}) 
 \normalsize \ \\ \ \\ 
 6.4 -- Anomalies in High-Dimensional Datasets (p.\pageref{6.4}) \\ 
 \small
@@ -231,21 +231,6 @@ What's an \textbf{outlier/anomalous observation?} (reprise)
 Derived-score anomaly detection may help (... or it may not) [Baron]
 \end{center}
 
-
-
-\newpage
-\begin{center}
-\includegraphics[width=\textwidth]{Images/autoencoder2.png}
-\end{center}
-\newpage \ \\ \noindent
-\noindent \textbf{Autoencoders} learn a compressed representation of the data (dimension reduction).
-\newl The \textbf{reconstruction error} measures (in a sense) how much information is lost in the compression. 
-\newl Anomaly detection algorithms can be applied to the compressed data:
-\begin{itemize}
-\item look for anomalous patters, and/or
-\item anomalous reconstruction errors. 
-\end{itemize}
-[Previous slide adapted from Baron].
 \newpage\ \\ \noindent
 \textbf{Simple analytical methods} using Cooke's or Mahalanobis' distances are sometimes used, but more sophisticated analysis is usually required, especially when trying to identify influential points (\textit{cf.} \textbf{leverage}). 
 \newl 
@@ -294,7 +279,9 @@ This leads to more sophisticated anomaly detection methods and could also could 
 \begin{itemize}
 \item \textbf{supervised}, and 
 \item \textbf{unsupervised}.\end{itemize}
-\textbf{Supervised methods} (SL) use a historical record of \textbf{previously identified anomalous observations} to build a \textbf{predictive classification or regression model} which estimates the probability that a unit is anomalous.
+\textbf{Supervised methods} (SL) use a historical record of \textbf{previously identified anomalous observations} to build a \textbf{predictive classification or regression model} which estimates the probability that a unit is anomalous.\newpage\ \begin{center}
+\includegraphics[width=\textwidth]{Images/Classification}
+\end{center}
 \newpage\ \\ \noindent  \textbf{SL Challenges:} 
 \begin{itemize}
 \item domain expertise and resources are required to tag the data;
@@ -571,7 +558,7 @@ The data decomposition/preparation process is illustrated with the 40-month time
 \newpage \ \\ \noindent The adjusted series is shown below; the trend and irregular components are also shown separately for readability. \newl It is on the irregular component that detection anomaly would be conducted. 
 \begin{center}
 \includegraphics[width=\textwidth]{Images/adjustedplot.png}\end{center} 
-\newpage\ \\ \noindent Given that the vast majority of observations in a general problem are typically "normal", another conceptually important approach is to view anomaly detection as a:
+\newpage\ \\ \noindent Given that the vast majority of observations in a general problem are typically ``normal'', another conceptually important approach is to view anomaly detection as a:
 \begin{itemize}
 \item \textbf{rare occurrence learning} classification problem, or \item  \textbf{novelty detection} data stream problem. \end{itemize} 
 While there a number of strategies that use regular classification/clustering algorithms for anomaly detection, they are rarely successful unless they are \textbf{adapted} or \textbf{modified for the anomaly detection context}.
@@ -614,6 +601,30 @@ $$F_1=\frac{2pr}{p+r}=\frac{2\text{TP}}{2\text{TP}+\text{FP}+\text{FN}}.$$
 \includegraphics[width=\textwidth]{Images/Ex2.png}\\ \ \\ 
 \includegraphics[width=\textwidth]{Images/AODA_metrics.png}
 \end{center}
+\newpage \ \\ \noindent SL algorithms include: 
+\begin{itemize}
+\item logistic regression
+\item na\"{\i}ve or optimal Bayes classifiers
+\item support vector machines
+\item neural networks (deep learning)
+\item decision trees, etc.
+\end{itemize}
+Such algorithms incorporate (and help us learn) historical patterns and rules. 
+\newpage\ 
+\begin{center}
+\includegraphics[height=0.85\textheight]{Images/kNN} \\ $k$ nearest neighbours
+\end{center}
+\newpage\ \\ \begin{center}
+\includegraphics[width=\textwidth]{Images/kNNs} \newline [Tibshirani, Hastie, Friedman]
+\end{center}
+\newpage\ \\ \begin{center}
+\includegraphics[width=\textwidth]{Images/RegBayes} \newline [Tibshirani, Hastie, Friedman]
+\end{center}
+\newpage\ \\ \begin{center}
+\includegraphics[height=0.5\textheight]{Images/SVM} \qquad \includegraphics[height=0.5\textheight]{Images/DecisionTree} \newline Support vector machines (left), decision tree (right) \newline  [Foster and Provost, Ng and Soo]
+\end{center}
+
+
 \newpage \ \\ \noindent Another SL approach: estimate the \textbf{relative abnormality} of observations. 
 \newl 
 Estimating the probability that an observation $\mathbf{x}_1$ is anomalous $\Longrightarrow$ difficult; \\ 
@@ -621,7 +632,45 @@ Determining it is more likely to be anomalous than another $\mathbf{x}_2$ $\Long
 \begin{itemize}
 \item \textbf{AUC} --  the probability of ranking a randomly chosen anomaly higher than a randomly chosen normal observation (higher is better);
 \item \textbf{probabilistic AUC} -- a calibrated version of AUC. 
-\end{itemize}\newpage \ \\ \noindent On the \textbf{unsupervised} front,  anomalous/normal labels are not used:
+\end{itemize}
+\newpage \ \\ \noindent 
+The \textbf{rare occurrence} problem can be tackled by using: 
+\begin{itemize}
+\item a \textbf{manipulated training set} (oversampling, undersampling, generating artificial instances); 
+\item \textbf{specific SL AD algorithms} (CREDOS, PN, SHRINK);
+\item \textbf{boosting algorithms} (SMOTEBoost, RareBoost);
+\item \textbf{cost-sensitive classifiers} (MetaCost, AdaCost, CSB, SSTBoost), 
+\item etc. 
+\end{itemize}
+See A.Lazarević {et al.} [2004], \textit{Data Mining for Analysis of Rare Events: A Case Study in Security, Financial and Medical Applications} for more information.
+\newpage\ \\ \noindent 
+The rare (anomalous) class can be \textbf{oversampled} by duplicating the rare events until the data set is \textbf{balanced} (roughly the same number of anomalies and normal observations). \newl This does not increase the overall level of information, but it will increase the  mis-classification cost.\newl 
+They majority class (normal observations) can also be \textbf{undersampled} by randomly removing: 
+\begin{itemize}
+\item ``near miss'' observations or
+\item or observations far from anomalous observations.
+\end{itemize}
+Some loss of information has to be expected (and overly general rules).
+\newpage \
+\begin{center}
+\includegraphics[height=0.8\textheight]{Images/OUHS.png} \newline [Le et al., A Hybrid Approach Using Oversampling Technique and Cost-Sensitive Learning for Bankruptcy Prediction]
+\end{center}
+\newpage\ 
+\begin{center}\includegraphics[height=0.85\textheight]{Images/SMOTE.png} \\ Generating artificial cases with SMOTE and DRAMOTE [Soufan, et al.] 
+\end{center}\newpage
+\begin{center}
+\includegraphics[width=\textwidth]{Images/autoencoder2.png}
+\end{center}
+\newpage \ \\ \noindent
+\noindent \textbf{Autoencoders} learn a compressed representation of the data (dimension reduction).
+\newl The \textbf{reconstruction error} measures (in a sense) how much information is lost in the compression. 
+\newl Anomaly detection algorithms can be applied to the compressed data:
+\begin{itemize}
+\item look for anomalous patters, and/or
+\item anomalous reconstruction errors. 
+\end{itemize}
+[Previous slide adapted from Baron].
+\newpage \ \\ \noindent On the \textbf{unsupervised} front,  anomalous/normal labels are not used:
 \begin{itemize}
 \item anomalies are those observations that are dissimilar to other observations;
 \item \textbf{clusters} are groupings of similar observations, so 
@@ -657,8 +706,8 @@ Clusters of regular customers (red, green, blue) and potential anomalies/outlier
 \item $P \subset D$ is a subset of $D$
 \item $d: D \times D \to \mathbb{R}$ is a distance function on $D\subset \mathbb{R}^n$
 \item the distance between $\mathbf{p}$ and $\mathbf{q}$ is written $d(\mathbf{p},\mathbf{q})$
-\item the output of an anomaly detection algorithm is a function $a : D \to \mathbb{R}$
-\newpage\ \item $a(\mathbf{p})$ is a number that describes how anomalous $\mathbf{p}$ is \item 
+\newpage\ \item the output of an anomaly detection algorithm is a function $a : D \to \mathbb{R}$
+\item $a(\mathbf{p})$ is a number that describes how anomalous $\mathbf{p}$ is \item 
 if $a(\mathbf{p}) < a(\mathbf{q})$ for $\mathbf{p},\mathbf{q} \in D$, then $\mathbf{p}$ is \textbf{less anomalous} than $\mathbf{q}$
 \item $\alpha \in \mathbb{R}$ is the \textbf{absolute anomaly threshold}
 \item  any $\mathbf{p} \in D$ for which $a(\mathbf{p}) > \alpha$ is \textbf{absolutely anomalous}
@@ -672,7 +721,7 @@ Similarity measures can also be constructed between \textbf{probability distribu
 We can think of a single point $\mathbf{p}$ as a probability distribution (with $0\%$ chance of drawing another point). \newl The distance between that point and any other distribution with mean $\mathbf{\mu}$ and covariance matrix $\mathbf{\Sigma}$ can be given using the \textbf{Mahalanobis framework}:
 
 $$
-M(\mathbf{p})=\sqrt{(\mathbf{p} - \mathbf{\mu})^{\!\top} \mathbf{\Sigma}^{-1} (\mathbf{p} - \mathbf{\mu}).}
+M(\mathbf{p})=\sqrt{(\mathbf{p} - \mathbf{\mu})^{\!\top} \mathbf{\Sigma}^{-1} (\mathbf{p} - \mathbf{\mu})} \quad \text{(BACON).}
 $$
 
 \noindent Alternatively, if $\mathbf{p}$ and $\mathbf{q}$ are drawn from the same distribution with covariance $\Sigma$, then the Mahalanobis distance is a dissimilarity measure between $\mathbf{p}$ and $\mathbf{q}$: 
@@ -1115,8 +1164,8 @@ This recursive partitioning yields an \textbf{Isolation Tree} (IsoTree):
 IsoTrees can be constructed from subsets: the location of any point within this smaller tree can be estimated (reduces computational cost). 
 \newl A collection of IsoTrees forms an \textbf{Isolation Forest}. \newl An IsoForest \textbf{score} can be computed for each point: search each tree for the point's location and record the path length required to reach it. The score is simply the average path length (it can be \textbf{normalized} to make it  independent of the dataset's size); low scores $\Longrightarrow$ outliers. \newl The formal procedure is provided in Algorithms 3 and 4.  \newpage\ \\
 \begin{center}
-\includegraphics[width=\textwidth]{Images/IsoForest.png} \\ 
-IsoForest schematics [Baron].
+\includegraphics[width=\textwidth]{Images/iForest.png} \\ \ \\
+Isolation Forest schematics [Baron].
 \end{center}
 \newpage
 \begin{center}\includegraphics[height=\textheight]{Images/Algorithm3}
@@ -1158,17 +1207,79 @@ In general, \text{density-based} schemes are more powerful than distance-based s
 \fh{\textcolor{darkestgreen}{
 6.3 -- Qualitative Methods}} \label{6.3} 
 
+\noindent \textbf{Categorical} (or  qualitative) variables are one whose levels are measured on a nominal scale. 
+\newl 
+Examples include: 
+\begin{itemize}
+\item the mother tongue of an individual,
+\item her hair colour,
+\item her age, 
+\item and so forth.  
+\end{itemize}
+\newpage\ \\ \noindent The \textbf{central tendency} of the values of such a variable is its \textbf{mode}. 
+\newl Measures of \textbf{spread} are much more difficult to define in a consistent manner. One possibility: use the proportion of levels with more than a certain percentage of the observations above a given threshold.
+\newl \textbf{Example:} consider a dataset with  $n=517$ individuals and $p=3$ features:
+\begin{itemize}
+\item \textbf{age} ($25-$, $25-44$, $45-64$, $65+$);
+\item \textbf{mother tongue} (French, English, Mandarin, Arabic, Other), and 
+\item \textbf{hair colour} (black, brown, blond, red).
+\end{itemize}
+Their respective modes are $25-44$, English, and brown. And their spread? 
+\newpage\ 
+\begin{center}
+\includegraphics[width=\textwidth]{Images/Categorical.png}
+\end{center}
+\newpage\ \\ \noindent 
+Qualitative features are often associated to numerical values: in \texttt{R}, for instance, there is a difference between factor \textbf{levels} and factor \textbf{labels}. 
+\newl Categorical variables with numerical levels are treated as \textbf{ordinal} variables. 
+\newl $\Warning$ \textbf{These should not be interpreted as numerals!}\newl If we use the code  ``red'' $=1$, ``blond'' $=2$, ``brown'' $=3$, and ``black'' $=4$ to represent hair colour, we \textbf{cannot conclude} that ``blond'' $>$ ``red'', even though $2>1$, or that ``black''$-$``brown''$=$``red'', even though $4-3=1$.   
+\newl A categorical variable that has exactly two \text{levels} is a \textbf{dichotomous} (binary) variable; a variable with more than two levels is \textbf{polytomous}. \newl Regression  on categorical variables $\Longrightarrow$ \textbf{multinomial logistic regression}.
+\newpage\ \\ \noindent 
+Distances (apart from the $0-1$ distance and the related Hamming distance) require numerical inputs. \newl But representing categorical variables with numerical features can lead to traps (see previous slide).\newl Anomaly detection methods based on distance or on density are not recommended in the qualitative context (unless the distance function has been modified appropriately). \newl 
+Another option is to look at combinations of feature levels, but this can be computationally expensive. 
 
 
-\fh{6.3.1 -- Definitions and Challenges} \label{6.3.1} 
 
+\fh{6.3.1 -- AVF Algorithm} \label{6.3.1} 
+\noindent The \textbf{Attribute Value Frequency} (AVF) algorithm is a fast and simple way to detect outlying observations in categorical data.\newl It can be done without having to create or search through various combinations feature levels (which increase the search time).  \newline\newline Intuitively, outlying observations are points which occur relatively infrequently in the (categorical) dataset;  an ``ideal'' anomalous point is one for which  \textbf{each feature value is extremely anomalous} (or relatively infrequent). 
+\newline\newline The \textbf{rarity} of an attribute level can be measured by summing the number of times the corresponding feature takes that value in the dataset. 
+\newpage\ \\ \noindent Let's say that there are $n$ observations in the dataset: $\{\mathbf{x}_i\}$, $i = 1, \ldots, n$, and that each observation is a collection of $m$ features. \newl We write $$\mathbf{x}_{i} = (x_{i,1}, \cdots , x_{i,\ell}, \cdots, x_{i,m}),$$ where  $x_{i,\ell}$ is $\mathbf{x}_i$'s $\ell$th feature's level.\newl 
+\textbf{Example:} in the previous example, we may have \begin{align*} \mathbf{x}_1&=(x_{1,1},x_{2,1},x_{3,1})=(24-,\text{French},\text{blond}) \\ &\vdots \\  \mathbf{x}_{517}&=(x_{517,1},x_{517,1},x_{517,1})=(24-,\text{Mandarin},\text{blond}).\end{align*}
+\newpage\ \\ \noindent The \textbf{AVF score} of an observation $\textbf{x}_i$ is
+$$\text{AVFscore}(\mathbf{x}_i) = \frac{1}{m} \sum_{\ell=1}^{m}f(x_{i,\ell}),$$
+where $f(x_{i,\ell})$ is the number of dataset observations $\mathbf{x}$ for which the  $\ell$th feature takes on the level ${x}_{i,\ell}$. \newl A \textbf{low} AVF score indicates that the observation is  likely to be an \textbf{outlier}. 
+\newline\newline An ``ideal'' anomalous observation minimizes the AVF score -- reached when the observation's features' levels occurs only once in the dataset.
+\newl For an integer $k$, the suggested  outliers are the $k$ observations with smallest AVF scores. The formal procedure is provided in Algorithm 5.
+\newpage
+\begin{center}\includegraphics[height=\textheight]{Images/Algorithm5}
+\end{center}
+\newpage
+\begin{center}\includegraphics[width=\textwidth]{Images/AVFScores} \\ AVF scores; $10$ lowest scores highlighted (in red). \begin{align*}\text{AVFscore}(24-,\text{French},\text{blond})&=\textstyle{\frac{1}{3}(f(24-)+f(\text{French})+f(\text{blond}))} \\ 
+&=\textstyle{\frac{1}{3}(175+141+79)=131.7}\end{align*} 
+\end{center}
 
+\fh{6.3.2 -- Greedy Algorithm} \label{6.3.2} 
+\noindent The \textbf{greedy} algorithm identifies a set \text{OS} of \textbf{candidate} anomalous observations in an efficient manner. 
+\newl 
+The \textbf{entropy of a set} $\Sigma\subseteq D$ is a measure of the \textbf{disorder} in $\Sigma$. Let $X$ be a feature of $D$; the set of levels that $X$ takes on $\Sigma$ is denoted by  $$S(X;\Sigma)=\{z|X=z,\  \mathbf{x}\in \Sigma\}.$$ Let $p_X(z)$ be the \% of observations in $\Sigma$ for which $X=z$. The \textbf{entropy of a feature} $X$ on $\Sigma$ is  
+\begin{align*} H(X;\Sigma)&=-\!\!\!\!\!\!\!\!\sum_{z\in S(X;\Sigma)}\!\!\!\!\!\! p_X(z)\log p_X(z).\end{align*}
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.95\textwidth]{Images/Entropy} \newline [Foster, Provost]
+\end{center}
+\newpage\ \\ \noindent The mathematical formulation of the problem is simple: in order to find $k$ anomalous observations in a dataset $D$, solve the optimization problem 
+$$\text{OS}=\arg\min_{O\subseteq D} \{H(D\setminus O)\}, \quad \text{subject to }|O|=k,$$
+where the \textbf{entropy} $H(D\setminus O)$ is the sum of the entropy of each feature:
+\begin{align*}H(D\setminus O)&=H(X_1;D\setminus O)+\cdots + H(X_m;D\setminus O)\\ H(X_{\ell};D\setminus O)&=-\!\!\!\!\!\!\!\!\!\!\!\sum_{z_{\ell}\in S(X_{\ell};D\setminus O)}\!\!\!\!\!\!\!\!\!\!\! p(z_{\ell})\log p(z_{\ell}),\end{align*} where $S(X_{\ell};D\setminus O)$ is the set of levels that the $\ell$th feature takes in  $D\setminus O$.\newl The greedy algorithm solves the optimization problem as follows:
+\newpage\ 
+\begin{enumerate}
+\item The set of outlying and/or anomalous observations $\text{OS}$ is initially set to be empty, and all observations of $D\setminus \text{OS}$ are identified as normal.
+\item Compute $H(D\setminus \text{OS})$. 
 
-\fh{6.3.2 -- Review of Methods} \label{6.3.2} 
-
-
-
-
+\item Every normal observation $\mathbf{x}$ is temporarily taken out of $D\setminus \text{OS}$ to create a subset $D'_{\mathbf{x}}$, whose entropy $H(D'_{\mathbf{x}})$ is also computed.
+\item The $\mathbf{y}$ which provides the \textbf{maximal entropy impact} is added to \text{OS}: $$\mathbf{y}=\arg\min_{\mathbf{x}\in D\setminus \text{OS}} \left\{H(D\setminus \text{OS})-H(D'_{\mathbf{x}})\right\}.$$
+\item Repeat steps 2-4 another $k-1$ times to obtain a set \text{OS} of $k$ candidate anomalous observations.
+\end{enumerate}
 
 \fh{\textcolor{darkestgreen}{6.4 -- Anomalies in High-Dimensional Datasets}} \label{6.4}
 

@@ -7,23 +7,23 @@ A \textbf{categorical variable} (or qualitative variable) is one whose levels ar
 
 The \textbf{central tendency} of the values of a categorical variable is usually given by its \textbf{mode}; measures of spread are harder to define consistently (the proportion of levels with more than a certain percentage of the observations above a given threshold could be used as rough gauge, but difficulties with this approach are readily apparent). 
 
-We often associate qualitative feature to numerical values, but with the caveat that these should not be interpreted as numerals; if we use the code  ``red'' $=1$ and ``blond'' $=2$ to represent hair colour, for instance, we obviously cannot conclude that ``blond'' $>$ ``red'', even though $2>1$.   
+We often associate qualitative features to numerical values, but with the caveat that these should not be interpreted as numerals; if we use the code  ``red'' $=1$ and ``blond'' $=2$ to represent hair colour, for instance, we obviously cannot conclude that ``blond'' $>$ ``red'', even though $2>1$.   
 
-A categorical variable that has exactly two \text{levels} is called a \textbf{dichotomous feature} (or a binairy variable); those with more than two levels are called  \textbf{polytomous variables}. %Regression analysis on categorical variables is performed by multinomial logistic regression.
+A categorical variable that has exactly two \text{levels} is called a \textbf{dichotomous feature} (or a binary variable); those with more than two levels are called  \textbf{polytomous variables}. %Regression analysis on categorical variables is performed by multinomial logistic regression.
 
 
 
 \subsubsection*{Challenges of Anomaly Detection with  Categorical Data}
-Representing categorical variables with numerical features can lead to traps; consequently, using anomaly detection methods based on distance metrics or on density is not recommended in the qualitiative context, unless they have first been modified appropriately. 
+Representing categorical variables with numerical features can lead to traps; consequently, using anomaly detection methods based on distance metrics or on density is not recommended in the qualitative context, unless they have first been modified appropriately. 
 \subsection{Review of Two Methods}
 We present two of the categorical methods below. 
 \subsubsection*{AVF Algorithm}
 The \textbf{Attribute Value Frequency} (AVF) algorithm offers a fast and simple way to detect outlying observations in categorical data, which minimizes the amount of data analyses, without having to create or search through various combinations feature levels (which increase the search time).  \newline\newline Intuitively, outlying observations are points which occur relatively infrequently in the (categorical) dataset;  an ``ideal'' anomalous point is one for which  \textbf{each feature value is extremely anomalous} (or relatively infrequent). 
 \newline\newline The \textbf{rarity} of an attribute level can be measured by summing the number of times the corresponding feature takes that value in the dataset. 
 
-Let's say that there are $n$ observations in the dataset: $\{\mathbf{x}_i\}$, $i = 1, \ldots, n$, and that each observation is a collection of $m$ features. We write $$\mathbf{x}_{i} = (x_{i,1}, \cdots , x_{i,\ell}, \cdots, x_{i,m}),$$ where  $x_{i,\ell}$ $\ell$th feature's level. Using the reasoning presented above, the \textbf{AVF score} (shown below) is a good tool to determine whether  $\textbf{x}_i$ should be considered an outlier or not:
+Let's say that there are $n$ observations in the dataset: $\{\mathbf{x}_i\}$, $i = 1, \ldots, n$, and that each observation is a collection of $m$ features. We write $$\mathbf{x}_{i} = (x_{i,1}, \cdots , x_{i,\ell}, \cdots, x_{i,m}),$$ where  $x_{i,\ell}$ is $\mathbf{x}_i$'s $\ell$th feature's level. Using the reasoning presented above, the \textbf{AVF score} (shown below) is a good tool to determine whether  $\textbf{x}_i$ should be considered an outlier or not:
 $$\text{AVFscore}(\mathbf{x}_i) = \frac{1}{m} \sum_{\ell=1}^{m}f(x_{i,\ell}),$$
-where $f(x_{i,\ell})$ is the number of observations $\mathbf{x}_i$ for which the  $\ell$th feature takes on the level ${x}_{i,\ell}$. A low AVF score indicates that the observation is more likely to be an outlier. 
+where $f(x_{i,\ell})$ is the number of observations $\mathbf{x}$ for which the  $\ell$th feature takes on the level ${x}_{i,\ell}$. A low AVF score indicates that the observation is more likely to be an outlier. 
 \newline\newline Since $\text{AVFscore}(\mathbf{x}_i) $ is essentially a sum of $m$ positive numbers, it is minimized when each of the sum's term is minimized, individually. Thus, the ``ideal'' anomalous observation described above minimizes the AVF score; the minimal score is reached when each of the observation's features' levels occurs only once in the dataset.
 
 \begin{algorithm}
@@ -54,8 +54,8 @@ where $f(x_{i,\ell})$ is the number of observations $\mathbf{x}_i$ for which the
 The \textbf{greedy} algorithm ``greedyAlg1'' is an  algorithm   which identifies the set \text{OS} of candidate anomalous observations in an efficient manner. 
 \newline\newline The mathematical formulation of the problem is simple -- given a dataset $D$ and a number $k$ of anomalous observations to identify, we solve the optimization problem 
 $$\text{OS}=\arg\min_{O\subseteq D} \{H(D\setminus O)\}, \quad \text{subject to }|O|=k,$$
-where the \textbf{entropy} of the subset  $D\setminus O$ is the sum of the entropy of each of feature on $D\setminus O$:
-$$H(D\setminus O)=H(X_1;D\setminus O)+\cdots + H(X_m;D\setminus O)$$ et $$H(X_{\ell};D\setminus O)=-\!\!\!\!\!\!\!\!\!\!\!\sum_{z_{\ell}\in S(X_{\ell};D\setminus O)}\!\!\!\!\!\!\!\!\!\!\! p(z_{\ell})\log p(z_{\ell}),$$ where $S(X_{\ell};D\setminus O)$ is the set of levels that the $\ell$th feature takes in  $D\setminus O$.
+where the \textbf{entropy} of the subset  $D\setminus O$ is the sum of the entropy of each feature on $D\setminus O$:
+$$H(D\setminus O)=H(X_1;D\setminus O)+\cdots + H(X_m;D\setminus O)$$ and  $$H(X_{\ell};D\setminus O)=-\!\!\!\!\!\!\!\!\!\!\!\sum_{z_{\ell}\in S(X_{\ell};D\setminus O)}\!\!\!\!\!\!\!\!\!\!\! p(z_{\ell})\log p(z_{\ell}),$$ where $S(X_{\ell};D\setminus O)$ is the set of levels that the $\ell$th feature takes in  $D\setminus O$.
 \newline\newline The "greedyAlg1" algorithm solves the optimization problem as follows:
 \begin{enumerate}
 \item The set of outlying and/or anomalous observations $\text{OS}$ is initially set to be empty, and all observations of $D\setminus \text{OS}$ are identified as normal (or regular).
