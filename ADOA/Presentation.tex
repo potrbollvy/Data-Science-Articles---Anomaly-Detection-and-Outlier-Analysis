@@ -1282,15 +1282,119 @@ where the \textbf{entropy} $H(D\setminus O)$ is the sum of the entropy of each f
 \end{enumerate}
 
 \fh{\textcolor{darkestgreen}{6.4 -- Anomalies in High-Dimensional Datasets}} \label{6.4}
-
-
+\noindent In recent times, datasets have become quite \textbf{large} -- they may contain \textbf{hundreds or thousands of features} (or more).
+\newl Conventional \textbf{proximity-based} anomaly detection methods can only be expected to work reasonably well when the sample size $n$ is larger than the dimension $p$ ($n>p$). 
+\newl
+In \textbf{high-dimensional data} ($n<p$), the main problem is an off-shoot of the \textbf{curse of dimensionality} (CoD):  observations are often \textbf{isolated} and \textbf{scattered} (or sparse) and the notion of proximity fails to maintain its relevance. \newl \textbf{High-dimensional anomaly detection methods} are linked with dimension reduction and feature selection methods. 
 
 \fh{6.4.1 -- Definitions and Challenges} \label{6.4.1}
+\noindent The challenges of anomaly and outlier detection in \textbf{high-dimensional data} (HDD) are due to:
+\begin{itemize}
+\item the notion of distance failing to retain its \textbf{relevance} due to the CoD (``the problem of detecting outliers is like finding a needle in a haystack'');
+\item all points in HDDs \textbf{tend to be  outliers}, and 
+\item datasets become more \textbf{sparse} as the dimension of the feature space increases.
+\end{itemize}
 
-
+\newpage\ \\ \noindent Good HDD anomaly detection methods should:
+\begin{itemize}
+\item allow for \textbf{effective management} of sparse data issues;
+\item provide \textbf{interpretability} of the discrepancies (i.e.\@ how is the behaviour of such observations different than the behaviour from regular ones?);
+\item allow anomaly measurements to be \textbf{compared} (``apples-to-apples''), and 
+\item consider the \textbf{local data behaviour} to determine whether an observation is abnormal or not.
+\end{itemize}
 
 \fh{6.4.2 -- Projection-Based Methods} \label{6.4.2} 
+Nowadays, it is common to deal with very large data sets known as HDLSS (\textbf{high dimension, low sample size}), which can contain hundreds of variables (or even more). \par As a result,  the curse of dimensionality affects the efficiency of conventional anomaly/outlier detection methods.\newl One solution to this problem is to \textbf{reduce the dimensionality} of the dataset while preserving its essential characteristics. Such projecion-based methods \begin{itemize}\item principal component analysis, \item linear discriminant analysis, \item feature selection, etc. \end{itemize} In this section, We provide details on one such method: PCA.
+\fh{Principal Components Analysis}
+%
+\noindent \textbf{Principal components analysis} (PCA) finds a representation of the original dataset in a lower-dimensional subspace (such as a line or a plane)  containing the greatest possible variation. 
+\newl PCA is an \textbf{orthogonal linear transformation} of the data into a new coordinate system. \newl The \textbf{first principal component} (PC), the first coordinate of the projection, is linked to the \textbf{largest directional variance} in the original dataset, the second PC to the second largest orthogonal variance, and so forth.\newpage\ \\ \noindent  PCA is used in various contexts:
+\begin{itemize}
+    \item as a dimension reduction method used during data pre-processing;
+    \item as a data visualization aid, and
+    \item as an anomaly and outlier detection method.
+\end{itemize}
+Let the dataset be represented by a numerical, centered, and scaled $n\times p$ matrix $\textbf{X}=[\textbf{X}_1,\cdots,\textbf{X}_p]$ with $n$ observations (number of rows) and $p$ features (number of columns). \newl In the regression context (without an intercept term), $\textbf{X}$ is called the \textbf{design matrix}.
 
+\newpage\ \\ \noindent The \textbf{principal components} are linear combinations of the variables: 
+\begin{align*}
+\textbf{Y}_i=\ell^{\!\top}_i\textbf{X}=\ell_{1,i}\textbf{X}_1+\cdots+\ell_{p,i}\textbf{X}_p;\quad i=1,\cdots,k,
+\end{align*}
+with $k\leq p$, yielding the largest variance subjet to the constraint $\|\ell_i\|=1$ (where $\|\cdot\| $ represents the Euclidean norm). We can thus deduce that  
+\begin{align*}
+\operatorname{Var}\left(Y_{i}\right) &=\operatorname{Var}\left(\ell_{i}^{\!\top} \boldsymbol{X}\right)=\ell_{i}^{\!\top} \boldsymbol{\Sigma} \ell_{i} \,,\\ 
+\operatorname{Cov}\left(Y_{i}, Y_{k}\right) &=\operatorname{Cov}\left(\ell_{i}^{\!\top} \boldsymbol{X}, \ell_{k}^{\!\top} \boldsymbol{X}\right)=\ell_{i}^{\!\top} \boldsymbol{\Sigma} \ell_{k}\, .
+\end{align*}
+In other words, PCA finds the \textbf{loadings vector} $\ell_{1}$ which maximizes the variance of $Y_1$, i.e. 
+\begin{align*}
+\mathbf{\ell}_{1}&=\underset{\|\mathbf{\ell_1}\|=1}{\arg \max }\left\{\ell^{\!\top}_1\mathbf{X}^{\!\top} \mathbf{X} \ell_1\right\},
+\end{align*}
+then the loadings vector $\ell_2$ (not correlated with $\ell_1$) which maximizes the variance of $Y_2$, i.e.   
+\begin{align*}
+\mathbf{\ell}_{2}& =\underset{\|\mathbf{\ell_2}\|=1,\; \ell_{1}^{\!\top}\ell_{2} =0}{\arg \max }\left\{\ell^{\!\top}_2\mathbf{X}^{\!\top} \mathbf{X} \ell_2\right\}.
+\end{align*}
+Similarly, the loadings vector $\ell_k$ is not correlated with any of the $\ell_i$, $i<k$, and maximizes the variance of $Y_k$, i.e.
+\begin{align}
+\mathbf{\ell}_k=\underset{\substack{\|\ell_k\|=1,\\ \;\ell_{i}^{\!\top}\ell_k=0,\;\forall\;i<k}}{\arg \max} \left\{\ell^{\!\top}_k\mathbf{X}^{\!\top} \mathbf{X} \ell_k\right\}.\label{eq1}
+\end{align}
+We solve \eqref{eq1} for all  $i<k$ through the Lagrangian
+\begin{align*}
+L=\ell^{\!\top}_k\mathbf{X}^{\!\top} \mathbf{X} \ell_k-\lambda_k(\ell^{\!\top}_k\ell_k-1)-w\ell_{i}^{\!\top}\ell_k.
+\end{align*}
+The critical points are found by differentiating with respect to each of the entries of $\ell_k$, $\lambda_k$ and $w$, and setting the result to 0. Simplifying, we obtain  
+\begin{align*}
+\mathbf{X}^{\!\top} \mathbf{X} \ell_k&=\lambda_k\ell_k\\
+\ell^{\!\top}_k\ell_k&=1 \quad\text{et}\quad\ell^{\!\top}_k\ell_i=0,\quad\text{for all}\; i<k.
+\end{align*}
+The loadings vector $\ell_k$ is thus the \textbf{eigenvector} of the design matrix $\mathbf{X}^{\!\top} \mathbf{X}$ associated to the $k$th largest eigenvalue. \newl
+The \textbf{proportion of the variance which can be explained} by the PCA can be calculated by first noting that 
+\begin{align*}
+\sum_{i=1}^{p}\operatorname{Var}\left(Y_{i}\right) &=\sum_{i=1}^{p}\ell_{i}^{\!\top} \boldsymbol{\Sigma} \ell_{i}=\sum_{i=1}^{p}\lambda_i \,.
+\end{align*}
+Consequently, the proportion of the total variance explained by the $i$th principal component is  
+\begin{align*}
+0\leq \frac{\lambda_i}{\sum_{i=1}^{p}\lambda_i }\leq 1
+\end{align*}
+The quality of the PCA results is strongly dependent on the number of retained principal components, that is, on the dimension $k$ of the subspace on which the observations are projected. There are multiple ways to select the ``right'' $k$ -- we will briefly present two of them. 
+\newl The proportion of the total variance explained by the first $k$ principal components is given by  
+\begin{align*}
+p_k=\frac{\sum_{i=1}^{k} \lambda_i}{\sum_{i=1}^{p}\lambda_i}.
+\end{align*}
+One approach is to retain $k$ principal components, where $k$ is the smallest value for which  $p_k$ surpasses some pre-established threshold  (often taken between $80\%$ and $90\%$). \newl
+The \textbf{scree plot method}, on the other hand, consists in drawing the curve given by the decreasing eigenvalues (the \textbf{scree plot}), and to identify the curve's ``elbows''. These points correspond to principal components for which the variance decreases at a slower rate with added components. If such an elbow exists, we would retain the eigenvalues up to it (and thus,  the corresponding principal components). 
+\textbf{Example}
+PCA is applied on a dataset of genetic expression measurements, for $n=72$ leukemia patients and $p=7128$ genes \cite{Hleukemia}. The scree plot suggests that only one principal component should be retained; the projection on the first 3 principal components is also shown in Figure~\ref{fig0} (on the right). Some R code is given below.
+\begin{figure*}[t]
+    \centering
+     \includegraphics[width=.55\textwidth]{ADOA/Images/screeleuk_EN.png}
+    \includegraphics[width=.4\textwidth]{ADOA/Images/3dpcleuk.PNG}
+    \caption{Scree plot (left); projection on the first 3 principal components (right).}\hrule
+    \label{fig0}
+\end{figure*}
+ 
+\noindent There are other PCA-associated dimension reduction methods, such as the singular value decomposition, kernel PCA, and so forth; more details are available in \cite{BLMMP}.
+\newl What is the link with anomaly and/or outlier detection? Once the dataset has been projected on a lower-dimensional subspace, the curse of dimensionality is mitigated -- it is on the projected data that the traditional detection methods are applied. \par Note, however, that any such reduction necessarily leads to a loss of information, which can affect the accuracy of the detection procedure, especially if the presence/absence of anomalies is not aligned with the dataset's principal components. 
+
+\fh{Distance-Based Outlier Basis Using Neighbours}
+Using PCA for anomaly detection is potentially problematic, however: whether an observation is anomalous or not does not figure in the construction of the principal component basis $\{\text{PC}_1,\ldots,\text{PC}_k\}$ -- there isn't necessarily a correlation between the axes of heightened variance and the presence or absence of anomalies. 
+\newl 
+The \textbf{distance-based outlier basis using neighbours} algorithm (DOBIN) builds a basis which is better suited for the eventual detection of outlying observations. DOBIN's main idea is to search for nearest neighbours that are in fact relatively distant from one another: 
+\begin{enumerate} 
+\item We start by building a space $\mathbf{Y}=\{\mathbf{y}_{\ell}\}$  which contains $M\ll n(n+1)/2$  vectors of the form $$\mathbf{y}_{\ell}=(\mathbf{x}_i -\mathbf{x}_j)\odot (\mathbf{x}_i -\mathbf{x}_j), $$ where $\odot$ is the element-by-element Hadamard multiplication, and for which the $1-$norm  $$\|\mathbf{y}_{\ell}\|_1=(x_{1,1}-x_{2,1})^2+\cdots +(x_{1,p}-x_{2,p})^2 $$ is the square of the distance between $\mathbf{x}_i,\mathbf{x}_j \in\mathbf{X}$ (the selection of each of the $M$ observation pairs is made according to a rather complex procedure which only considers $\mathbf{x}_i$ and $\mathbf{x}_j$ if they are part of one another's $k-$neighbourhood, for $k\in\{k_1,\ldots, k_2\}$); the set $\mathbf{Y}$ thus contains points for which $\|\mathbf{y}_{\ell}\|_1$ is relatively large, which is to say that the observations $\mathbf{x}_i$ are $\mathbf{x}_j$ fairly distant from one another even if they are $k-$neighbours of each other;
+\item we next build a basis $\{\eta_1,\ldots,\eta_p\}\subset \mathbb{R}^p$ where each  $\eta_i$ is a unit vector given by a particular linear combination of points in $\mathbf{Y}$; they can be found using a  Gram-Schmidt-like procedure: 
+\begin{align*}
+\mathbf{y}_{\ell_0}&=\mathbf{y}_{\ell},\quad \ell=1,\ldots, M \\ 
+%\eta_1&=\frac{\sum_{\ell=1}^M\mathbf{y}_{\ell}}{\left\|\sum_{\ell=1}^M\mathbf{y}_{\ell}\right\|_2} \\
+%\mathbf{y}_{\ell_1}&=\mathbf{y}_{\ell}-\langle\eta_1 \mid \mathbf{y}_{\ell}\rangle,\quad \ell=1,\ldots, M \\ 
+%\eta_2&=\frac{\sum_{\ell=1}^M\mathbf{y}_{\ell_1}}{\left\|\sum_{\ell=1}^M\mathbf{y}_{\ell_1}\right\|_2} \\ 
+\mathbf{y}_{\ell_{b-1}}&=\mathbf{y}_{\ell_{b-2}}-\langle\eta_{b-1} \mid \mathbf{y}_{\ell_{b-2}}\rangle,\quad \ell=1,\ldots, M \\ 
+\eta_b&=\frac{\sum_{\ell=1}^M\mathbf{y}_{\ell_{b-1}}}{\left\|\sum_{\ell=1}^M\mathbf{y}_{\ell_{p-1}}\right\|_2},
+\end{align*} for $b=1,\ldots,p$,
+\item and we tranform the original dataset   $\mathbf{X}$ according to  $\hat{\mathbf{X}}=\mathcal{T}(\mathbf{X})\Theta,$ where $\mathcal{T}(\mathbf{X})$ normalizes each feature of  $\mathbf{X}$ according to a problem-specific scheme  (Min-Max or Median-IQR, say) and $$\Theta=[\eta_1\mid\cdots\mid \eta_p]$$ is a orthogonal $p\times p$ matrix.  
+\end{enumerate}
+It is on the transformed space (which plays an analogous role to the subspace projection of  $\mathbf{X}$ in PCA) that we apply the various outlier and anomaly detection algorithms.\newl 
+The full details contain a fair number of technical complications; the interested reader is invited to consult the original documentation \cite{A6} (note that the algorithm is implemented in R \textit{via} the module \textit{dobin}). 
+%
 
 
 \fh{6.4.3 -- Subspace  Methods} \label{6.4.3}

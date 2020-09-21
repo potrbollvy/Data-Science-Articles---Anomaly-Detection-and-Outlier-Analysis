@@ -550,3 +550,14 @@ rdata.iso %>%
   scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
   scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
   theme_bw() + theme(legend.position = "none") 
+
+
+### PCA
+
+leukemia.big <- read.csv("http://web.stanford.edu/~hastie/ CASI_files/DATA/leukemia_big.csv")
+leukemia.big <- t(leukemia.big)
+leukemia.big.scaled <- scale(leukemia.big)
+pca.leukemia <- prcomp(leukemia.big.scaled)
+plot(pca.leukemia)
+pca.leukemia.s <- summary(pca.leukemia) 
+plot(pca.leukemia.s$importance[3,])
