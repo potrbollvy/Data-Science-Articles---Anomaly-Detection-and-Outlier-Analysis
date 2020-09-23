@@ -554,10 +554,102 @@ rdata.iso %>%
 
 ### PCA
 
-leukemia.big <- read.csv("http://web.stanford.edu/~hastie/ CASI_files/DATA/leukemia_big.csv")
-leukemia.big <- t(leukemia.big)
-leukemia.big.scaled <- scale(leukemia.big)
-pca.leukemia <- prcomp(leukemia.big.scaled)
-plot(pca.leukemia)
-pca.leukemia.s <- summary(pca.leukemia) 
-plot(pca.leukemia.s$importance[3,])
+rdata.scaled <- scale(rdata[,1:4])
+pca.rdata <- prcomp(rdata.scaled)
+plot(pca.rdata)
+
+plot(pca.rdata$x[,1],pca.rdata$x[,2])
+
+pca.rdata.2=data.frame(pca.rdata$x[,1:4],rdata[,5])
+
+splom(pca.rdata.2[,1:2], groups=group, pch=22)
+
+
+mu.2 <- colMeans(pca.rdata.2[,1:2]) 
+Sigma.inv.2 = inv(cov(pca.rdata.2[,1:2]))
+
+M_d.2<-vector()
+
+for(j in 1:nrow(rdata)){
+  M_d.2[j]<-sqrt(as.matrix(pca.rdata.2[j,1:2]-mu.2)%*%Sigma.inv.2%*%t(as.matrix(pca.rdata.2[j,1:2]-mu.2)))
+}
+
+pca.rdata.3 <- data.frame(pca.rdata.2,M_d.2)
+summary(M_d)
+
+pca.rdata.3 %>% ggplot(aes(x=M_d.2)) + 
+  geom_histogram(colour="black",binwidth = 0.5) + 
+  geom_rug() + 
+  theme_bw()
+
+p11.2 <- pca.rdata.3 %>% ggplot(aes(x=PC1,y=PC2,fill=M_d.2,colour=M_d.2)) + 
+  geom_point(pch=22) + xlim(-8,6) + ylim(-2,2) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+p22.2 <- pca.rdata.3 %>% ggplot(aes(x=PC2,y=PC1,fill=M_d.2,colour=M_d.2)) + 
+  geom_point(pch=22) + xlim(-2,2) + ylim(-8,6) +
+  scale_fill_continuous(high = "#0088CC", low = "#FFFFFF") + 
+  theme_bw() + theme(axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none")
+
+
+p21.2 <- textGrob("PC1")
+p12.2 <- textGrob("PC2")
+
+
+grid.arrange(p11.2, p12.2, 
+             p21.2, p22.2, ncol=2)
+
+pca.rdata.4 = data.frame(1:(nobs+2),pca.rdata.3$M_d.2)
+names(pca.rdata.4) = c("obs","PCA_Mahalanobis")
+pca.rdata.4 <- pca.rdata.4[order(-pca.rdata.4$PCA_Mahalanobis),]
+head(pca.rdata.4)
+
+pca.rdata.4 %>%  
+  ggplot(aes(x=obs,y=PCA_Mahalanobis)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="PCA/Mahalanobis") +
+  geom_point(aes(fill=PCA_Mahalanobis,colour=PCA_Mahalanobis,size=PCA_Mahalanobis),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+
+## DOBIN
+
+library(dobin)
+library(ggplot2)
+library(OutliersO3)
+
+out <- dobin(rdata[,1:4], frac=0.9, norm=3)
+
+kk <- min(ceiling(dim(rdata)[1]/10),25)
+knn_dist <- FNN::knn.dist(out$coords[, 1:3], k = kk)
+knn_dist <- knn_dist[ ,kk]
+ord <- order(knn_dist, decreasing=TRUE)
+ord[1:4]
+
+knn_dist.dobin <- data.frame(1:(nobs+2),knn_dist)
+names(knn_dist.dobin) = c("obs","knn_dobin")
+knn_dist.dobin <- knn_dist.dobin[order(-knn_dist.dobin$knn_dobin),]
+head(knn_dist.dobin)
+
+knn_dist.dobin %>% 
+  ggplot(aes(x=obs,y=knn_dobin)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="11NN Distance - DOBIN") +
+  geom_point(aes(fill=knn_dobin,colour=knn_dobin,size=knn_dobin),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 
+
+out$vec[ ,1]
+
+# second variable is the main contributor to outliers 
+
+# O3 outlier ensembles
+
+O3y <- OutliersO3::O3prep(rdata[,1:4], method=c("HDo", "PCS", "BAC", "adjOut", "DDC", "MCD"))
+O3y1 <- OutliersO3::O3plotM(O3y)
+O3y1$gO3
+

@@ -1285,7 +1285,7 @@ where the \textbf{entropy} $H(D\setminus O)$ is the sum of the entropy of each f
 \noindent In recent times, datasets have become quite \textbf{large} -- they may contain \textbf{hundreds or thousands of features} (or more).
 \newl Conventional \textbf{proximity-based} anomaly detection methods can only be expected to work reasonably well when the sample size $n$ is larger than the dimension $p$ ($n>p$). 
 \newl
-In \textbf{high-dimensional data} ($n<p$), the main problem is an off-shoot of the \textbf{curse of dimensionality} (CoD):  observations are often \textbf{isolated} and \textbf{scattered} (or sparse) and the notion of proximity fails to maintain its relevance. \newl \textbf{High-dimensional anomaly detection methods} are linked with dimension reduction and feature selection methods. 
+In \textbf{high-dimensional data} ($n<p$), the main problem is an off-shoot of the \textbf{curse of dimensionality} (CoD):  observations are often \textbf{isolated} and \textbf{scattered} (or sparse); the notion of proximity fails to maintain its relevance. \newl \textbf{High-dimensional anomaly detection methods} are linked with dimension reduction and feature selection methods. 
 
 \fh{6.4.1 -- Definitions and Challenges} \label{6.4.1}
 \noindent The challenges of anomaly and outlier detection in \textbf{high-dimensional data} (HDD) are due to:
@@ -1304,84 +1304,137 @@ In \textbf{high-dimensional data} ($n<p$), the main problem is an off-shoot of t
 \end{itemize}
 
 \fh{6.4.2 -- Projection-Based Methods} \label{6.4.2} 
-Nowadays, it is common to deal with very large data sets known as HDLSS (\textbf{high dimension, low sample size}), which can contain hundreds of variables (or even more). \par As a result,  the curse of dimensionality affects the efficiency of conventional anomaly/outlier detection methods.\newl One solution to this problem is to \textbf{reduce the dimensionality} of the dataset while preserving its essential characteristics. Such projecion-based methods \begin{itemize}\item principal component analysis, \item linear discriminant analysis, \item feature selection, etc. \end{itemize} In this section, We provide details on one such method: PCA.
+\noindent One approach to mitigate the effects of the CoD on conventional anomaly/outlier detection methods in \textbf{high dimension, low sample size} (HDLSS) datasets is to \textbf{reduce the dimensionality} of the dataset while preserving its essential characteristics. \newl Such projecion-based methods include: \begin{itemize}\item \textbf{principal component analysis}, \item \textbf{independent component analysis}, \item \textbf{feature selection}, etc. -- see \textit{Feature Selection and Dimension Reduction} module/report for more examples.\end{itemize} 
 \fh{Principal Components Analysis}
-%
-\noindent \textbf{Principal components analysis} (PCA) finds a representation of the original dataset in a lower-dimensional subspace (such as a line or a plane)  containing the greatest possible variation. 
-\newl PCA is an \textbf{orthogonal linear transformation} of the data into a new coordinate system. \newl The \textbf{first principal component} (PC), the first coordinate of the projection, is linked to the \textbf{largest directional variance} in the original dataset, the second PC to the second largest orthogonal variance, and so forth.\newpage\ \\ \noindent  PCA is used in various contexts:
+ \noindent \textbf{Principal component analysis} (PCA) can be used to find the combinations of variables along which the data points are \textbf{most spread out}.\newl Geometrically, the procedure fits the ``best'' $p-$\textbf{ellipsoid} to a centered representation of the data. \newl The ellipsoid axes are the \textbf{principal components} of the data. \newl Small axes are components along which the variance is ``small''; removing these components can lead to a ``small'' loss of information. \newl There are scenarios where it could be those ``small'' axes that are more interesting -- such as the ``pancake stack'' problem. 
+
+\newpage
+\begin{center}
+\includegraphics[width=0.4\textwidth]{Images/PC1.png}\quad
+\includegraphics[width=0.4\textwidth]{Images/PC2.png}\\
+\includegraphics[width=0.4\textwidth]{Images/PC3.png}\quad
+\includegraphics[width=0.4\textwidth]{Images/PC4.png}
+\end{center} Illustration of PCA on an artificial 2D dataset. The red axes  provide the best elliptic fit. Removing the minor axis by projecting the points on the major axis leads to dimension reduction and a (small) loss of information. \newpage\ \\ 
+\noindent \textbf{PCA Procedure}: 
+\begin{enumerate} 
+\item centre and ``scale'' the data to obtain a matrix $\mathbf{X}$;
+\item compute the data's ``covariance matrix'' $\mathbf{K}=\mathbf{X}^{\!\top}\mathbf{X}$;
+\item compute $\mathbf{K}$'s eigenvalues, $\mathbf{\Lambda}$ (ordered diagonal matrix), and its orthonormal eigenvectors matrix $\mathbf{W}$;
+\item each eigenvector $\mathbf{w}$ (also known as \textbf{loading}) represents an axis, whose variance is given by the associated eigenvalue $\lambda$. \end{enumerate}
+Note that $\mathbf{K}\geq 0 \implies \mathbf{\Lambda} \geq 0$. 
+\newpage\ \\ \noindent The \textbf{first principal component} $\textrm{PC}_1$ is the eigenvector $\mathbf{w}_1$ of $\mathbf{K}$ associated to its largest eigenvalue $\lambda_1$, and the variance of the data along $\mathbf{w}_1$ is proportional to $\lambda_1$.
+\newl The \textbf{second principal component} $\textrm{PC}_2$ is the eigenvector $\mathbf{w}_2$ of $\mathbf{K}$ associated to its second  largest eigenvalue $\lambda_2\leq \lambda_1$, and the variance of the data along $\mathbf{w}_1$ is proportional to $\lambda_2$, and so on.
+\newl \textbf{Final Result:} $r=\textrm{rank}(\mathbf{X})$ \textbf{orthonormal} principal components $$\textrm{PC}_1,\ldots,\textrm{PC}_r.$$ 
+If some of the eigenvalues are $0$, $r<p$, and \textit{vice-versa} $\implies$ data is embedded in a $r-$dimensional subspace in the first place. \newpage\ \\ \noindent  PCA can provide an avenue for dimension reduction by ``removing'' components with small eigenvalues.\newl The \textbf{proportion of the spread in the data} which can be explained by each PC can be placed in a \textbf{scree plot} (eigenvalues against ordered component indices), and retain the ordered PCs:
+\begin{itemize} 
+\item for which the eigenvalue is above some threshold (say, $25\%$);  
+\item for which the cumulative proportion of the spread falls below some threshold (say $95\%$), or 
+\item prior to a \textbf{kink} in the scree plot.
+\end{itemize}
+\newpage\ \\ \noindent \textbf{Example:} consider an $8D$ dataset for which the ordered PCA eigenvalues are 
+\begin{center}%https://www.tablesgenerator.com/#
+\begin{tabular}{ccccccccc}
+\textbf{PC}           & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} \\ \hline
+\textbf{Var}     & $17$       & $8$        & $3$        & $2$        & $1$        & $0.5$        & $0.25$        & $0$        \\
+\textbf{Prop}   & $54$       & $25$       & $9$       & $6$       & $3$       & $2$       & $1$       & $0$       \\
+\textbf{Cumul} & $54$       & $79$       & $88$       & $94$       & $98$       & $99$       & $100$       & $100$      
+\end{tabular}
+\end{center}
+If only the PCs that explain up to $95\%$ of the \textbf{cumulative variance} are retained, the original dataset reduces to a $4D$ subset.
+\newl If only the PCs that \textbf{individually explain} more than $25\%$ of the variance are retained, the original dataset reduces to a $2D$ subset.
+\newl If only the PCs that lead into the \textbf{first kink} in the scree plot are retained, the original dataset reduces to a $3D$ subset.    \newpage\ \\ \begin{center}
+\includegraphics[width=0.32\textwidth]{Images/Eigenvalue_plot4.png}\ 
+\includegraphics[width=0.32\textwidth]{Images/Eigenvalue_plot3.png}\ 
+\includegraphics[width=0.32\textwidth]{Images/Eigenvalue_plot2.png}
+\end{center}
+The proportion of the variance explained by each (ordered) component is shown in the first $3$ charts; the cumulative proportion is shown in the last chart. \newl The cumulative proportion method is shown in the first image, the individual threshold method in the second, and the kink method in the third.
+\newpage\ \\ \noindent \textbf{PCA Limitations}: \begin{itemize} 
+\item dependent on scaling, and so not unique;
+\item interpreting the PCs require domain expertise;
+\item (quite) sensitive to outliers;
+\item analysis goals not always aligned with the PCs, and 
+\item data assumptions not always met -- does it always make sense that important data structures and data spread be linked (see \textbf{counting pancakes} problem), or that the PCs be \textbf{orthogonal}?
+\end{itemize} 
+\newpage\ 
+\begin{center}
+\includegraphics[width=0.4\textwidth]{Images/pancake} \\ 
+\includegraphics[width=0.6\textwidth]{Images/ICA} \\ (algobeans.com) 
+\end{center}
+
+%\noindent \textbf{Principal components analysis} (PCA) finds a representation of the original dataset in a lower-dimensional subspace (such as a line or a plane)  containing the greatest possible variation. 
+%\newl PCA is an \textbf{orthogonal linear transformation} of the data into a new coordinate system. \newl The \textbf{first principal component} (PC), the first coordinate of the projection, is linked to the \textbf{largest directional variance} in the original dataset, the second PC to the second largest orthogonal variance, and so forth.
+\newpage\ \\ \noindent  PCA is used in various contexts:
 \begin{itemize}
     \item as a dimension reduction method used during data pre-processing;
     \item as a data visualization aid, and
     \item as an anomaly and outlier detection method.
 \end{itemize}
-Let the dataset be represented by a numerical, centered, and scaled $n\times p$ matrix $\textbf{X}=[\textbf{X}_1,\cdots,\textbf{X}_p]$ with $n$ observations (number of rows) and $p$ features (number of columns). \newl In the regression context (without an intercept term), $\textbf{X}$ is called the \textbf{design matrix}.
+%Let the dataset be represented by a numerical, centered, and scaled $n\times p$ matrix $\textbf{X}=[\textbf{X}_1,\cdots,\textbf{X}_p]$ with $n$ observations (number of rows) and $p$ features (number of columns). \newl In the regression context (without an intercept term), $\textbf{X}$ is called the \textbf{design matrix}.
 
-\newpage\ \\ \noindent The \textbf{principal components} are linear combinations of the variables: 
-\begin{align*}
-\textbf{Y}_i=\ell^{\!\top}_i\textbf{X}=\ell_{1,i}\textbf{X}_1+\cdots+\ell_{p,i}\textbf{X}_p;\quad i=1,\cdots,k,
-\end{align*}
-with $k\leq p$, yielding the largest variance subjet to the constraint $\|\ell_i\|=1$ (where $\|\cdot\| $ represents the Euclidean norm). We can thus deduce that  
-\begin{align*}
-\operatorname{Var}\left(Y_{i}\right) &=\operatorname{Var}\left(\ell_{i}^{\!\top} \boldsymbol{X}\right)=\ell_{i}^{\!\top} \boldsymbol{\Sigma} \ell_{i} \,,\\ 
-\operatorname{Cov}\left(Y_{i}, Y_{k}\right) &=\operatorname{Cov}\left(\ell_{i}^{\!\top} \boldsymbol{X}, \ell_{k}^{\!\top} \boldsymbol{X}\right)=\ell_{i}^{\!\top} \boldsymbol{\Sigma} \ell_{k}\, .
-\end{align*}
-In other words, PCA finds the \textbf{loadings vector} $\ell_{1}$ which maximizes the variance of $Y_1$, i.e. 
-\begin{align*}
-\mathbf{\ell}_{1}&=\underset{\|\mathbf{\ell_1}\|=1}{\arg \max }\left\{\ell^{\!\top}_1\mathbf{X}^{\!\top} \mathbf{X} \ell_1\right\},
-\end{align*}
-then the loadings vector $\ell_2$ (not correlated with $\ell_1$) which maximizes the variance of $Y_2$, i.e.   
-\begin{align*}
-\mathbf{\ell}_{2}& =\underset{\|\mathbf{\ell_2}\|=1,\; \ell_{1}^{\!\top}\ell_{2} =0}{\arg \max }\left\{\ell^{\!\top}_2\mathbf{X}^{\!\top} \mathbf{X} \ell_2\right\}.
-\end{align*}
-Similarly, the loadings vector $\ell_k$ is not correlated with any of the $\ell_i$, $i<k$, and maximizes the variance of $Y_k$, i.e.
-\begin{align}
-\mathbf{\ell}_k=\underset{\substack{\|\ell_k\|=1,\\ \;\ell_{i}^{\!\top}\ell_k=0,\;\forall\;i<k}}{\arg \max} \left\{\ell^{\!\top}_k\mathbf{X}^{\!\top} \mathbf{X} \ell_k\right\}.\label{eq1}
-\end{align}
-We solve \eqref{eq1} for all  $i<k$ through the Lagrangian
-\begin{align*}
-L=\ell^{\!\top}_k\mathbf{X}^{\!\top} \mathbf{X} \ell_k-\lambda_k(\ell^{\!\top}_k\ell_k-1)-w\ell_{i}^{\!\top}\ell_k.
-\end{align*}
-The critical points are found by differentiating with respect to each of the entries of $\ell_k$, $\lambda_k$ and $w$, and setting the result to 0. Simplifying, we obtain  
-\begin{align*}
-\mathbf{X}^{\!\top} \mathbf{X} \ell_k&=\lambda_k\ell_k\\
-\ell^{\!\top}_k\ell_k&=1 \quad\text{et}\quad\ell^{\!\top}_k\ell_i=0,\quad\text{for all}\; i<k.
-\end{align*}
-The loadings vector $\ell_k$ is thus the \textbf{eigenvector} of the design matrix $\mathbf{X}^{\!\top} \mathbf{X}$ associated to the $k$th largest eigenvalue. \newl
-The \textbf{proportion of the variance which can be explained} by the PCA can be calculated by first noting that 
-\begin{align*}
-\sum_{i=1}^{p}\operatorname{Var}\left(Y_{i}\right) &=\sum_{i=1}^{p}\ell_{i}^{\!\top} \boldsymbol{\Sigma} \ell_{i}=\sum_{i=1}^{p}\lambda_i \,.
-\end{align*}
-Consequently, the proportion of the total variance explained by the $i$th principal component is  
-\begin{align*}
-0\leq \frac{\lambda_i}{\sum_{i=1}^{p}\lambda_i }\leq 1
-\end{align*}
-The quality of the PCA results is strongly dependent on the number of retained principal components, that is, on the dimension $k$ of the subspace on which the observations are projected. There are multiple ways to select the ``right'' $k$ -- we will briefly present two of them. 
-\newl The proportion of the total variance explained by the first $k$ principal components is given by  
-\begin{align*}
-p_k=\frac{\sum_{i=1}^{k} \lambda_i}{\sum_{i=1}^{p}\lambda_i}.
-\end{align*}
-One approach is to retain $k$ principal components, where $k$ is the smallest value for which  $p_k$ surpasses some pre-established threshold  (often taken between $80\%$ and $90\%$). \newl
-The \textbf{scree plot method}, on the other hand, consists in drawing the curve given by the decreasing eigenvalues (the \textbf{scree plot}), and to identify the curve's ``elbows''. These points correspond to principal components for which the variance decreases at a slower rate with added components. If such an elbow exists, we would retain the eigenvalues up to it (and thus,  the corresponding principal components). 
-\textbf{Example}
-PCA is applied on a dataset of genetic expression measurements, for $n=72$ leukemia patients and $p=7128$ genes \cite{Hleukemia}. The scree plot suggests that only one principal component should be retained; the projection on the first 3 principal components is also shown in Figure~\ref{fig0} (on the right). Some R code is given below.
-\begin{figure*}[t]
-    \centering
-     \includegraphics[width=.55\textwidth]{ADOA/Images/screeleuk_EN.png}
-    \includegraphics[width=.4\textwidth]{ADOA/Images/3dpcleuk.PNG}
-    \caption{Scree plot (left); projection on the first 3 principal components (right).}\hrule
-    \label{fig0}
-\end{figure*}
- 
-\noindent There are other PCA-associated dimension reduction methods, such as the singular value decomposition, kernel PCA, and so forth; more details are available in \cite{BLMMP}.
-\newl What is the link with anomaly and/or outlier detection? Once the dataset has been projected on a lower-dimensional subspace, the curse of dimensionality is mitigated -- it is on the projected data that the traditional detection methods are applied. \par Note, however, that any such reduction necessarily leads to a loss of information, which can affect the accuracy of the detection procedure, especially if the presence/absence of anomalies is not aligned with the dataset's principal components. 
+%\newpage\ \\ \noindent The \textbf{principal components} are linear combinations of the variables: 
+%\begin{align*}
+%\textbf{Y}_i=\ell^{\!\top}_i\textbf{X}=\ell_{1,i}\textbf{X}_1+\cdots+\ell_{p,i}\textbf{X}_p;\quad i=1,\cdots,k,
+%\end{align*}
+%with $k\leq p$, yielding the largest variance subjet to the constraint $\|\ell_i\|=1$ (where $\|\cdot\| $ represents the Euclidean norm). We can thus deduce that  
+%\begin{align*}
+%\operatorname{Var}\left(\textbf{Y}_{i}\right) &=\operatorname{Var}\left(\ell_{i}^{\!\top} \textbf{X} \right)=\ell_{i}^{\!\top} \textbf{X}^{\!\top} \textbf{X} \ell_{i}=\ell_{i}^{\!\top} \textbf{X}^{\!\top} \textbf{X} \ell_{i} \,,\\ 
+%\operatorname{Cov}\left(\textbf{Y}_{i}, \textbf{Y}_{k}\right) &=\operatorname{Cov}\left(\ell_{i}^{\!\top} \textbf{X}, \ell_{k}^{\!\top} \textbf{X}\right)=\ell_{i}^{\!\top}\textbf{X}^{\!\top} \textbf{X}\ell_{k}\, .
+%\end{align*}
+%In other words, PCA finds the \textbf{loadings vector} $\ell_{1}$ which maximizes the variance of $\textbf{Y}_1$, i.e. 
+%\begin{align*}
+%\mathbf{\ell}_{1}&=\underset{\|\mathbf{\ell_1}\|=1}{\arg \max }\left\{\ell^{\!\top}_1\textbf{X}^{\!\top} \textbf{X} \ell_1\right\}.
+%\end{align*}
+%\newpage\ \\ \noindent Then it finds the loadings vector $\ell_2$ (not correlated with $\ell_1$) which maximizes the variance of $\textbf{Y}_2$, i.e.   
+%\begin{align*}
+%\mathbf{\ell}_{2}& =\underset{\|\mathbf{\ell_2}\|=1,\; \ell_{1}^{\!\top}\ell_{2} =0}{\arg \max }\left\{\ell^{\!\top}_2\textbf{X}^{\!\top} \textbf{X} \ell_2\right\}.
+%\end{align*}
+%Similarly, the loadings vector $\ell_k$ is not correlated with any of the $\ell_i$, $i<k$, and maximizes the variance of $\textbf{Y}_k$, i.e.
+%\begin{align*}
+%\mathbf{\ell}_k=\underset{\substack{\|\ell_k\|=1,\\ \;\ell_{i}^{\!\top}\ell_k=0,\;\forall\;i<k}}{\arg \max} \left\{\ell^{\!\top}_k\textbf{X}^{\!\top} \textbf{X} \ell_k\right\}.\label{eq1}
+%\end{align*}
+%This can be solved through the Lagrangian
+%\begin{align*}
+%L=\ell^{\!\top}_k\textbf{X}^{\!\top} \textbf{X} \ell_k-\lambda_k(\ell^{\!\top}_k\ell_k-1)-w\ell_{i}^{\!\top}\ell_k.
+%\end{align*}
+%\newpage\ \\ \noindent The critical points are found by differentiating with respect to each of the entries of $\ell_k$, $\lambda_k$ and $w$, and setting the result to $0$. Simplifying, we obtain  
+%\begin{align*}
+%\textbf{X}^{\!\top} \textbf{X} \ell_k&=\lambda_k\ell_k\\
+%\ell^{\!\top}_k\ell_k&=1 %\quad\text{et}\quad\ell^{\!\top}_k\ell_i=0,\quad\text{for all}\; i<k.
+%\end{align*}
+%The loadings vector $\ell_k$ is thus the \textbf{eigenvector} of the covariance matrix $\textbf{X}^{\!\top} \textbf{X}$ associated to the $k$th largest eigenvalue. \newl
+%The \textbf{proportion of the variance which can be explained} by the PCA can be calculated by first noting that 
+%\begin{align*}
+%\sum_{i=1}^{p}\operatorname{Var}\left(\textbf{Y}_{i}\right) &=\sum_{i=1}^{p}\ell_{i}^{\!\top} \textbf{X}^{\!\top} \textbf{X} \ell_{i}=\sum_{i=1}^{p}\lambda_i \,.
+%\end{align*}
+%\newpage\ \\ \noindent Consequently, the proportion of the total variance explained by the $i$th principal component is  
+%\begin{align*}
+%0\leq \frac{\lambda_i}{\sum_{i=1}^{p}\lambda_i }\leq 1
+%\end{align*}
+\noindent The \textbf{quality} of the PCA results is strongly dependent on the \textbf{number of retained principal components} ($=$ the dimension $k$ of the subspace on which the observations are projected). \newl For anomaly detection purposes, it is not obvious that the methods shown prior to find an optimal $k$ are appropriate $\Longrightarrow$ a good $k$ is one which allows for good anomaly detection. 
+\newl \noindent There are other PCA-associated dimension reduction methods: ICA, singular value decomposition, kernel PCA, etc.  \newl What is the link with anomaly and/or outlier detection? 
+\begin{itemize}
+\item Once the dataset has been projected on a lower-dimensional subspace, the curse of dimensionality is \textbf{mitigated} -- traditional methods are applied to the \textbf{projected data}.
+\item  Dimension reduction usually leads to a loss of information, which can affect the accuracy of the detection procedure -- especially if the presence/absence of anomalies is \textbf{not aligned} with the dataset's principal components. 
+\end{itemize}
+\newpage\ \begin{center}
+\includegraphics[height=0.85\textheight]{Images/PCA_1} \\ $2$D PCA projection.
+\end{center}
+\newpage\ \begin{center}
+\includegraphics[height=0.85\textheight]{Images/PCA_Maha0} \\ Histogram of $2$D PCA Mahalanobis scores.
+\end{center}
+\newpage \begin{center}
+\includegraphics[width=\textwidth]{Images/PCA_Maha2}
+\end{center}
 
 \fh{Distance-Based Outlier Basis Using Neighbours}
-Using PCA for anomaly detection is potentially problematic, however: whether an observation is anomalous or not does not figure in the construction of the principal component basis $\{\text{PC}_1,\ldots,\text{PC}_k\}$ -- there isn't necessarily a correlation between the axes of heightened variance and the presence or absence of anomalies. 
+\noindent Main problem with using PCA-type projections for anomaly detection:  there may not be a correlation between the axes of heightened variance and the presence or absence of anomalies. 
 \newl 
 The \textbf{distance-based outlier basis using neighbours} algorithm (DOBIN) builds a basis which is better suited for the eventual detection of outlying observations. DOBIN's main idea is to search for nearest neighbours that are in fact relatively distant from one another: 
 \begin{enumerate} 
-\item We start by building a space $\mathbf{Y}=\{\mathbf{y}_{\ell}\}$  which contains $M\ll n(n+1)/2$  vectors of the form $$\mathbf{y}_{\ell}=(\mathbf{x}_i -\mathbf{x}_j)\odot (\mathbf{x}_i -\mathbf{x}_j), $$ where $\odot$ is the element-by-element Hadamard multiplication, and for which the $1-$norm  $$\|\mathbf{y}_{\ell}\|_1=(x_{1,1}-x_{2,1})^2+\cdots +(x_{1,p}-x_{2,p})^2 $$ is the square of the distance between $\mathbf{x}_i,\mathbf{x}_j \in\mathbf{X}$ (the selection of each of the $M$ observation pairs is made according to a rather complex procedure which only considers $\mathbf{x}_i$ and $\mathbf{x}_j$ if they are part of one another's $k-$neighbourhood, for $k\in\{k_1,\ldots, k_2\}$); the set $\mathbf{Y}$ thus contains points for which $\|\mathbf{y}_{\ell}\|_1$ is relatively large, which is to say that the observations $\mathbf{x}_i$ are $\mathbf{x}_j$ fairly distant from one another even if they are $k-$neighbours of each other;
-\item we next build a basis $\{\eta_1,\ldots,\eta_p\}\subset \mathbb{R}^p$ where each  $\eta_i$ is a unit vector given by a particular linear combination of points in $\mathbf{Y}$; they can be found using a  Gram-Schmidt-like procedure: 
+\item start by building a space $\mathbf{Y}=\{\mathbf{y}_{\ell}\}$  which contains $M\ll n(n+1)/2$  vectors of the form $$\mathbf{y}_{\ell}=(\mathbf{x}_i -\mathbf{x}_j)\odot (\mathbf{x}_i -\mathbf{x}_j), $$ \newpage\ \\ \noindent where $\odot$ is the element-by-element Hadamard multiplication, and for which the $1-$norm  $$\|\mathbf{y}_{\ell}\|_1=(x_{1,1}-x_{2,1})^2+\cdots +(x_{1,p}-x_{2,p})^2 $$ is the square of the distance between $\mathbf{x}_i,\mathbf{x}_j \in\mathbf{X}$;
+\item the selection of each of the $M$ observation pairs is made according to a complex procedure which only picks $\mathbf{x}_i$ and $\mathbf{x}_j$ if they are part of one another's $k-$neighbourhood, for $k\in\{k_1,\ldots, k_2\}$; 
+\item the set $\mathbf{Y}$ thus contains points for which $\|\mathbf{y}_{\ell}\|_1$ is relatively large, which is to say that the observations $\mathbf{x}_i$ are $\mathbf{x}_j$ fairly distant from one another even if they are $k-$neighbours of each other;
+\newpage\ \item next, a basis $\{\eta_1,\ldots,\eta_p\}\subset \mathbb{R}^p$ is built where each  $\eta_i$ is a unit vector given by a particular linear combination of points in $\mathbf{Y}$; they can be found using a  Gram-Schmidt-like procedure: 
 \begin{align*}
 \mathbf{y}_{\ell_0}&=\mathbf{y}_{\ell},\quad \ell=1,\ldots, M \\ 
 %\eta_1&=\frac{\sum_{\ell=1}^M\mathbf{y}_{\ell}}{\left\|\sum_{\ell=1}^M\mathbf{y}_{\ell}\right\|_2} \\
@@ -1389,13 +1442,15 @@ The \textbf{distance-based outlier basis using neighbours} algorithm (DOBIN) bui
 %\eta_2&=\frac{\sum_{\ell=1}^M\mathbf{y}_{\ell_1}}{\left\|\sum_{\ell=1}^M\mathbf{y}_{\ell_1}\right\|_2} \\ 
 \mathbf{y}_{\ell_{b-1}}&=\mathbf{y}_{\ell_{b-2}}-\langle\eta_{b-1} \mid \mathbf{y}_{\ell_{b-2}}\rangle,\quad \ell=1,\ldots, M \\ 
 \eta_b&=\frac{\sum_{\ell=1}^M\mathbf{y}_{\ell_{b-1}}}{\left\|\sum_{\ell=1}^M\mathbf{y}_{\ell_{p-1}}\right\|_2},
-\end{align*} for $b=1,\ldots,p$,
-\item and we tranform the original dataset   $\mathbf{X}$ according to  $\hat{\mathbf{X}}=\mathcal{T}(\mathbf{X})\Theta,$ where $\mathcal{T}(\mathbf{X})$ normalizes each feature of  $\mathbf{X}$ according to a problem-specific scheme  (Min-Max or Median-IQR, say) and $$\Theta=[\eta_1\mid\cdots\mid \eta_p]$$ is a orthogonal $p\times p$ matrix.  
+\end{align*} for $b=1,\ldots,p$;
+\newpage\ \item finally, transform the original dataset   $\mathbf{X}$ according to  $\hat{\mathbf{X}}=\mathcal{T}(\mathbf{X})\Theta,$ where $\mathcal{T}(\mathbf{X})$ normalizes each feature of  $\mathbf{X}$ according to a problem-specific scheme  (Min-Max or Median-IQR, say), and $$\Theta=[\eta_1\mid\cdots\mid \eta_p]$$ is an orthogonal $p\times p$ matrix.  
 \end{enumerate}
-It is on the transformed space (which plays an analogous role to the subspace projection of  $\mathbf{X}$ in PCA) that we apply the various outlier and anomaly detection algorithms.\newl 
-The full details contain a fair number of technical complications; the interested reader is invited to consult the original documentation \cite{A6} (note that the algorithm is implemented in R \textit{via} the module \textit{dobin}). 
+$\hat{\mathbf{X}}$ plays an analogous role to the subspace projection of  $\mathbf{X}$ in PCA -- this is the object on which outlier and anomaly detection algorithms are applied.\newl 
+In a nutshell, the first component provides the direction of largest $k$NN distance, instead of the direction of largest variance, and so forth. The paper by Kandanaarachchi and Hyndman provide more details. 
 %
-
+\newpage \begin{center}
+\includegraphics[width=\textwidth]{Images/11NN_DOBIN}
+\end{center}
 
 \fh{6.4.3 -- Subspace  Methods} \label{6.4.3}
 
@@ -1432,9 +1487,87 @@ The full details contain a fair number of technical complications; the intereste
 
 
 \fh{6.6.1 -- Outlier Ensembles} \label{6.6.1}
+In the preceding sections, we have described various anomaly detection algorithms whose relative performance varies with the type of data being considered. It's usually impossible to come up with an algorithm that outperforms all the others. \par This is because a particular anomaly detection algorithm may be well adapted to a data set and may be successful in detecting abnormal or outlier observations, but it may not work with other data sets whose characteristics do not match the first data set. \newl The impact of such a mismatch between algorithms can be mitigated by using  \textbf{ensemble methods}, where the results of several algorithms are considered before making a final decision. Such an approach often provides the best results and thus improves the performance of the base anomaly detection algorithms \cite{A10}. 
+\newl We will consider two types of ensemble methods:  \textbf{sequential ensembles} (boosting) and \textbf{independent ensembles}.
 
+{Sequential Ensembles}
+Sequential ensembles requires a given algorithm (or a set of algorithms) to be applied to a dataset in a sequential manntter, each time on a slightly different dataset derived from the previous step's dataset based on the previous steps' results, and so forth. At each step, the weight associated with each observation is modified according to the preceding results using some ``boosting'' method (such as AdaBoost or XGBoost, for instance). \newl The final result is either some weighted combination of all preceding results, or simply the results output by the last step in the sequence (see Algorithme~\ref{algSeq}). 
 
+The details are out-of-scope for this report, but can be studied in \cite{LB}.
 
+\begin{algorithm}
+\SetAlgoLined
+\textbf{Inputs:} dataset $D$, base algorithms $A_1,\ldots,A_r$ 
+
+$j=1$\;
+\While{stopping criteria are not met}{
+	Select an algorithm $A_j$ based on the results from the preceding steps\;
+	Create a new dataset $D_j$ from $D$ by modifying the weight of each observation based on the results from the preceding steps\;
+	Apply $A_j$ to $D_j$\;
+	$j=j+1$\;
+}
+\textbf{Output:} anomalous observations obtained by weighing the results of all previous steps 
+\caption{SequentialEnsemble}\label{algSeq}
+\end{algorithm}%\newl
+\subsection*{Independent Ensembles}
+In an independent ensemble, we instead apply different algorithms (or different instanciations of the same algorithm) to the dataset (or some resampled dataset). \par Choices made at the data and algorithm level
+are independent of the results obtained in previous runs (unlike in a sequential ensemble). The results are then combined to obtain more robust outliers (see Algorithm~\ref{algInd}).
+
+\begin{algorithm}[t]
+\SetAlgoLined
+\textbf{Inputs:} dataset $D$, base algorithms $A_1,\ldots,A_r$ 
+
+$j=1$\;
+\While{stopping criteria are not met}{
+	Select an algorithm $A_j$\;
+	Create a new dataset $D_j$ from $D$ by (potential) re-sampling, but independently of the preceding steps' results\;
+	Apply $A_j$ to $D_j$\;
+	$j=j+1$\;
+}
+\textbf{Output:} anomalous observations obtained by combining the results of all previous steps 
+\caption{IndependantEnsemble}\label{algInd}
+\end{algorithm}
+\ \\
+\noindent Every base anomaly detection algorithm provides an a\-no\-ma\-ly score (or an abnormal/regular classification) for each observation in $D$; observations with higher scores are considered to be more anomalous, observations with lower scores more normal. \par The results are then combined using a task-specific method in order to provide a more robust classification of anomalous or outlying observations. 
+\newl Many such combination techniques used in practice:  \begin{itemize}[noitemsep]
+\item \textbf{majority vote}, 
+\item \textbf{average}, 
+\item \textbf{minimal rank}, etc. \end{itemize}  
+Let $\alpha_i(\mathbf{p})$ represent the (normalized) \textbf{anomaly score} of $\mathbf{p}\in D$, according to algorithm $A_i$. If $\alpha_i(\mathbf{p})\approx 0$, it is unlikely that $\mathbf{p}$ is an anomaly according to $A_i$, whereas if $\alpha_i(\mathbf{p})\approx 1$, it is quite likely that $\mathbf{p}$ according to $A_i$. \par The \textbf{rank} of $\mathbf{p}\in D$ according to $A_i$, on the other hand, is denoted by $r_i(\mathbf{p})$: the higher the rank (smaller number), the higher the anomaly score  \textit{vice versa}. In a dataset with  $n$ observations, the rank varies from $1$ to $n$ (ties are allowed). 
+\par If the base detection algorithms are $A_1, \ldots, A_m$, the anomaly score and the rank of an observation $\mathbf{p}\in D$ according to the independent ensemble method are, respectively, 
+\begin{align*}
+\alpha(\mathbf{p})=\frac{1}{m}\sum_{i=1}^{m}\alpha_i(\mathbf{p}) \qquad \text{and}\; \qquad r(\mathbf{p}) =\min_{1\leq i \leq m} \{r_i(\mathbf{p})\}.
+\end{align*}
+If $n=m=3$, for instance, we could end up with 
+\begin{align*}\alpha_{1}\left(\mathbf{p}_{1}\right)&=1.0,\; \alpha_{1}\left(\mathbf{p}_{2}\right)=0.9,\; \alpha_{1}\left(\mathbf{p}_{3}\right)=0.0; \\ 
+\alpha_{2}\left(\mathbf{p}_{1}\right)&=1.0,\; \alpha_{2}\left(\mathbf{p}_{2}\right)=0.8,\; \alpha_{2}\left(\mathbf{p}_{3}\right)=0.0;\\
+\alpha_{3}\left(\mathbf{p}_{1}\right)&=0.1,\;  \alpha_{3}\left(\mathbf{p}_{2}\right)=1.0,\; \alpha_{3}\left(\mathbf{p}_{3}\right)=0.0.
+\end{align*}
+Using the mean as the combination techniques, we obtain
+\begin{align*}
+\alpha\left(\mathbf{p}_{1}\right)&=0.7,\; \alpha\left(\mathbf{p}_{2}\right)=0.9,\; \alpha\left(\mathbf{p}_{3}\right)=0.0,
+\end{align*}
+whence $$\mathbf{p}_2\succeq \mathbf{p}_1\succeq \mathbf{p}_3,$$ that is, $\mathbf{p}_2$ is more anomalous than $\mathbf{p}_1$, which is itself more anomalous than  $\mathbf{p}_3$ (see the notation introduced on page~\pageref{succeq}). 
+\newl 
+Using the minimal rank method, we obtain 
+\begin{align*}
+r_{1}\left(\mathbf{p}_{1}\right)&=1,\; r_{1}\left(\mathbf{p}_{2}\right)=2,\; r_{1}\left(\mathbf{p}_{3}\right)=3;\\ 
+r_{2}\left(\mathbf{p}_{1}\right)&=1,\; r_{2}\left(\mathbf{p}_{2}\right)=2,\; r_{2}\left(\mathbf{p}_{3}\right)=3;\\
+r_{3}\left(\mathbf{p}_{1}\right)&=2,\; r_{3}\left(\mathbf{p}_{2}\right)=1,\; r_{3}\left(\mathbf{p}_{3}\right)=3,
+\end{align*}
+from which 
+\begin{align*}
+r\left(\mathbf{p}_{1}\right)=r\left(\mathbf{p}_{2}\right)=1,\; r \left(\mathbf{p}_{3}\right)=3, 
+\end{align*}
+whence $\mathbf{p}_1\succeq \mathbf{p}_3$ and $\mathbf{p}_2\succeq \mathbf{p}_3$, but $\mathbf{p}_1$ and  $\mathbf{p}_2$ have the same anomalous levels. 
+\newl Evidently, the results depend not only on the data set under consideration and on the base algorithms that are used in the ensemble, but also on how the results are combined. 
+\newl In the context of HDLSS data, ensemble methods can sometimes allow the analyst to mitigate some of the effects of the curse of dimensionality by selecting fast base algorithms (which can be run multiple times) and focusing on building robust relative anomaly scores. \par Another suggested  approach is to use a different subset of the original dataset's features at each step, in order to de-correlate the base detection models. 
+
+% "HDo", "PCS", "BAC", "adjOut", "DDC", "MCD"
+\newpage \begin{center}
+\includegraphics[width=\textwidth]{Images/O3_Outlier}
+\end{center}
+\newpage\ \\ \noindent The columns on the left indicate which variables are used to generate each subspace (see row colouring). \newl The columns on the right indicate the observations that were identified as an outlier by at least one method in at least one of the subspaces. \newl The colours depict the number of methods that identify each observation in each subspace as an outlier. \newl Observation $102$ is identified as an outlier by $6$ methods in $2$ subspaces, $5$ methods in $3$ subspaces, $4$ methods in $2$ subspaces, $3$ methods in $1$ subspace, $2$ methods  in $4$ subspaces, and $1$ method in $3$ subspaces -- it is clearly the most outlying observation in the dataset. \newl Observations $62$ and $101$ are also commonly identified as outliers.
 \fh{6.6.2 -- Anomalies in Text Datasets Methods} \label{6.6.2} 
 
 

@@ -34,7 +34,7 @@ The challenges of anomaly and outlier detection  in high-dimensional data lie in
 \end{enumerate}
 %
 \subsection{Projection-Based Methods}
-Nowadays, it is common to deal with very large data sets known as HDLSS (\textbf{high dimension, low sample size}), which can contain hundreds of variables (or even more). \par As a result,  the curse of dimensionality affects the efficiency of conventional anomaly/outlier detection methods.\newl One solution to this problem is to \textbf{reduce the dimensionality} of the dataset while preserving its essential characteristics. Such projecion-based methods \begin{itemize}[noitemsep]\item principal component analysis, \item linear discriminant analysis, \item feature selection, etc. \end{itemize} In this section, We provide details on one such method: PCA.
+Nowadays, it is common to deal with very large data sets known as HDLSS (\textbf{high dimension, low sample size}), which can contain hundreds of variables (or even more). \par As a result,  the curse of dimensionality affects the efficiency of conventional anomaly/outlier detection methods.\newl One solution to this problem is to \textbf{reduce the dimensionality} of the dataset while preserving its essential characteristics. Such projecion-based methods include \begin{itemize}[noitemsep]\item principal component analysis, \item linear discriminant analysis, \item feature selection, etc. \end{itemize} In this section, we provide details on one such method: PCA.
 \subsubsection*{Principal Components Analysis}
 %
 \textbf{Principal components analysis} (PCA) aims to find a representation of the original dataset in a lower-dimensional subspace (such as a line or a plane)  containing the greatest possible variation. 
@@ -45,41 +45,40 @@ PCA corresponds to an orthogonal linear transformation of the data into a new co
     \item as a data visualization aid, and, in the scenario of interest for this report, 
     \item as an anomaly and outlier detection method.
 \end{itemize}
-Let the dataset be represented by a numerical, centered, and scaled $n\times p$ matrix $\textbf{X}=[\textbf{X}_1,\cdots,\textbf{X}_p]$ with $n$ observations (number of rows) and $p$ features (number of columns). The \textbf{principal components} can be written as linear combinations of the variables 
+Let the dataset be represented by a numerical, centered, and scaled $n\times p$ matrix $\textbf{X}=[\textbf{X}_1,\cdots,\textbf{X}_p]$ with $n$ observations (number of rows) and $p$ features (number of columns). The \textbf{principal components} are linear combinations of the variables: 
 \begin{align*}
 \textbf{Y}_i=\ell^{\!\top}_i\textbf{X}=\ell_{1,i}\textbf{X}_1+\cdots+\ell_{p,i}\textbf{X}_p;\quad i=1,\cdots,k,
 \end{align*}
 with $k\leq p$, yielding the largest variance subjet to the constraint $\|\ell_i\|=1$ (where $\|\cdot\| $ represents the Euclidean norm). We can thus deduce that  
 \begin{align*}
-\operatorname{Var}\left(Y_{i}\right) &=\operatorname{Var}\left(\ell_{i}^{\!\top} \boldsymbol{X}\right)=\ell_{i}^{\!\top} \boldsymbol{\Sigma} \ell_{i} \,,\\ 
-\operatorname{Cov}\left(Y_{i}, Y_{k}\right) &=\operatorname{Cov}\left(\ell_{i}^{\!\top} \boldsymbol{X}, \ell_{k}^{\!\top} \boldsymbol{X}\right)=\ell_{i}^{\!\top} \boldsymbol{\Sigma} \ell_{k}\, .
+\operatorname{Var}\left(\textbf{Y}_{i}\right) &=\operatorname{Var}\left(\ell_{i}^{\!\top} \textbf{X} \right)=\ell_{i}^{\!\top} \textbf{X}^{\!\top} \textbf{X} \ell_{i}=\ell_{i}^{\!\top} \textbf{X}^{\!\top} \textbf{X} \ell_{i} \,,\\ 
+\operatorname{Cov}\left(\textbf{Y}_{i}, \textbf{Y}_{k}\right) &=\operatorname{Cov}\left(\ell_{i}^{\!\top} \textbf{X}, \ell_{k}^{\!\top} \textbf{X}\right)=\ell_{i}^{\!\top}\textbf{X}^{\!\top} \textbf{X}\ell_{k}\, .
 \end{align*}
-In other words, PCA finds the \textbf{loadings vector} $\ell_{1}$ which maximizes the variance of $Y_1$, i.e. 
+In other words, PCA finds the \textbf{loadings vector} $\ell_{1}$ which maximizes the variance of $\textbf{Y}_1$, i.e. 
 \begin{align*}
-\mathbf{\ell}_{1}&=\underset{\|\mathbf{\ell_1}\|=1}{\arg \max }\left\{\ell^{\!\top}_1\mathbf{X}^{\!\top} \mathbf{X} \ell_1\right\},
+\mathbf{\ell}_{1}&=\underset{\|\mathbf{\ell_1}\|=1}{\arg \max }\left\{\ell^{\!\top}_1\textbf{X}^{\!\top} \textbf{X} \ell_1\right\},
 \end{align*}
-then the loadings vector $\ell_2$ (not correlated with $\ell_1$) which maximizes the variance of $Y_2$, i.e.   
+then the loadings vector $\ell_2$ (not correlated with $\ell_1$) which maximizes the variance of $\textbf{Y}_2$, i.e.   
 \begin{align*}
-\mathbf{\ell}_{2}& =\underset{\|\mathbf{\ell_2}\|=1,\; \ell_{1}^{\!\top}\ell_{2} =0}{\arg \max }\left\{\ell^{\!\top}_2\mathbf{X}^{\!\top} \mathbf{X} \ell_2\right\}.
+\mathbf{\ell}_{2}& =\underset{\|\mathbf{\ell_2}\|=1,\; \ell_{1}^{\!\top}\ell_{2} =0}{\arg \max }\left\{\ell^{\!\top}_2\textbf{X}^{\!\top} \textbf{X} \ell_2\right\}.
 \end{align*}
-Similarly, the loadings vector $\ell_k$ is not correlated with any of the $\ell_i$, $i<k$, and maximizes the variance of $Y_k$, i.e.
+Similarly, the loadings vector $\ell_k$ is not correlated with any of the $\ell_i$, $i<k$, and maximizes the variance of $\textbf{Y}_k$, i.e.
 \begin{align}
-\mathbf{\ell}_k=\underset{\substack{\|\ell_k\|=1,\\ \;\ell_{i}^{\!\top}\ell_k=0,\;\forall\;i<k}}{\arg \max} \left\{\ell^{\!\top}_k\mathbf{X}^{\!\top} \mathbf{X} \ell_k\right\}.\label{eq1}
+\mathbf{\ell}_k=\underset{\substack{\|\ell_k\|=1,\\ \;\ell_{i}^{\!\top}\ell_k=0,\;\forall\;i<k}}{\arg \max} \left\{\ell^{\!\top}_k\textbf{X}^{\!\top} \textbf{X} \ell_k\right\}.\label{eq1}
 \end{align}
 We solve \eqref{eq1} for all  $i<k$ through the Lagrangian
 \begin{align*}
-L=\ell^{\!\top}_k\mathbf{X}^{\!\top} \mathbf{X} \ell_k-\lambda_k(\ell^{\!\top}_k\ell_k-1)-w\ell_{i}^{\!\top}\ell_k.
+L=\ell^{\!\top}_k\textbf{X}^{\!\top} \textbf{X} \ell_k-\lambda_k(\ell^{\!\top}_k\ell_k-1)-w\ell_{i}^{\!\top}\ell_k.
 \end{align*}
 The critical points are found by differentiating with respect to each of the entries of $\ell_k$, $\lambda_k$ and $w$, and setting the result to 0. Simplifying, we obtain  
 \begin{align*}
-\mathbf{X}^{\!\top} \mathbf{X} \ell_k&=\lambda_k\ell_k\\
+\textbf{X}^{\!\top} \textbf{X} \ell_k&=\lambda_k\ell_k\\
 \ell^{\!\top}_k\ell_k&=1 \quad\text{et}\quad\ell^{\!\top}_k\ell_i=0,\quad\text{for all}\; i<k.
 \end{align*}
-The loadings vector $\ell_k$ is thus the \textbf{eigenvector} of the design matrix $\mathbf{X}^{\!\top} \mathbf{X}$ associated to the $k$th largest eigenvalue. \newl
-%\begin{lemma} Les $k$ ($k<p$ composantes principales donnant la plus grande variance maximale sont données par les $k$ vecteurs propres associés aux $k$ plus grandes valeurs propres de $\mathbf{X}^{\!\top} \mathbf{X}$.\end{lemma}
+The loadings vector $\ell_k$ is thus the \textbf{eigenvector} of the covariance matrix $\textbf{X}^{\!\top} \textbf{X}$ associated to the $k$th largest eigenvalue. \newl
 The \textbf{proportion of the variance which can be explained} by the PCA can be calculated by first noting that 
 \begin{align*}
-\sum_{i=1}^{p}\operatorname{Var}\left(Y_{i}\right) &=\sum_{i=1}^{p}\ell_{i}^{\!\top} \boldsymbol{\Sigma} \ell_{i}=\sum_{i=1}^{p}\lambda_i \,.
+\sum_{i=1}^{p}\operatorname{Var}\left(\textbf{Y}_{i}\right) &=\sum_{i=1}^{p}\ell_{i}^{\!\top} \textbf{X}^{\!\top} \textbf{X} \ell_{i}=\sum_{i=1}^{p}\lambda_i \,.
 \end{align*}
 Consequently, the proportion of the total variance explained by the $i$th principal component is  
 \begin{align*}
@@ -129,7 +128,7 @@ The \textbf{distance-based outlier basis using neighbours} algorithm (DOBIN) bui
 \mathbf{y}_{\ell_{b-1}}&=\mathbf{y}_{\ell_{b-2}}-\langle\eta_{b-1} \mid \mathbf{y}_{\ell_{b-2}}\rangle,\quad \ell=1,\ldots, M \\ 
 \eta_b&=\frac{\sum_{\ell=1}^M\mathbf{y}_{\ell_{b-1}}}{\left\|\sum_{\ell=1}^M\mathbf{y}_{\ell_{p-1}}\right\|_2},
 \end{align*} for $b=1,\ldots,p$,
-\item and we tranform the original dataset   $\mathbf{X}$ according to  $\hat{\mathbf{X}}=\mathcal{T}(\mathbf{X})\Theta,$ where $\mathcal{T}(\mathbf{X})$ normalizes each feature of  $\mathbf{X}$ according to a problem-specific scheme  (Min-Max or Median-IQR, say) and $$\Theta=[\eta_1\mid\cdots\mid \eta_p]$$ is a orthogonal $p\times p$ matrix.  
+\item and we transform the original dataset   $\mathbf{X}$ according to  $\hat{\mathbf{X}}=\mathcal{T}(\mathbf{X})\Theta,$ where $\mathcal{T}(\mathbf{X})$ normalizes each feature of  $\mathbf{X}$ according to a problem-specific scheme  (Min-Max or Median-IQR, say), and $$\Theta=[\eta_1\mid\cdots\mid \eta_p]$$ is an orthogonal $p\times p$ matrix.  
 \end{enumerate}
 It is on the transformed space (which plays an analogous role to the subspace projection of  $\mathbf{X}$ in PCA) that we apply the various outlier and anomaly detection algorithms.\newl 
 The full details contain a fair number of technical complications; the interested reader is invited to consult the original documentation \cite{A6} (note that the algorithm is implemented in R \textit{via} the module \textit{dobin}). 
