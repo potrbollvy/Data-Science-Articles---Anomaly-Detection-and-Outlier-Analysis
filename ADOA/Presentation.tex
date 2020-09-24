@@ -158,10 +158,10 @@
 %\textcolor{white}{ab} \localtextbulletone\ Application 4 (p.\@\pageref{6.5.4}) \\ 
 %\textcolor{white}{ab} \localtextbulletone\ Application 5 (p.\@\pageref{6.5.5}) 
 %\normalsize \ \\ \ \\ 
-6.6 -- Advanced Topics (p.\pageref{6.6}) \\ 
+6.5 -- Advanced Topics (p.\pageref{6.5}) \\ 
 \small
-\textcolor{white}{ab} \localtextbulletone\ Outlier Ensembles (p.\@\pageref{6.6.1}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Anomalies in Text Datasets Methods (p.\@\pageref{6.6.2})\normalsize 
+\textcolor{white}{ab} \localtextbulletone\ Outlier Ensembles (p.\@\pageref{6.5.1}) \\ 
+\textcolor{white}{ab} \localtextbulletone\ Anomalies in Text Datasets Methods (p.\@\pageref{6.5.2})\normalsize 
  \ \\ \ \\ 
 References and other details can be found in Cissokho, Y., Fadel, S., Millson, R., Pourhasan, R., Boily, P. [2020], \textit{Anomaly Detection and Outlier Analysis}, Data Science Report Series, Data Action Lab.
 
@@ -1476,8 +1476,8 @@ The formal procedure is provided in Algorithm 8.
 \item \textbf{Projected Clustering Ensembles} (OutRank); 
 \item \textbf{Local Selection of Subspace Projections} (OUTRES), etc.
 \end{itemize}
-Anomaly detection and outlier analysis is still a very active area of research, with numerous challenges, and new algorithms come out monthly. \newl $\Warning$ ``\textbf{No Free Lunch'' Theorem:} there is no magic method --  all methods have strengths and limitations, and the results depend heavily on the data. 
-
+ $\Warning$ ``\textbf{No Free Lunch'' Theorem:} there is no magic method --  all methods have strengths and limitations, and the results depend heavily on the data. 
+\newl Another list of algorithms is found at \texttt{https://pyod.readthedocs.io/en/latest/}; it is far from complete. 
 
 %\fh{\textcolor{darkestgreen}{6.5 -- Applications}} \label{6.5}
 
@@ -1501,17 +1501,13 @@ Anomaly detection and outlier analysis is still a very active area of research, 
 
 %\fh{6.5.5 -- Application 5} \label{6.5.5} 
 
+\fh{\textcolor{darkestgreen}{6.5 -- Advanced Topics}} \label{6.5}
+\noindent Anomaly detection and outlier analysis is still a young field, with a very active research community. \newl The challenges are numerous (we have highlighted some of them), and new algorithms come out nearly monthly. \newl An application to time series (using the S\&P 500) is provided in the accompanying report, as are suggested exercises and projects (Airline Data, Distracted Driving Fatalities Data, Houseprice Data, etc.). \newl We wrap up this module with a 
 
 
-
-
-\fh{\textcolor{darkestgreen}{6.6 -- Advanced Topics}} \label{6.6}
-
-
-
-\fh{6.6.1 -- Outlier Ensembles} \label{6.6.1}
+\fh{6.5.1 -- Outlier Ensembles} \label{6.5.1}
 \noindent We have looked at various anomaly detection algorithms whose relative performance varies with the type of data being considered. 
-\newl \textbf{No Free Lunch Theorem:} there is no specific algorithm that is guaranteed to outperform every other algorithm for all datasets. \newl The impact of algorithmic mismatch can be mitigated by using \textbf{ensemble methods}, where the results of several algorithms are considered before making a final decision. \newl We discuss two types of ensemble methods:  \textbf{sequential ensembles} (boosting) and \textbf{independent ensembles}.
+\newl The  \textbf{No Free Lunch theorem} reminds us that there is no specific algorithm that is guaranteed to outperform every other algorithm for all datasets. \newl The impact of algorithmic mismatch can be mitigated by using \textbf{ensemble methods}, where the results of several algorithms are considered before making a final decision. \newl We discuss two types of ensemble methods:  \textbf{sequential ensembles} (boosting) and \textbf{independent ensembles}.
 
 \fh{Sequential Ensembles}
 \noindent In \textbf{sequential ensembles}, a baseline algorithm is applied to a dataset in a sequential manner. \newl At each step, the weight associated with each observation is modified according to the preceding results using some ``boosting'' method (such as AdaBoost or XGBoost, for instance). \newl The final result is either some weighted combination of all preceding results, or simply the outputs of the last step in the sequence (see \textit{Boosting with AdaBoost and Gradient Boosting}, on the Data Action Lab blog). 
@@ -1556,13 +1552,13 @@ and under the minimal rank method, we obtain
 r\left(\mathbf{p}_{1}\right)=r\left(\mathbf{p}_{2}\right)=1,\; r \left(\mathbf{p}_{3}\right)=3, \quad\Longrightarrow \mathbf{p}_1\succeq \mathbf{p}_3\text{ and }\mathbf{p}_2\succeq \mathbf{p}_3.  
 \end{align*}
 \newpage \ \\ \noindent $\Warning$ In general, the results not only depend on the dataset under consideration and on the base algorithms that are used in the ensemble, \textbf{but also on how they are combined}. 
-\newl For HDLSS data, ensemble methods can sometimes allow the analyst to mitigate some of the effects of the curse of dimensionality by selecting \textbf{fast}  baseline algorithms (which can be run efficiently multiple times) and focusing on building robust relative anomaly scores through combination. \newl Another suggested  approach is to use a \textbf{different sub-collection} of the original dataset's features at each step, in order to \textbf{de-correlate} the base detection models.
-\newl Even without combining the results, it may be beneficial to run multiple algorithms on different subspaces to produce an \textbf{Overview of Outliers} (O3). 
+\newl For HDLSS data, ensemble methods can sometimes allow the analyst to mitigate some of the effects of the curse of dimensionality by selecting \textbf{fast}  baseline algorithms (which can be run efficiently multiple times) and focusing on building robust relative anomaly scores through combination. \newl Another suggestion: use a \textbf{different sub-collection} of the original dataset's features at each step, in order to \textbf{de-correlate} the base detection models.
+\newl Even without combining the results, it may be useful to run multiple algorithms on different subspaces to produce an \textbf{Overview of Outliers}~(O3). 
 \newpage \begin{center}
 \includegraphics[width=\textwidth]{Images/O3_Outlier}
 \end{center}
 \newpage\ \\ \noindent The columns on the left indicate the \textbf{subspace variables} (see row colouring). \newl The columns on the right indicate which \textbf{observations were identified as an outlier} by at least $1$ method (HDoutliers, FastPCS, mvBACON, adjOutlyingness, DectectDeviatingCells, covMCD) in at least $1$ subspace. \newl The \textbf{colours} depict the number of methods that identify each observation in each subspace as an outlier. \newl Observation $102$ is identified as an outlier by $6$ methods in $2$ subspaces, $5$ methods in $3$ subspaces, $4$ methods in $2$ subspaces, $3$ methods in $1$ subspace, $2$ methods  in $4$ subspaces, and $1$ method in $3$ subspaces -- it is clearly the \textbf{most anomalous} observation in the dataset. \newl Observations $62$ and $101$ are also commonly identified as outliers.
-\fh{6.6.2 -- Anomalies in Text Datasets Methods} \label{6.6.2} 
+\fh{6.5.2 -- Anomalies in Text Datasets Methods} \label{6.5.2} 
 
 
 \end{document}
