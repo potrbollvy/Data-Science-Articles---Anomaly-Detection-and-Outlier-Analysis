@@ -6,7 +6,9 @@ library(gridExtra)
 library(grid)
 library(dbscan)
 library(solitude)
-
+library(HighDimOut)
+library(dobin)
+library(OutliersO3)
 
 # number of observations to simulate
 nobs = 100
@@ -617,10 +619,6 @@ pca.rdata.4 %>%
 
 ## DOBIN
 
-library(dobin)
-library(ggplot2)
-library(OutliersO3)
-
 out <- dobin(rdata[,1:4], frac=0.9, norm=3)
 
 kk <- min(ceiling(dim(rdata)[1]/10),25)
@@ -644,12 +642,22 @@ knn_dist.dobin %>%
   theme_bw() + theme(legend.position = "none") 
 
 out$vec[ ,1]
-
 # second variable is the main contributor to outliers 
 
-# O3 outlier ensembles
 
-O3y <- OutliersO3::O3prep(rdata[,1:4], method=c("HDo", "PCS", "BAC", "adjOut", "DDC", "MCD"))
-O3y1 <- OutliersO3::O3plotM(O3y)
-O3y1$gO3
+### Feature Bagging 
 
+res.FBOD <- Func.FBOD(data = rdata[,1:4], iter=10, k.nn=5)
+rdata.FBOD <- data.frame(1:(nobs+2),res.FBOD)
+names(rdata.FBOD) = c("obs","FBOD")
+rdata.FBOD <- rdata.FBOD[order(-rdata.FBOD$FBOD),]
+head(rdata.FBOD)
+
+rdata.FBOD %>% 
+  ggplot(aes(x=obs,y=FBOD)) + 
+  scale_x_continuous(name="Observations") + 
+  scale_y_continuous(name="Feature Bagging Anomaly Score, k=5, M=10") +
+  geom_point(aes(fill=FBOD,colour=FBOD,size=FBOD),pch=22) +
+  scale_fill_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  scale_colour_continuous(high = "#0033FF", low = "#CCCCCC") +  
+  theme_bw() + theme(legend.position = "none") 

@@ -150,14 +150,14 @@
 \textcolor{white}{ab} \localtextbulletone\ Subspace  Methods (p.\@\pageref{6.4.3}) 
 \normalsize
 \newpage\ \\ \noindent 
-6.5 -- Applications  (p.\pageref{6.5}) \\ 
-\small
-\textcolor{white}{ab} \localtextbulletone\ S\&P 500 (p.\@\pageref{6.5.1}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Airports (p.\@\pageref{6.5.2}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Application 3 (p.\@\pageref{6.5.3}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Application 4 (p.\@\pageref{6.5.4}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Application 5 (p.\@\pageref{6.5.5}) 
-\normalsize \ \\ \ \\ 
+%6.5 -- Applications  (p.\pageref{6.5}) \\ 
+%\small
+%\textcolor{white}{ab} \localtextbulletone\ S\&P 500 (p.\@\pageref{6.5.1}) \\ 
+%\textcolor{white}{ab} \localtextbulletone\ Airports (p.\@\pageref{6.5.2}) \\ 
+%\textcolor{white}{ab} \localtextbulletone\ Application 3 (p.\@\pageref{6.5.3}) \\ 
+%\textcolor{white}{ab} \localtextbulletone\ Application 4 (p.\@\pageref{6.5.4}) \\ 
+%\textcolor{white}{ab} \localtextbulletone\ Application 5 (p.\@\pageref{6.5.5}) 
+%\normalsize \ \\ \ \\ 
 6.6 -- Advanced Topics (p.\pageref{6.6}) \\ 
 \small
 \textcolor{white}{ab} \localtextbulletone\ Outlier Ensembles (p.\@\pageref{6.6.1}) \\ 
@@ -447,7 +447,7 @@ Specific containers are not followed from Shanghai to Toronto: no covariance inf
 \end{description}
 \newpage\ \\ 
 \begin{center}
-\includegraphics[width=\textwidth]{Images/Rplot}
+\includegraphics[width=\textwidth]{Images/Rplot1}
 \\
 %\begin{threeparttable}
  \setlength{\tabcolsep}{1pt}
@@ -1453,30 +1453,53 @@ In a nutshell, the first component provides the direction of largest $k$NN dista
 \end{center}
 
 \fh{6.4.3 -- Subspace  Methods} \label{6.4.3}
+\noindent \textbf{Subspace methods} have been used effectively for anomaly and outlier detection in high-dimen\-sional datasets.\newl In this context, a \textbf{subspace} is obtained by projecting the original dataset $D$ on some collection of its features (looking at $D$ only along some of its axes). 
+\newl \textbf{Strengths:} 
+\begin{itemize}
+\item eliminates \textbf{additive noise effects} of HDD;
+\item leads to more robust outliers (identified as such even when using different methods).
+\end{itemize}
+\newpage\ \\ \noindent \textbf{Limitation:} \begin{itemize}
+\item difficult to solve effectively and efficiently $\Longrightarrow$ the potential \# of subspace projections is exponential in  \# of features. \end{itemize} \textbf{Feature bagging} (FB) combines the results of the anomaly detection algorithm applied to \textbf{various subspaces} of the original data. \newl Officially, FB uses the Local Outlying Factor algorithm (LOF), but any fast anomaly detection algorithm can be used instead. \newl The anomaly scores and rankings from each run are aggregated as they are in the Independent Ensemble approach (cf.\@ last Section of the slides).\newl 
+The formal procedure is provided in Algorithm 8.
+
+\newpage\ \begin{center}
+\includegraphics[height=0.9\textheight]{Images/Algorithm8}
+\end{center}
+\newpage 
+\newpage \begin{center}
+\includegraphics[width=\textwidth]{Images/FBOD}
+\end{center}\newpage\ \\ \noindent 
+\noindent Other, more sophisticated, subspace anomaly detection methods include:
+\begin{itemize}
+\item \textbf{High-dimensional Outlying Subspaces} (HOS); \item \textbf{Subspace Outlier Degree} (SOD), implemented in  \texttt{HighDimOut}; 
+\item \textbf{Projected Clustering Ensembles} (OutRank); 
+\item \textbf{Local Selection of Subspace Projections} (OUTRES), etc.
+\end{itemize}
+Anomaly detection and outlier analysis is still a very active area of research, with numerous challenges, and new algorithms come out monthly. \newl $\Warning$ ``\textbf{No Free Lunch'' Theorem:} there is no magic method --  all methods have strengths and limitations, and the results depend heavily on the data. 
+
+
+%\fh{\textcolor{darkestgreen}{6.5 -- Applications}} \label{6.5}
 
 
 
-\fh{\textcolor{darkestgreen}{6.5 -- Applications}} \label{6.5}
+%\fh{6.5.1 -- S\&P 500} \label{6.5.1}
 
 
 
-\fh{6.5.1 -- S\&P 500} \label{6.5.1}
+%\fh{6.5.2 -- Airports} \label{6.5.2} 
 
 
 
-\fh{6.5.2 -- Airports} \label{6.5.2} 
+%\fh{6.5.3 -- Application 3} \label{6.5.3} 
 
 
 
-\fh{6.5.3 -- Application 3} \label{6.5.3} 
+%\fh{6.5.4 -- Application 4} \label{6.5.4} 
 
 
 
-\fh{6.5.4 -- Application 4} \label{6.5.4} 
-
-
-
-\fh{6.5.5 -- Application 5} \label{6.5.5} 
+%\fh{6.5.5 -- Application 5} \label{6.5.5} 
 
 
 
@@ -1487,54 +1510,27 @@ In a nutshell, the first component provides the direction of largest $k$NN dista
 
 
 \fh{6.6.1 -- Outlier Ensembles} \label{6.6.1}
-In the preceding sections, we have described various anomaly detection algorithms whose relative performance varies with the type of data being considered. It's usually impossible to come up with an algorithm that outperforms all the others. \par This is because a particular anomaly detection algorithm may be well adapted to a data set and may be successful in detecting abnormal or outlier observations, but it may not work with other data sets whose characteristics do not match the first data set. \newl The impact of such a mismatch between algorithms can be mitigated by using  \textbf{ensemble methods}, where the results of several algorithms are considered before making a final decision. Such an approach often provides the best results and thus improves the performance of the base anomaly detection algorithms \cite{A10}. 
-\newl We will consider two types of ensemble methods:  \textbf{sequential ensembles} (boosting) and \textbf{independent ensembles}.
+\noindent We have looked at various anomaly detection algorithms whose relative performance varies with the type of data being considered. 
+\newl \textbf{No Free Lunch Theorem:} there is no specific algorithm that is guaranteed to outperform every other algorithm for all datasets. \newl The impact of algorithmic mismatch can be mitigated by using \textbf{ensemble methods}, where the results of several algorithms are considered before making a final decision. \newl We discuss two types of ensemble methods:  \textbf{sequential ensembles} (boosting) and \textbf{independent ensembles}.
 
-{Sequential Ensembles}
-Sequential ensembles requires a given algorithm (or a set of algorithms) to be applied to a dataset in a sequential manntter, each time on a slightly different dataset derived from the previous step's dataset based on the previous steps' results, and so forth. At each step, the weight associated with each observation is modified according to the preceding results using some ``boosting'' method (such as AdaBoost or XGBoost, for instance). \newl The final result is either some weighted combination of all preceding results, or simply the results output by the last step in the sequence (see Algorithme~\ref{algSeq}). 
+\fh{Sequential Ensembles}
+\noindent In \textbf{sequential ensembles}, a baseline algorithm is applied to a dataset in a sequential manner. \newl At each step, the weight associated with each observation is modified according to the preceding results using some ``boosting'' method (such as AdaBoost or XGBoost, for instance). \newl The final result is either some weighted combination of all preceding results, or simply the outputs of the last step in the sequence (see \textit{Boosting with AdaBoost and Gradient Boosting}, on the Data Action Lab blog). 
+\newl
+The formal procedure is provided in Algorithm 6.  
+\newpage\ \begin{center}
+\includegraphics[height=0.9\textheight]{Images/Algorithm6}
+\end{center}
 
-The details are out-of-scope for this report, but can be studied in \cite{LB}.
-
-\begin{algorithm}
-\SetAlgoLined
-\textbf{Inputs:} dataset $D$, base algorithms $A_1,\ldots,A_r$ 
-
-$j=1$\;
-\While{stopping criteria are not met}{
-	Select an algorithm $A_j$ based on the results from the preceding steps\;
-	Create a new dataset $D_j$ from $D$ by modifying the weight of each observation based on the results from the preceding steps\;
-	Apply $A_j$ to $D_j$\;
-	$j=j+1$\;
-}
-\textbf{Output:} anomalous observations obtained by weighing the results of all previous steps 
-\caption{SequentialEnsemble}\label{algSeq}
-\end{algorithm}%\newl
-\subsection*{Independent Ensembles}
-In an independent ensemble, we instead apply different algorithms (or different instanciations of the same algorithm) to the dataset (or some resampled dataset). \par Choices made at the data and algorithm level
-are independent of the results obtained in previous runs (unlike in a sequential ensemble). The results are then combined to obtain more robust outliers (see Algorithm~\ref{algInd}).
-
-\begin{algorithm}[t]
-\SetAlgoLined
-\textbf{Inputs:} dataset $D$, base algorithms $A_1,\ldots,A_r$ 
-
-$j=1$\;
-\While{stopping criteria are not met}{
-	Select an algorithm $A_j$\;
-	Create a new dataset $D_j$ from $D$ by (potential) re-sampling, but independently of the preceding steps' results\;
-	Apply $A_j$ to $D_j$\;
-	$j=j+1$\;
-}
-\textbf{Output:} anomalous observations obtained by combining the results of all previous steps 
-\caption{IndependantEnsemble}\label{algInd}
-\end{algorithm}
-\ \\
-\noindent Every base anomaly detection algorithm provides an a\-no\-ma\-ly score (or an abnormal/regular classification) for each observation in $D$; observations with higher scores are considered to be more anomalous, observations with lower scores more normal. \par The results are then combined using a task-specific method in order to provide a more robust classification of anomalous or outlying observations. 
-\newl Many such combination techniques used in practice:  \begin{itemize}[noitemsep]
+\fh{Independent Ensembles}
+\noindent In \textbf{independent ensembles}, different algorithms (or different instantiations of one algorithm) to the dataset (or some \textbf{resampled} dataset). \newl Choices made at the data and algorithm level are \textbf{independent} of preceding runs results (in comparison with sequential ensembles). The results are then combined to obtain more robust outliers \newl Every base anomaly detection algorithm provides an \textbf{a\-no\-ma\-ly score} (or an abnormal/regular classification) for each observation in $D$; observations with higher scores are considered more anomalous than  observations with lower scores.  \newl The formal procedure is provided in Algorithm 7.  
+\newpage\ \begin{center}
+\includegraphics[height=0.9\textheight]{Images/Algorithm7}
+\end{center}
+\newpage\ \\ \noindent  Many combination techniques are used in practice:  \begin{itemize}
 \item \textbf{majority vote}, 
 \item \textbf{average}, 
 \item \textbf{minimal rank}, etc. \end{itemize}  
-Let $\alpha_i(\mathbf{p})$ represent the (normalized) \textbf{anomaly score} of $\mathbf{p}\in D$, according to algorithm $A_i$. If $\alpha_i(\mathbf{p})\approx 0$, it is unlikely that $\mathbf{p}$ is an anomaly according to $A_i$, whereas if $\alpha_i(\mathbf{p})\approx 1$, it is quite likely that $\mathbf{p}$ according to $A_i$. \par The \textbf{rank} of $\mathbf{p}\in D$ according to $A_i$, on the other hand, is denoted by $r_i(\mathbf{p})$: the higher the rank (smaller number), the higher the anomaly score  \textit{vice versa}. In a dataset with  $n$ observations, the rank varies from $1$ to $n$ (ties are allowed). 
-\par If the base detection algorithms are $A_1, \ldots, A_m$, the anomaly score and the rank of an observation $\mathbf{p}\in D$ according to the independent ensemble method are, respectively, 
+Let $\alpha_i(\mathbf{p})$ and $r_i(\mathbf{p})$ represent the (normalized) \textbf{anomaly score} and the \textbf{anomaly rank} of $\mathbf{p}\in D$ according to algorithm $A_i$, respectively. The smaller the anomaly score, the smaller the anomaly rank, and \textit{vice-versa}.\newl Anomaly scores lie between $0$ (unlikely to be an anomaly) to $1$ (likely to be an anomaly); ranks range from $1$ to $n$ (the number of observations, with ties allowed). \newpage\ \\ \noindent  If the base detection algorithms are $A_1, \ldots, A_m$, the average anomaly score and the minimal rank of an observation $\mathbf{p}\in D$ according to the independent ensemble method, say, are  respectively
 \begin{align*}
 \alpha(\mathbf{p})=\frac{1}{m}\sum_{i=1}^{m}\alpha_i(\mathbf{p}) \qquad \text{and}\; \qquad r(\mathbf{p}) =\min_{1\leq i \leq m} \{r_i(\mathbf{p})\}.
 \end{align*}
@@ -1542,32 +1538,30 @@ If $n=m=3$, for instance, we could end up with
 \begin{align*}\alpha_{1}\left(\mathbf{p}_{1}\right)&=1.0,\; \alpha_{1}\left(\mathbf{p}_{2}\right)=0.9,\; \alpha_{1}\left(\mathbf{p}_{3}\right)=0.0; \\ 
 \alpha_{2}\left(\mathbf{p}_{1}\right)&=1.0,\; \alpha_{2}\left(\mathbf{p}_{2}\right)=0.8,\; \alpha_{2}\left(\mathbf{p}_{3}\right)=0.0;\\
 \alpha_{3}\left(\mathbf{p}_{1}\right)&=0.1,\;  \alpha_{3}\left(\mathbf{p}_{2}\right)=1.0,\; \alpha_{3}\left(\mathbf{p}_{3}\right)=0.0.
-\end{align*}
+\end{align*}\newpage\ \\ \noindent
 Using the mean as the combination techniques, we obtain
 \begin{align*}
-\alpha\left(\mathbf{p}_{1}\right)&=0.7,\; \alpha\left(\mathbf{p}_{2}\right)=0.9,\; \alpha\left(\mathbf{p}_{3}\right)=0.0,
+\alpha\left(\mathbf{p}_{1}\right)&=0.7,\; \alpha\left(\mathbf{p}_{2}\right)=0.9,\; \alpha\left(\mathbf{p}_{3}\right)=0.0, \quad \Longrightarrow \quad \mathbf{p}_2\succeq \mathbf{p}_1\succeq \mathbf{p}_3:
 \end{align*}
-whence $$\mathbf{p}_2\succeq \mathbf{p}_1\succeq \mathbf{p}_3,$$ that is, $\mathbf{p}_2$ is more anomalous than $\mathbf{p}_1$, which is itself more anomalous than  $\mathbf{p}_3$ (see the notation introduced on page~\pageref{succeq}). 
+ $\mathbf{p}_2$ is more anomalous than $\mathbf{p}_1$, which is itself more anomalous than  $\mathbf{p}_3$. 
 \newl 
-Using the minimal rank method, we obtain 
+Consequently,  
 \begin{align*}
 r_{1}\left(\mathbf{p}_{1}\right)&=1,\; r_{1}\left(\mathbf{p}_{2}\right)=2,\; r_{1}\left(\mathbf{p}_{3}\right)=3;\\ 
 r_{2}\left(\mathbf{p}_{1}\right)&=1,\; r_{2}\left(\mathbf{p}_{2}\right)=2,\; r_{2}\left(\mathbf{p}_{3}\right)=3;\\
 r_{3}\left(\mathbf{p}_{1}\right)&=2,\; r_{3}\left(\mathbf{p}_{2}\right)=1,\; r_{3}\left(\mathbf{p}_{3}\right)=3,
 \end{align*}
-from which 
+and under the minimal rank method, we obtain
 \begin{align*}
-r\left(\mathbf{p}_{1}\right)=r\left(\mathbf{p}_{2}\right)=1,\; r \left(\mathbf{p}_{3}\right)=3, 
+r\left(\mathbf{p}_{1}\right)=r\left(\mathbf{p}_{2}\right)=1,\; r \left(\mathbf{p}_{3}\right)=3, \quad\Longrightarrow \mathbf{p}_1\succeq \mathbf{p}_3\text{ and }\mathbf{p}_2\succeq \mathbf{p}_3.  
 \end{align*}
-whence $\mathbf{p}_1\succeq \mathbf{p}_3$ and $\mathbf{p}_2\succeq \mathbf{p}_3$, but $\mathbf{p}_1$ and  $\mathbf{p}_2$ have the same anomalous levels. 
-\newl Evidently, the results depend not only on the data set under consideration and on the base algorithms that are used in the ensemble, but also on how the results are combined. 
-\newl In the context of HDLSS data, ensemble methods can sometimes allow the analyst to mitigate some of the effects of the curse of dimensionality by selecting fast base algorithms (which can be run multiple times) and focusing on building robust relative anomaly scores. \par Another suggested  approach is to use a different subset of the original dataset's features at each step, in order to de-correlate the base detection models. 
-
-% "HDo", "PCS", "BAC", "adjOut", "DDC", "MCD"
+\newpage \ \\ \noindent $\Warning$ In general, the results not only depend on the dataset under consideration and on the base algorithms that are used in the ensemble, \textbf{but also on how they are combined}. 
+\newl For HDLSS data, ensemble methods can sometimes allow the analyst to mitigate some of the effects of the curse of dimensionality by selecting \textbf{fast}  baseline algorithms (which can be run efficiently multiple times) and focusing on building robust relative anomaly scores through combination. \newl Another suggested  approach is to use a \textbf{different sub-collection} of the original dataset's features at each step, in order to \textbf{de-correlate} the base detection models.
+\newl Even without combining the results, it may be beneficial to run multiple algorithms on different subspaces to produce an \textbf{Overview of Outliers} (O3). 
 \newpage \begin{center}
 \includegraphics[width=\textwidth]{Images/O3_Outlier}
 \end{center}
-\newpage\ \\ \noindent The columns on the left indicate which variables are used to generate each subspace (see row colouring). \newl The columns on the right indicate the observations that were identified as an outlier by at least one method in at least one of the subspaces. \newl The colours depict the number of methods that identify each observation in each subspace as an outlier. \newl Observation $102$ is identified as an outlier by $6$ methods in $2$ subspaces, $5$ methods in $3$ subspaces, $4$ methods in $2$ subspaces, $3$ methods in $1$ subspace, $2$ methods  in $4$ subspaces, and $1$ method in $3$ subspaces -- it is clearly the most outlying observation in the dataset. \newl Observations $62$ and $101$ are also commonly identified as outliers.
+\newpage\ \\ \noindent The columns on the left indicate the \textbf{subspace variables} (see row colouring). \newl The columns on the right indicate which \textbf{observations were identified as an outlier} by at least $1$ method (HDoutliers, FastPCS, mvBACON, adjOutlyingness, DectectDeviatingCells, covMCD) in at least $1$ subspace. \newl The \textbf{colours} depict the number of methods that identify each observation in each subspace as an outlier. \newl Observation $102$ is identified as an outlier by $6$ methods in $2$ subspaces, $5$ methods in $3$ subspaces, $4$ methods in $2$ subspaces, $3$ methods in $1$ subspace, $2$ methods  in $4$ subspaces, and $1$ method in $3$ subspaces -- it is clearly the \textbf{most anomalous} observation in the dataset. \newl Observations $62$ and $101$ are also commonly identified as outliers.
 \fh{6.6.2 -- Anomalies in Text Datasets Methods} \label{6.6.2} 
 
 

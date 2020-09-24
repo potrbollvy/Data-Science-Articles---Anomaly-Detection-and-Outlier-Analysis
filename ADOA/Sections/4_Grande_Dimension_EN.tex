@@ -34,7 +34,7 @@ The challenges of anomaly and outlier detection  in high-dimensional data lie in
 \end{enumerate}
 %
 \subsection{Projection-Based Methods}
-Nowadays, it is common to deal with very large data sets known as HDLSS (\textbf{high dimension, low sample size}), which can contain hundreds of variables (or even more). \par As a result,  the curse of dimensionality affects the efficiency of conventional anomaly/outlier detection methods.\newl One solution to this problem is to \textbf{reduce the dimensionality} of the dataset while preserving its essential characteristics. Such projecion-based methods include \begin{itemize}[noitemsep]\item principal component analysis, \item linear discriminant analysis, \item feature selection, etc. \end{itemize} In this section, we provide details on one such method: PCA.
+Nowadays, it is common to deal with very large datasets known as HDLSS (\textbf{high dimension, low sample size}), which can contain hundreds of variables (or even more). \par As a result,  the curse of dimensionality affects the efficiency of conventional anomaly/outlier detection methods.\newl One solution to this problem is to \textbf{reduce the dimensionality} of the dataset while preserving its essential characteristics. Such projecion-based methods include \begin{itemize}[noitemsep]\item principal component analysis, \item linear discriminant analysis, \item feature selection, etc. \end{itemize} In this section, we provide details on one such method: PCA.
 \subsubsection*{Principal Components Analysis}
 %
 \textbf{Principal components analysis} (PCA) aims to find a representation of the original dataset in a lower-dimensional subspace (such as a line or a plane)  containing the greatest possible variation. 
@@ -136,10 +136,10 @@ The full details contain a fair number of technical complications; the intereste
 \subsection{Ensembles Methods}
 %
 %
-In the preceding sections, we have described various anomaly detection algorithms whose relative performance varies with the type of data being considered. It's usually impossible to come up with an algorithm that outperforms all the others. \par This is because a particular anomaly detection algorithm may be well adapted to a data set and may be successful in detecting abnormal or outlier observations, but it may not work with other data sets whose characteristics do not match the first data set. \newl The impact of such a mismatch between algorithms can be mitigated by using  \textbf{ensemble methods}, where the results of several algorithms are considered before making a final decision. Such an approach often provides the best results and thus improves the performance of the base anomaly detection algorithms \cite{A10}. 
+In the preceding sections, we have described various anomaly detection algorithms whose relative performance varies with the type of data being considered. It's usually impossible to come up with an algorithm that outperforms all the others. \par This is because a particular anomaly detection algorithm may be well-adapted to a dataset and may be successful in detecting abnormal or outlier observations, but it may not work with other datasets whose characteristics do not match the first dataset. \newl The impact of such a mismatch between algorithms can be mitigated by using  \textbf{ensemble methods}, where the results of several algorithms are considered before making a final decision. Such an approach often provides the best results and thus improves the performance of the base anomaly detection algorithms \cite{A10}. 
 \newl We will consider two types of ensemble methods:  \textbf{sequential ensembles} (boosting) and \textbf{independent ensembles}, 
 \subsection*{Sequential Ensembles}
-Sequential ensembles requires a given algorithm (or a set of algorithms) to be applied to a dataset in a sequential manntter, each time on a slightly different dataset derived from the previous step's dataset based on the previous steps' results, and so forth. At each step, the weight associated with each observation is modified according to the preceding results using some ``boosting'' method (such as AdaBoost or XGBoost, for instance). \newl The final result is either some weighted combination of all preceding results, or simply the results output by the last step in the sequence (see Algorithme~\ref{algSeq}). 
+Sequential ensembles require a given algorithm (or a set of algorithms) to be applied to a dataset in a sequential manner, each time on a slightly different dataset derived from the previous step's dataset based on the previous steps' results, and so forth. At each step, the weight associated with each observation is modified according to the preceding results using some ``boosting'' method (such as AdaBoost or XGBoost, for instance). \newl The final result is either some weighted combination of all preceding results, or simply the results output by the last step in the sequence (see Algorithm~\ref{algSeq}). 
 
 The details are out-of-scope for this report, but can be studied in \cite{LB}.
 
@@ -158,7 +158,7 @@ $j=1$\;
 \caption{SequentialEnsemble}\label{algSeq}
 \end{algorithm}%\newl
 \subsection*{Independent Ensembles}
-In an independent ensemble, we instead apply different algorithms (or different instanciations of the same algorithm) to the dataset (or some resampled dataset). \par Choices made at the data and algorithm level
+In an independent ensemble, we instead apply different algorithms (or different instantiations of the same algorithm) to the dataset (or some resampled dataset). \par Choices made at the data and algorithm level
 are independent of the results obtained in previous runs (unlike in a sequential ensemble). The results are then combined to obtain more robust outliers (see Algorithm~\ref{algInd}).
 
 \begin{algorithm}[t]
@@ -181,7 +181,7 @@ $j=1$\;
 \item \textbf{majority vote}, 
 \item \textbf{average}, 
 \item \textbf{minimal rank}, etc. \end{itemize}  
-Let $\alpha_i(\mathbf{p})$ represent the (normalized) \textbf{anomaly score} of $\mathbf{p}\in D$, according to algorithm $A_i$. If $\alpha_i(\mathbf{p})\approx 0$, it is unlikely that $\mathbf{p}$ is an anomaly according to $A_i$, whereas if $\alpha_i(\mathbf{p})\approx 1$, it is quite likely that $\mathbf{p}$ according to $A_i$. \par The \textbf{rank} of $\mathbf{p}\in D$ according to $A_i$, on the other hand, is denoted by $r_i(\mathbf{p})$: the higher the rank (smaller number), the higher the anomaly score  \textit{vice versa}. In a dataset with  $n$ observations, the rank varies from $1$ to $n$ (ties are allowed). 
+Let $\alpha_i(\mathbf{p})$ represent the (normalized) \textbf{anomaly score} of $\mathbf{p}\in D$, according to algorithm $A_i$. If $\alpha_i(\mathbf{p})\approx 0$, it is unlikely that $\mathbf{p}$ is an anomaly according to $A_i$, whereas if $\alpha_i(\mathbf{p})\approx 1$, it is quite likely that $\mathbf{p}$ according to $A_i$. \par The \textbf{rank} of $\mathbf{p}\in D$ according to $A_i$, on the other hand, is denoted by $r_i(\mathbf{p})$: the higher the rank (smaller number), the higher the anomaly score and \textit{vice versa}. In a dataset with  $n$ observations, the rank varies from $1$ to $n$ (ties are allowed). 
 \par If the base detection algorithms are $A_1, \ldots, A_m$, the anomaly score and the rank of an observation $\mathbf{p}\in D$ according to the independent ensemble method are, respectively, 
 \begin{align*}
 \alpha(\mathbf{p})=\frac{1}{m}\sum_{i=1}^{m}\alpha_i(\mathbf{p}) \qquad \text{and}\; \qquad r(\mathbf{p}) =\min_{1\leq i \leq m} \{r_i(\mathbf{p})\}.
@@ -208,7 +208,7 @@ from which
 r\left(\mathbf{p}_{1}\right)=r\left(\mathbf{p}_{2}\right)=1,\; r \left(\mathbf{p}_{3}\right)=3, 
 \end{align*}
 whence $\mathbf{p}_1\succeq \mathbf{p}_3$ and $\mathbf{p}_2\succeq \mathbf{p}_3$, but $\mathbf{p}_1$ and  $\mathbf{p}_2$ have the same anomalous levels. 
-\newl Evidently, the results depend not only on the data set under consideration and on the base algorithms that are used in the ensemble, but also on how the results are combined. 
+\newl Evidently, the results depend not only on the dataset under consideration and on the base algorithms that are used in the ensemble, but also on how they are combined. 
 \newl In the context of HDLSS data, ensemble methods can sometimes allow the analyst to mitigate some of the effects of the curse of dimensionality by selecting fast base algorithms (which can be run multiple times) and focusing on building robust relative anomaly scores. \par Another suggested  approach is to use a different subset of the original dataset's features at each step, in order to de-correlate the base detection models. 
 %
 %
@@ -218,7 +218,7 @@ whence $\mathbf{p}_1\succeq \mathbf{p}_3$ and $\mathbf{p}_2\succeq \mathbf{p}_3$
 \subsection{Subspace Methods}
 %
 %
-\textbf{Subspace methods} have been used particularly effectively by analysts for anomaly and outlier detection in high-dimen\-sional data sets \cite{A8,A13,A14}; it is often easier to find the sought-after observations by exploring  lower-dimensional subspaces (rather than the original set). \par There is thus an intrinsic interest in exploring subspaces in their own right  \cite{A1,Aurore}. This approach eliminates \textbf{additive noise effects} often found in high dimensional spaces and leads to more robust outliers (that is, outliers which are identified as such even when using different methods). \newl The problem is rather difficult to solve effectively and efficiently, since the potential number of subspace projections of high-dimensional data is related exponentially to the number of features in the dataset. \newl The \textbf{Feature Bagging} algorithm formalizes the idea presented at the end of the preceding sub-section; it officially uses the LOF algorithm of Section 2, but any fast anomaly detection algorithm can be used instead. The anomaly scores and rankings from each run are aggregated as they are in the Independent Ensemble approach. 
+\textbf{Subspace methods} have been used particularly effectively by analysts for anomaly and outlier detection in high-dimen\-sional datasets \cite{A8,A13,A14}; it is often easier to find the sought-after observations by exploring  lower-dimensional subspaces (rather than the original set). \par There is thus an intrinsic interest in exploring subspaces in their own right  \cite{A1,Aurore}. This approach eliminates \textbf{additive noise effects} often found in high dimensional spaces and leads to more robust outliers (that is, outliers which are identified as such even when using different methods). \newl The problem is rather difficult to solve effectively and efficiently, since the potential number of subspace projections of high-dimensional data is related exponentially to the number of features in the dataset. \newl The \textbf{Feature Bagging} algorithm formalizes the idea presented at the end of the preceding sub-section; it officially uses the LOF algorithm of Section 2, but any fast anomaly detection algorithm can be used instead. The anomaly scores and rankings from each run are aggregated as they are in the Independent Ensemble approach. 
 
 \begin{algorithm}
 \SetAlgoLined
