@@ -104,7 +104,7 @@
 \def\codee{MAT 4376/5314E}
 \def\descr{Techniques of Data Analysis}
 \def\lec{}
-\def\sec{6}
+\def\sec{5}
 \def\sections{}
 \def\sectitle{Anomaly Detection and Outlier Analysis}
 \def\unitofstudy{\codee\ -- \descr}
@@ -130,38 +130,38 @@
   \providecommand{\huxbpad}[1]{\rule[-#1]{0pt}{#1}}
 
 \fh{\textcolor{darkestgreen}{Outline}}
-\noindent With the advent of automatic data collection, it is now possible to store and process large troves of data. There are technical issues associated to massive data sets, such as the speed and efficiency of analytical methods, but there are also problems related to the detection of \textbf{anomalous observations} and the \textbf{analysis of outliers}.  \newl Unexpected observations can spoil analysises and/or be indicative of data collection and data processing issues.\ \\ \ \\  Extreme and irregular values behave very differently from the majority of observations: they can represent criminal attacks, fraud attempts, targeted attacks, or data collection errors. As a result, anomaly detection and outlier analysis play a crucial role in cyber-security, quality control, etc.   
+\noindent With the advent of automatic data collection, it is now possible to store and process large troves of data. There are technical issues associated to massive data sets, such as the speed and efficiency of analytical methods, but there are also problems related to the detection of \textbf{anomalous observations} and the \textbf{analysis of outliers}.  \newl Unexpected observations can spoil analysises and/or be indicative of data collection and data processing issues.\ \\ \ \\  Extreme and irregular values behave very differently from the majority of observations: they can represent criminal attacks, fraud attempts, targeted attacks, or data collection errors. As a result, anomaly detection and outlier analysis plays a crucial role in cyber-security, quality control, etc.   
 \newpage\ \\ \noindent 
-6.1 -- Basic Notions and Overview (p.\pageref{6.1}) \\ \small  
-\textcolor{white}{ab} \localtextbulletone\ Anomaly Detection as Statistical Learning  (p.\@\pageref{6.1.1}) 
+5.1 -- Basic Notions and Overview (p.\pageref{5.1}) \\ \small  
+\textcolor{white}{ab} \localtextbulletone\ Anomaly Detection as Statistical Learning  (p.\@\pageref{5.1.1}) 
 \normalsize \ \\ \ \\  
- 6.2 -- Quantitative Methods of Anomaly Detection  (p.\pageref{6.2}) \\ \small
-\textcolor{white}{ab} \localtextbulletone\ Distance-Based Methods (p.\@\pageref{6.2.1}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Density-Based Methods (p.\@\pageref{6.2.2}) 
+ 5.2 -- Quantitative Methods of Anomaly Detection  (p.\pageref{5.2}) \\ \small
+\textcolor{white}{ab} \localtextbulletone\ Distance-Based Methods (p.\@\pageref{5.2.1}) \\ 
+\textcolor{white}{ab} \localtextbulletone\ Density-Based Methods (p.\@\pageref{5.2.2}) 
 \normalsize \ \\ \ \\  
-6.3 -- Qualitative Methods (p.\pageref{6.3}) \\ \small
-\textcolor{white}{ab} \localtextbulletone\ AVF Algorithm (p.\@\pageref{6.3.1}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Greedy Algorithm (p.\@\pageref{6.3.2}) 
+5.3 -- Qualitative Methods (p.\pageref{5.3}) \\ \small
+\textcolor{white}{ab} \localtextbulletone\ AVF Algorithm (p.\@\pageref{5.3.1}) \\ 
+\textcolor{white}{ab} \localtextbulletone\ Greedy Algorithm (p.\@\pageref{5.3.2}) 
 \normalsize \ \\ \ \\ 
-6.4 -- Anomalies in High-Dimensional Datasets (p.\pageref{6.4}) \\ 
+5.4 -- Anomalies in High-Dimensional Datasets (p.\pageref{5.4}) \\ 
 \small
-\textcolor{white}{ab} \localtextbulletone\ Definitions and Challenges (p.\@\pageref{6.4.1}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Projection-Based Methods (p.\@\pageref{6.4.2}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Subspace  Methods (p.\@\pageref{6.4.3}) 
+\textcolor{white}{ab} \localtextbulletone\ Definitions and Challenges (p.\@\pageref{5.4.1}) \\ 
+\textcolor{white}{ab} \localtextbulletone\ Projection-Based Methods (p.\@\pageref{5.4.2}) \\ 
+\textcolor{white}{ab} \localtextbulletone\ Subspace  Methods (p.\@\pageref{5.4.3}) 
 \normalsize
 \newpage\ \\ \noindent 
-%6.5 -- Applications  (p.\pageref{6.5}) \\ 
+%5.5 -- Applications  (p.\pageref{5.5}) \\ 
 %\small
-%\textcolor{white}{ab} \localtextbulletone\ S\&P 500 (p.\@\pageref{6.5.1}) \\ 
-%\textcolor{white}{ab} \localtextbulletone\ Airports (p.\@\pageref{6.5.2}) \\ 
-%\textcolor{white}{ab} \localtextbulletone\ Application 3 (p.\@\pageref{6.5.3}) \\ 
-%\textcolor{white}{ab} \localtextbulletone\ Application 4 (p.\@\pageref{6.5.4}) \\ 
-%\textcolor{white}{ab} \localtextbulletone\ Application 5 (p.\@\pageref{6.5.5}) 
+%\textcolor{white}{ab} \localtextbulletone\ S\&P 500 (p.\@\pageref{5.5.1}) \\ 
+%\textcolor{white}{ab} \localtextbulletone\ Airports (p.\@\pageref{5.5.2}) \\ 
+%\textcolor{white}{ab} \localtextbulletone\ Application 3 (p.\@\pageref{5.5.3}) \\ 
+%\textcolor{white}{ab} \localtextbulletone\ Application 4 (p.\@\pageref{5.5.4}) \\ 
+%\textcolor{white}{ab} \localtextbulletone\ Application 5 (p.\@\pageref{5.5.5}) 
 %\normalsize \ \\ \ \\ 
-6.5 -- Advanced Topics (p.\pageref{6.5}) \\ 
+5.5 -- Advanced Topics (p.\pageref{5.5}) \\ 
 \small
-\textcolor{white}{ab} \localtextbulletone\ Outlier Ensembles (p.\@\pageref{6.5.1}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Anomalies in Text Datasets (p.\@\pageref{6.5.2})\normalsize 
+\textcolor{white}{ab} \localtextbulletone\ Outlier Ensembles (p.\@\pageref{5.5.1}) \\ 
+\textcolor{white}{ab} \localtextbulletone\ Anomalies in Text Datasets (p.\@\pageref{5.5.2})\normalsize 
  \ \\ \ \\ 
 References and other details can be found in Cissokho, Y., Fadel, S., Millson, R., Pourhasan, R., Boily, P. [2020], \textit{Anomaly Detection and Outlier Analysis}, Data Science Report Series, Data Action Lab.
 
@@ -173,7 +173,7 @@ References and other details can be found in Cissokho, Y., Fadel, S., Millson, R
 
 
 
-\fh{\textcolor{darkestgreen}{6.1 -- Basic Notions and Overview}} \label{6.1}
+\fh{\textcolor{darkestgreen}{5.1 -- Basic Notions and Overview}} \label{5.1}
 \noindent Isaac Asimov, the prolific American author, once wrote that \begin{quote} The most exciting phrase to hear [...], the one that heralds the most discoveries, is not ``Eureka!'' but ``That's funny...''.\end{quote}
 
 \noindent \textbf{Important Goals:} establish anomaly detection protocols  and to identify strategies to deal with such observations.
@@ -409,7 +409,7 @@ It is plausible that these individuals belong to another species who were \textb
 \newl This traditional approach to anomaly detection is difficult to apply to high-dimensional datasets because it is nearly impossible to visualize them directly $\Longrightarrow$ fundamentally different approaches are needed.\newl 
 Dimension reduction methods can be used to provide a \textbf{low-dimensional representation} of the data on which to apply visual detection (see autoencoder example), but some information always gets lost in the process. 
 
-\fh{6.1.1 -- Anomaly Detection as Statistical Learning} \label{6.1.1} 
+\fh{5.1.1 -- Anomaly Detection as Statistical Learning} \label{5.1.1} 
 \noindent Fraudulent behaviour is not always easily identifiable, even after the fact. \newl \textbf{Example:} credit card fraudsters try to disguise their transactions as regular and banal, and try to avoid outlandish behaviour. \newl Their goal: fool human observers into confusing  \textbf{plausible} (or possible) with \textbf{probable} (or at least, \textbf{not improbable}). \newl It is plausible that a generic 40-something father of 3 might purchase a new TV; is it probable that THIS particular father of 3  would do so? \newl But it's unlikely that a generic father of 3 who resides in North America would purchase a round of drinks at a dance club in Kiev. \newpage\ \\ \noindent Anomaly detection is really a problem in \textbf{applied probability}. Let $I$ be what is known about the dataset/situation: 
 \begin{itemize}
 \item behaviour of individual observations,
@@ -688,7 +688,7 @@ Clusters of regular customers (red, green, blue) and potential anomalies/outlier
 
 
 
-\fh{\textcolor{darkestgreen}{6.2 -- Quantitative Methods of Anomaly Detection}} \label{6.2} 
+\fh{\textcolor{darkestgreen}{5.2 -- Quantitative Methods of Anomaly Detection}} \label{5.2} 
 
 \noindent Cluster-based methods are not the only types of UL anomaly detection methods.
 \begin{itemize}
@@ -696,7 +696,7 @@ Clusters of regular customers (red, green, blue) and potential anomalies/outlier
 \item \textbf{Density-based methods:} local outlier factor (LOF), isolation forest, HDBSCAN, etc.
 \end{itemize}
 
-\fh{6.2.1 -- Distance-Based Methods} \label{6.2.1}
+\fh{5.2.1 -- Distance-Based Methods} \label{5.2.1}
 \noindent We find anomalous observations by  comparing them to other observations (\textbf{anomalies are relative, not absolute}). \newl In the \textbf{distance-based context}, the natural way to compare observations is  to consider their \textbf{distance from a subset of observations}: increasing distance being increasingly \textbf{suggestive} of anomalous status.
 \newl \textbf{Requirement:} a \textbf{distance function} or a \textbf{pre-computed table of pair-wise distances} (in discrete case). 
 \newl The choice of subsets and distance functions  distinguish the different distance-based algorithms.
@@ -950,7 +950,7 @@ DTNN anomalies ($\nu=5$), for various distances; unscaled data.
 \end{center}
 
 
-\fh{6.2.2 -- Density-Based Methods} \label{6.2.2} 
+\fh{5.2.2 -- Density-Based Methods} \label{5.2.2} 
 \noindent The flexibility in the choice of distance functions, scaling, and distance-based anomaly detection algorithm gives rise to different \textbf{anomaly rankings}. This is par for the course in the anomaly detection context. \newl Density-based approaches view points as anomalous if they occur in \textbf{low density regions}. Methods include: \begin{itemize}
 \item \textbf{local outlier factors};
 \item \textbf{DBSCAN}, and  
@@ -1205,7 +1205,7 @@ In general, \text{density-based} schemes are more powerful than distance-based s
 
 
 \fh{\textcolor{darkestgreen}{
-6.3 -- Qualitative Methods}} \label{6.3} 
+5.3 -- Qualitative Methods}} \label{5.3} 
 
 \noindent \textbf{Categorical} (or  qualitative) variables are one whose levels are measured on a nominal scale. 
 \newl 
@@ -1240,7 +1240,7 @@ Another option is to look at combinations of feature levels, but this can be com
 
 
 
-\fh{6.3.1 -- AVF Algorithm} \label{6.3.1} 
+\fh{5.3.1 -- AVF Algorithm} \label{5.3.1} 
 \noindent The \textbf{Attribute Value Frequency} (AVF) algorithm is a fast and simple way to detect outlying observations in categorical data.\newl It can be done without having to create or search through various combinations feature levels (which increase the search time).  \newline\newline Intuitively, outlying observations are points which occur relatively infrequently in the (categorical) dataset;  an ``ideal'' anomalous point is one for which  \textbf{each feature value is extremely anomalous} (or relatively infrequent). 
 \newline\newline The \textbf{rarity} of an attribute level can be measured by summing the number of times the corresponding feature takes that value in the dataset. 
 \newpage\ \\ \noindent Let's say that there are $n$ observations in the dataset: $\{\mathbf{x}_i\}$, $i = 1, \ldots, n$, and that each observation is a collection of $m$ features. \newl We write $$\mathbf{x}_{i} = (x_{i,1}, \cdots , x_{i,\ell}, \cdots, x_{i,m}),$$ where  $x_{i,\ell}$ is $\mathbf{x}_i$'s $\ell$th feature's level.\newl 
@@ -1258,7 +1258,7 @@ where $f(x_{i,\ell})$ is the number of dataset observations $\mathbf{x}$ for whi
 &=\textstyle{\frac{1}{3}(175+141+79)=131.7}\end{align*} 
 \end{center}
 
-\fh{6.3.2 -- Greedy Algorithm} \label{6.3.2} 
+\fh{5.3.2 -- Greedy Algorithm} \label{5.3.2} 
 \noindent The \textbf{greedy} algorithm identifies a set \text{OS} of \textbf{candidate} anomalous observations in an efficient manner. 
 \newl 
 The \textbf{entropy of a set} $\Sigma\subseteq D$ is a measure of the \textbf{disorder} in $\Sigma$. Let $X$ be a feature of $D$; the set of levels that $X$ takes on $\Sigma$ is denoted by  $$S(X;\Sigma)=\{z|X=z,\  \mathbf{x}\in \Sigma\}.$$ Let $p_X(z)$ be the \% of observations in $\Sigma$ for which $X=z$. The \textbf{entropy of a feature} $X$ on $\Sigma$ is  
@@ -1281,13 +1281,13 @@ where the \textbf{entropy} $H(D\setminus O)$ is the sum of the entropy of each f
 \item Repeat steps 2-4 another $k-1$ times to obtain a set \text{OS} of $k$ candidate anomalous observations.
 \end{enumerate}
 
-\fh{\textcolor{darkestgreen}{6.4 -- Anomalies in High-Dimensional Datasets}} \label{6.4}
+\fh{\textcolor{darkestgreen}{5.4 -- Anomalies in High-Dimensional Datasets}} \label{5.4}
 \noindent In recent times, datasets have become quite \textbf{large} -- they may contain \textbf{hundreds or thousands of features} (or more).
 \newl Conventional \textbf{proximity-based} anomaly detection methods can only be expected to work reasonably well when the sample size $n$ is larger than the dimension $p$ ($n>p$). 
 \newl
 In \textbf{high-dimensional data} ($n<p$), the main problem is an off-shoot of the \textbf{curse of dimensionality} (CoD):  observations are often \textbf{isolated} and \textbf{scattered} (or sparse); the notion of proximity fails to maintain its relevance. \newl \textbf{High-dimensional anomaly detection methods} are linked with dimension reduction and feature selection methods. 
 
-\fh{6.4.1 -- Definitions and Challenges} \label{6.4.1}
+\fh{5.4.1 -- Definitions and Challenges} \label{5.4.1}
 \noindent The challenges of anomaly and outlier detection in \textbf{high-dimensional data} (HDD) are due to:
 \begin{itemize}
 \item the notion of distance failing to retain its \textbf{relevance} due to the CoD (``the problem of detecting outliers is like finding a needle in a haystack'');
@@ -1303,7 +1303,7 @@ In \textbf{high-dimensional data} ($n<p$), the main problem is an off-shoot of t
 \item consider the \textbf{local data behaviour} to determine whether an observation is abnormal or not.
 \end{itemize}
 
-\fh{6.4.2 -- Projection-Based Methods} \label{6.4.2} 
+\fh{5.4.2 -- Projection-Based Methods} \label{5.4.2} 
 \noindent One approach to mitigate the effects of the CoD on conventional anomaly/outlier detection methods in \textbf{high dimension, low sample size} (HDLSS) datasets is to \textbf{reduce the dimensionality} of the dataset while preserving its essential characteristics. \newl Such projecion-based methods include: \begin{itemize}\item \textbf{principal component analysis}, \item \textbf{independent component analysis}, \item \textbf{feature selection}, etc. -- see \textit{Feature Selection and Dimension Reduction} module/report for more examples.\end{itemize} 
 \fh{Principal Components Analysis}
  \noindent \textbf{Principal component analysis} (PCA) can be used to find the combinations of variables along which the data points are \textbf{most spread out}.\newl Geometrically, the procedure fits the ``best'' $p-$\textbf{ellipsoid} to a centered representation of the data. \newl The ellipsoid axes are the \textbf{principal components} of the data. \newl Small axes are components along which the variance is ``small''; removing these components can lead to a ``small'' loss of information. \newl There are scenarios where it could be those ``small'' axes that are more interesting -- such as the ``pancake stack'' problem. 
@@ -1452,7 +1452,7 @@ In a nutshell, the first component provides the direction of largest $k$NN dista
 \includegraphics[width=\textwidth]{Images/11NN_DOBIN}
 \end{center}
 
-\fh{6.4.3 -- Subspace  Methods} \label{6.4.3}
+\fh{5.4.3 -- Subspace  Methods} \label{5.4.3}
 \noindent \textbf{Subspace methods} have been used effectively for anomaly and outlier detection in high-dimen\-sional datasets.\newl In this context, a \textbf{subspace} is obtained by projecting the original dataset $D$ on some collection of its features (looking at $D$ only along some of its axes). 
 \newl \textbf{Strengths:} 
 \begin{itemize}
@@ -1479,33 +1479,33 @@ The formal procedure is provided in Algorithm 8.
  $\Warning$ ``\textbf{No Free Lunch'' Theorem:} there is no magic method --  all methods have strengths and limitations, and the results depend heavily on the data. 
 \newl Another list of algorithms is found at \texttt{https://pyod.readthedocs.io/en/latest/}; it is far from complete. 
 
-%\fh{\textcolor{darkestgreen}{6.5 -- Applications}} \label{6.5}
+%\fh{\textcolor{darkestgreen}{5.5 -- Applications}} \label{5.5}
 
 
 
-%\fh{6.5.1 -- S\&P 500} \label{6.5.1}
+%\fh{5.5.1 -- S\&P 500} \label{5.5.1}
 
 
 
-%\fh{6.5.2 -- Airports} \label{6.5.2} 
+%\fh{5.5.2 -- Airports} \label{5.5.2} 
 
 
 
-%\fh{6.5.3 -- Application 3} \label{6.5.3} 
+%\fh{5.5.3 -- Application 3} \label{5.5.3} 
 
 
 
-%\fh{6.5.4 -- Application 4} \label{6.5.4} 
+%\fh{5.5.4 -- Application 4} \label{5.5.4} 
 
 
 
-%\fh{6.5.5 -- Application 5} \label{6.5.5} 
+%\fh{5.5.5 -- Application 5} \label{5.5.5} 
 
-\fh{\textcolor{darkestgreen}{6.5 -- Advanced Topics}} \label{6.5}
+\fh{\textcolor{darkestgreen}{5.5 -- Advanced Topics}} \label{5.5}
 \noindent Anomaly detection and outlier analysis is still a young field, with a very active research community. \newl The challenges are numerous (we have highlighted some of them), and new algorithms come out nearly monthly. \newl An application to time series (using the S\&P 500) is provided in the accompanying report, as are suggested exercises and projects (Airline Data, Distracted Driving Fatalities Data, Houseprice Data, etc.). \newl We wrap up this module with a discussion of outlier ensembles and of anomalies in text data. 
 
 
-\fh{6.5.1 -- Outlier Ensembles} \label{6.5.1}
+\fh{5.5.1 -- Outlier Ensembles} \label{5.5.1}
 \noindent We have looked at various anomaly detection algorithms whose relative performance varies with the type of data being considered. 
 \newl The  \textbf{No Free Lunch theorem} reminds us that there is no specific algorithm that is guaranteed to outperform every other algorithm for all datasets. \newl The impact of algorithmic mismatch can be mitigated by using \textbf{ensemble methods}, where the results of several algorithms are considered before making a final decision. \newl We discuss two types of ensemble methods:  \textbf{sequential ensembles} (boosting) and \textbf{independent ensembles}.
 
@@ -1558,15 +1558,15 @@ r\left(\mathbf{p}_{1}\right)=r\left(\mathbf{p}_{2}\right)=1,\; r \left(\mathbf{p
 \includegraphics[width=\textwidth]{Images/O3_Outlier}
 \end{center}
 \newpage\ \\ \noindent The columns on the left indicate the \textbf{subspace variables} (see row colouring). \newl The columns on the right indicate which \textbf{observations were identified as an outlier} by at least $1$ method (HDoutliers, FastPCS, mvBACON, adjOutlyingness, DectectDeviatingCells, covMCD) in at least $1$ subspace. \newl The \textbf{colours} depict the number of methods that identify each observation in each subspace as an outlier. \newl Observation $102$ is identified as an outlier by $6$ methods in $2$ subspaces, $5$ methods in $3$ subspaces, $4$ methods in $2$ subspaces, $3$ methods in $1$ subspace, $2$ methods  in $4$ subspaces, and $1$ method in $3$ subspaces -- it is clearly the \textbf{most anomalous} observation in the dataset. \newl Observations $62$ and $101$ are also commonly identified as outliers.
-\fh{6.5.2 -- Anomalies in Text Datasets} \label{6.5.2} 
+\fh{5.5.2 -- Anomalies in Text Datasets} \label{5.5.2} 
 \noindent In the \textbf{one-hot encoding} framework, text data is typically
 \begin{itemize}
 \item \textbf{sparse};
 \item \textbf{high-dimensional}, and 
 \item \textbf{non-negative}.
 \end{itemize}
-\textbf{Word vector representations} help with the first two of these, but at the cost of removing the third (and  reduced interpretability). \newl The proximity-based models that have been discussed previously can be extended to text data, but with subtle differences.    
-\fh{Proximity-Based Models}
+\textbf{Word vector representations} help with the first two of these, but at the cost of removing the third (and  reduced interpretability). \newl The anomaly detection models that have been discussed previously can be extended to text data, but with subtle differences.    
+\fh{Text Processing}
 \noindent \textbf{Proximity-based models} require either a sound distance function or a sound similarity function. \newl The \textbf{term frequency-inverse document frequency} representation is commonly-used for text processing: the term frequency for each word (i.e.\@ how often it shows up in a document) is \textbf{normalized} by the inverse document frequency (i.e.\@ in how many documents it appears). \newl \textbf{Semantic parsing} is the process of converting a sentence in a natural language to a formal meaning representation.
 \newl The word \textbf{order} and its \textbf{type/role} provide the word’s \textbf{attributes}.\newpage\ \\ \noindent 
 Consider the sentence: 
@@ -1656,9 +1656,9 @@ Text comes unstructured and unorganized. After processing, text is clean, but st
 How does this affect the choice of text statistic in the DTM/TDM? 
 \newl 
 $\Warning$ There is no sound mathematical justification to use the term frequency-inverse document frequency statistic. It may may not always be the ideal choice, but it is often used nonetheless. \newl  \textbf{Word vector representations} change the nature of DTM.
-\newpage\ \\ \noindent However the documents have been \textbf{normalized}, the corpus is now represented by a matrix $$\textbf{X}=\begin{bmatrix} \textbf{D}_1 \\ \vdots \\ \textbf{D}_N \end{bmatrix}.$$ The similarity between documents is computed using the \textbf{cosine similarity}: 
+\fh{Anomaly Detection Models} \noindent However the documents have been \textbf{normalized}, the corpus is now represented by a matrix $$\textbf{X}=\begin{bmatrix} \textbf{D}_1 \\ \vdots \\ \textbf{D}_N \end{bmatrix}.$$ For proximity-based methods, the similarity between documents is computed using the \textbf{cosine similarity}: 
 $$w(\textbf{D}_i,\textbf{D}_j)=\cos(\textbf{D}_i,\textbf{D}_j)=\frac{\textbf{D}_i\cdot \textbf{D}_j}{\|\textbf{D}_i \| \|\textbf{D}_j \|}.$$
-Proximity-based algorithms can then be applied to this dataset, as they would to any numerical dataset, but the results are not always ... satisfactory.  
+Proximity-based algorithms can then be applied to this dataset, as they would to any numerical dataset. So can supervised algorithms, if data labels are available. The results, however, are not always ... satisfactory.  
 \end{document}
 
 
