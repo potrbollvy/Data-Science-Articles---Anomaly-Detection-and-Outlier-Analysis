@@ -161,7 +161,7 @@
 6.5 -- Advanced Topics (p.\pageref{6.5}) \\ 
 \small
 \textcolor{white}{ab} \localtextbulletone\ Outlier Ensembles (p.\@\pageref{6.5.1}) \\ 
-\textcolor{white}{ab} \localtextbulletone\ Anomalies in Text Datasets Methods (p.\@\pageref{6.5.2})\normalsize 
+\textcolor{white}{ab} \localtextbulletone\ Anomalies in Text Datasets (p.\@\pageref{6.5.2})\normalsize 
  \ \\ \ \\ 
 References and other details can be found in Cissokho, Y., Fadel, S., Millson, R., Pourhasan, R., Boily, P. [2020], \textit{Anomaly Detection and Outlier Analysis}, Data Science Report Series, Data Action Lab.
 
@@ -1502,7 +1502,7 @@ The formal procedure is provided in Algorithm 8.
 %\fh{6.5.5 -- Application 5} \label{6.5.5} 
 
 \fh{\textcolor{darkestgreen}{6.5 -- Advanced Topics}} \label{6.5}
-\noindent Anomaly detection and outlier analysis is still a young field, with a very active research community. \newl The challenges are numerous (we have highlighted some of them), and new algorithms come out nearly monthly. \newl An application to time series (using the S\&P 500) is provided in the accompanying report, as are suggested exercises and projects (Airline Data, Distracted Driving Fatalities Data, Houseprice Data, etc.). \newl We wrap up this module with a 
+\noindent Anomaly detection and outlier analysis is still a young field, with a very active research community. \newl The challenges are numerous (we have highlighted some of them), and new algorithms come out nearly monthly. \newl An application to time series (using the S\&P 500) is provided in the accompanying report, as are suggested exercises and projects (Airline Data, Distracted Driving Fatalities Data, Houseprice Data, etc.). \newl We wrap up this module with a discussion of outlier ensembles and of anomalies in text data. 
 
 
 \fh{6.5.1 -- Outlier Ensembles} \label{6.5.1}
@@ -1558,9 +1558,107 @@ r\left(\mathbf{p}_{1}\right)=r\left(\mathbf{p}_{2}\right)=1,\; r \left(\mathbf{p
 \includegraphics[width=\textwidth]{Images/O3_Outlier}
 \end{center}
 \newpage\ \\ \noindent The columns on the left indicate the \textbf{subspace variables} (see row colouring). \newl The columns on the right indicate which \textbf{observations were identified as an outlier} by at least $1$ method (HDoutliers, FastPCS, mvBACON, adjOutlyingness, DectectDeviatingCells, covMCD) in at least $1$ subspace. \newl The \textbf{colours} depict the number of methods that identify each observation in each subspace as an outlier. \newl Observation $102$ is identified as an outlier by $6$ methods in $2$ subspaces, $5$ methods in $3$ subspaces, $4$ methods in $2$ subspaces, $3$ methods in $1$ subspace, $2$ methods  in $4$ subspaces, and $1$ method in $3$ subspaces -- it is clearly the \textbf{most anomalous} observation in the dataset. \newl Observations $62$ and $101$ are also commonly identified as outliers.
-\fh{6.5.2 -- Anomalies in Text Datasets Methods} \label{6.5.2} 
+\fh{6.5.2 -- Anomalies in Text Datasets} \label{6.5.2} 
+\noindent In the \textbf{one-hot encoding} framework, text data is typically
+\begin{itemize}
+\item \textbf{sparse};
+\item \textbf{high-dimensional}, and 
+\item \textbf{non-negative}.
+\end{itemize}
+\textbf{Word vector representations} help with the first two of these, but at the cost of removing the third (and  reduced interpretability). \newl The proximity-based models that have been discussed previously can be extended to text data, but with subtle differences.    
+\fh{Proximity-Based Models}
+\noindent \textbf{Proximity-based models} require either a sound distance function or a sound similarity function. \newl The \textbf{term frequency-inverse document frequency} representation is commonly-used for text processing: the term frequency for each word (i.e.\@ how often it shows up in a document) is \textbf{normalized} by the inverse document frequency (i.e.\@ in how many documents it appears). \newl \textbf{Semantic parsing} is the process of converting a sentence in a natural language to a formal meaning representation.
+\newl The word \textbf{order} and its \textbf{type/role} provide the word’s \textbf{attributes}.\newpage\ \\ \noindent 
+Consider the sentence: 
+\begin{quote}``Dzingel added to the lead when he deflected Marc Methot’s point shot 20 seconds later.'' (AP game recap, Ottawa Senators vs.\@Toronto Maple Leafs, 18-2-2017)
+\end{quote}
+A potential semantic parsing tree is shown below: \\ 
+\includegraphics[width=\textwidth]{Images/SemanticParsing}
+\newpage\ \\ \noindent By contrast, in the \textbf{Bag-of-Words} (BoW) framework, only the \textbf{presence} (or \textbf{absence}) of ``words'' (stems, $n-$grams, sentences, etc.) is important. 
+\newl \textbf{Relative frequencies} provide information (intent, theme, feeling, etc.) about the corpus; the \textbf{words themselves} are attributes of the document. \begin{center}
+\includegraphics[width=0.45\textwidth]{Images/BoW}\end{center}\newpage\ \\ \noindent In general, text data requires \textbf{extensive cleaning and processing}. But there are a number of challenges due to the nature of the data:
+\begin{itemize}
+\item what is an anomaly in the text?
+\item what is an outlier?
+\item are these concepts even definable?
+\item how do we deal with encoding errors?
+\end{itemize}
+$\Warning$ Spelling mistakes and typographical errors are difficult to catch in large documents, even with spell-checkers; in the anomaly detection context, perhaps the text should not be cleaned up too thoroughly? 
+\newpage\ \\ \noindent The process can be simplified to some extent with the help of \textbf{regular expressions} and \textbf{text pre-processing functions}.\newl Specific pre-processing steps vary depending on the problem:
+\begin{itemize}
+\item tweetish uses a different vocabulary than legalese
+\item same for a child who’s learning to speak and a Ph.D. candidate defending her thesis
+\end{itemize}
+As is almost everything else related to text mining, the cleaning process is \textbf{strongly context-dependent}, and the order of pre-processing tasks can affect results.\newpage\ \\ \noindent \textbf{Text Processing Options:}
+\begin{itemize}
+\item convert all letters to \textbf{lower case} (avoid when seeking names)
+\item remove all \textbf{punctuation marks} (avoid if seeking emojis)
+\item remove all \textbf{numerals} (avoid when mining for quantities)
+\item remove all extraneous \textbf{white space}
+\item remove characters within \textbf{brackets} (avoid if seeking tags)
+\item replace \textbf{numerals with words}
+\item replace \textbf{abbreviations}  
+\newpage\ \item replace \textbf{contractions} (avoid if seeking non-formal speech)
+\item replace all \textbf{symbols with words}
+\item remove \textbf{stop words} and \textbf{uninformative words} (language-, era- and context-dependent)
+\item \textbf{stem words} and \textbf{complete stems} to remove empty variations 
+\begin{itemize}
+\item “sleepiness”, “sleeping”, “sleeps”, “slept” $\Longrightarrow$ “sleep”
+\item the stem “operati” has different meanings in “operations research”, “operating systems” and “operative dentistry” 
+\end{itemize}
+\end{itemize}
+\newpage\ \\ \noindent 
+\textbf{Text Processing Challenges:}
+\begin{itemize}
+\item \textbf{phonetic accent representation:} ``ya new cah’s wicked pissa!''
+\item \textbf{neologisms and portmanteaus:} ``I’m planning prevenge''
+\item \textbf{poor translations/foreign words}, \textbf{puns and play-on-words}
+\item \textbf{mark-up, tags, and uninformative text:}    \texttt{<b>}; \verb+\verb+; ISBN blurb
+\item \textbf{specialized vocabulary:} ``clopen'';  ``poset''; ``retro-encabulator''
+\item \textbf{fictional names and places:} ``Alderaan''; ``Kilgore Trout''
+\item \textbf{slang and curses:} ``skengfire''; \verb+#$&#!+
+\end{itemize}
 
+\newpage\ \\ \noindent
+Text must be stored to data structures with right properties:
+\begin{itemize}
+\item a \textbf{string} or \textbf{vector of characters}, with language-specific encoding;
+\item a \textbf{corpus} (collection) of text documents (with meta information)
+\item a \textbf{document-term matrix} (DTM) where the rows are documents, the columns are terms, and the entries are an appropriate text statistic (or the transposed term-document matrix (TDM))
+\item a \textbf{tidy text dataset} with one token (single word, $n-$gram, sentence, paragraph) per row
+\end{itemize}
+\textbf{No magic recipe:} best format depends on the problem at hand. But this step is \textbf{crucial}, both for semantic analysis and BoW.
 
+\newpage\ \includegraphics[width=\textwidth]{Images/DTM} \\ Document-Term Matrix\newpage\ \\ \noindent Consider a corpus $\mathcal{C}=\{d_1,\ldots,d_N\}$ consisting of $N$ \textbf{documents} and $M$ BoW \textbf{terms} $\mathcal{T}=\{t_1,\ldots,t_M\}$. Each document $d$ contains $M_d$ terms. \newl For instance, if \begin{align*}\mathcal{C} =& \{\text{``the dogs who have been left out''}, \text{``who did that''},  \\ & \qquad \text{``my dogs breath smells like dog food''}\}, \end{align*}
+then $N=3$, $M=14$, and \begin{align*}\mathcal{T}&=\{\text{``been''},\text{``breath''},\text{``did''},\text{``dogs''},\text{``food''},\text{``have''},\text{``let''},\\ & \qquad\text{``like''},\text{``my''},  \text{``out''},\text{``smells''},\text{``that''},\text{``the''},\text{``who''}\}.\end{align*}\newpage\ \\ \noindent The \textbf{relative term frequency} of term $t$ in document $d$ is $$\textit{tf}^*_{t,d}=\frac{\text{\# of times term $t$ occurs in document $d$}}{M_d}.$$
+\begin{center}\includegraphics[width=\textwidth]{Images/tf}
+\end{center}
+For instance, $1/3$ of the terms in document $d_2$ are ``did;'' $2/7$ of the terms in document $d_3$ are ``dogs''.  
+\newpage\ \\ \noindent The \textbf{relative document frequency} of $t$ is $$\textit{df}^*_{t}=\frac{\text{\# of documents in which term $t$ occurs}}{N}=\frac{\sum_d{\text{sign}(\textit{tf}^*_{t,d})}}{N}.$$
+In this example, all the terms occur in exactly one of the documents (not all the same), except for ``dogs'' and ``who'', which appear in two documents. 
+\begin{center} 
+\includegraphics[width=\textwidth]{Images/df}
+\end{center} None of the $\textit{df}^*_{t,d}$ entries can be $0$ (otherwise the corresponding document would be empty).  \newpage\ \\ \noindent The \textbf{term frequency-inverse document frequency} of $t$ in $d$ is 
+$$\textit{tf-idf}^*_{t}=-\textit{tf}^*_{t,d}\times \ln(\textit{df}^*_{t}).$$
+\begin{center}\includegraphics[width=\textwidth]{Images/tf-idf}
+\end{center}
+Note that the entries for which $\textit{tf-idf}^*_{t,d}=0$ are also those for which the relative term frequency is $\textit{tf}^*_{t,d}=0$. 
+\newpage\ \\ \noindent 
+If all the documents contain the term $t$, then $\textit{df}^*_{t}=1$ and
+$$\textit{tf-idf}^*_{t,d}=-\textit{tf}^*_{t,d}\times \ln (1)=0,$$ and that specific term does not provide information.
+\newl If a term $t$ rarely occurs in a document $d$, then $\textit{tf}^*_{t,d}\approx 0$ and
+$$\textit{tf-idf}^*_{t,d}= 0 \times \ln (\textit{df}^*_{t})\approx 0.$$
+Terms that appear relatively often only in a small subset of documents are crucial to understanding those documents \textbf{in the general context} of the corpus.
+\newpage\ \\ \noindent At the analysis stage, it is easy to forget where the data comes from and what it really applies to.
+\newl 
+Text comes unstructured and unorganized. After processing, text is clean, but still unstructured. Bag of Words provides a framework for a structured numerical representation of text.
+\newl 
+How does this affect the choice of text statistic in the DTM/TDM? 
+\newl 
+$\Warning$ There is no sound mathematical justification to use the term frequency-inverse document frequency statistic. It may may not always be the ideal choice, but it is often used nonetheless. \newl  \textbf{Word vector representations} change the nature of DTM.
+\newpage\ \\ \noindent However the documents have been \textbf{normalized}, the corpus is now represented by a matrix $$\textbf{X}=\begin{bmatrix} \textbf{D}_1 \\ \vdots \\ \textbf{D}_N \end{bmatrix}.$$ The similarity between documents is computed using the \textbf{cosine similarity}: 
+$$w(\textbf{D}_i,\textbf{D}_j)=\cos(\textbf{D}_i,\textbf{D}_j)=\frac{\textbf{D}_i\cdot \textbf{D}_j}{\|\textbf{D}_i \| \|\textbf{D}_j \|}.$$
+Proximity-based algorithms can then be applied to this dataset, as they would to any numerical dataset, but the results are not always ... satisfactory.  
 \end{document}
 
 
